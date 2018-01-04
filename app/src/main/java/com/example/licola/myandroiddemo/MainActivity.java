@@ -1,0 +1,254 @@
+package com.example.licola.myandroiddemo;
+
+import static android.os.Build.MANUFACTURER;
+
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
+import com.example.RuntimeHandle;
+import com.example.licola.myandroiddemo.AndroidRuntimeCode.RuntimeCode;
+import com.example.licola.myandroiddemo.ItemFragment.OnListFragmentInteractionListener;
+import com.example.licola.myandroiddemo.dagger.SuperUserModel;
+import com.example.licola.myandroiddemo.dagger.UserModel;
+import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
+import com.example.licola.myandroiddemo.java.MainWork;
+import com.example.licola.myandroiddemo.java.SingleInit;
+import com.example.licola.myandroiddemo.messenger.MessengerService;
+import com.example.licola.myandroiddemo.utils.FragmentPagerRebuildAdapter;
+import com.example.licola.myandroiddemo.utils.Logger;
+import dalvik.system.DexFile;
+import javax.inject.Inject;
+
+@RuntimeHandle()
+public class MainActivity extends BaseActivity implements
+    OnListFragmentInteractionListener {
+
+  /**
+   * The {@link android.support.v4.view.PagerAdapter} that will provide
+   * fragments for each of the sections. We use a
+   * {@link FragmentPagerAdapter} derivative, which will keep every
+   * loaded fragment in memory. If this becomes too memory intensive, it
+   * may be best to switch to a
+   * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+   */
+  private SectionsPagerAdapter mSectionsPagerAdapter;
+
+  /**
+   * The {@link ViewPager} that will host the section contents.
+   */
+  private ViewPager mViewPager;
+  Toolbar toolbar;
+  @Inject
+  UserModel userModel;
+  @Inject
+  SuperUserModel superUserModel;
+
+
+  static Boolean value1 = true;
+  static Boolean value2 = false;
+  static Boolean value3 = new Boolean(true);
+
+  static final String[] title = {"BottomSheetFragment", "Test", "View", "Download", "Xml",
+      "Constraint", "RecyclerView", "Animate", "ProgressView", "IO", "ImageView"};
+
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    toolbar = (Toolbar) findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
+    // Create the adapter that will return a fragment for each of the three
+    // primary sections of the activity.
+
+    mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), title.length);
+    // Set up the ViewPager with the sections adapter.
+    mViewPager = (ViewPager) findViewById(R.id.container);
+    mViewPager.setAdapter(mSectionsPagerAdapter);
+
+    TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+    tabLayout.setupWithViewPager(mViewPager);
+    tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+    mViewPager.post(new Runnable() {
+      @Override
+      public void run() {
+        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
+//        mViewPager.setCurrentItem(2);
+      }
+    });
+
+    RuntimeCode runtimeCode = new RuntimeCode();
+    runtimeCode.init();
+
+    //        ActivitySuperComponent superComponent = DaggerActivitySuperComponent.builder()
+    //                .activitySuperUserModel(new ActivitySuperUserModel())
+    //                .build();
+    //
+    //        ActivityComponent component = DaggerActivityComponent.builder()
+    //                .activitySuperComponent(superComponent)
+    //                .activityUserModel(new ActivityUserModel())
+    //                .build();
+    //
+    //        component.inject(this);
+
+    MainWork.work();
+    testBuild();
+
+//    Logger.d("SingleInit.name:"+SingleInit.name);
+//    Logger.d("SingleInit instance:"+SingleInit.getInstance());
+//    Class<SingleInit> initClass=null;
+
+    Intent intent = new Intent(this, MessengerService.class);
+    bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
+    this.getClassLoader();
+  }
+
+  @Override
+  protected void onDestroy() {
+    unbindService(mConnection);
+    super.onDestroy();
+  }
+
+  private void testBuild() {
+    String manufacturer = MANUFACTURER;
+    Logger.d("manufacturer:" + manufacturer);
+  }
+
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+      @NonNull int[] grantResults) {
+    //permissionFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    // Inflate the menu; this adds items to the action bar if it is present.
+    getMenuInflater().inflate(R.menu.menu_main, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    // Handle action bar item clicks here. The action bar will
+    // automatically handle clicks on the Home/Up button, so long
+    // as you specify a parent activity in AndroidManifest.xml.
+    int id = item.getItemId();
+
+    //noinspection SimplifiableIfStatement
+    if (id == R.id.action_settings) {
+      return true;
+    }
+
+    return super.onOptionsItemSelected(item);
+  }
+
+  private Messenger mService;
+
+  private ServiceConnection mConnection = new ServiceConnection() {
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+      mService = new Messenger(service);
+      Message message = Message.obtain(null, 100);
+      Bundle data = new Bundle();
+      data.putString("msg", "hello this is client");
+      message.setData(data);
+      try {
+        mService.send(message);
+      } catch (RemoteException e) {
+        e.printStackTrace();
+      }
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+
+    }
+  };
+
+  @Override
+  public void onListFragmentInteraction(DummyItem item) {
+    Toast.makeText(this, item.toString(), Toast.LENGTH_SHORT).show();
+  }
+
+  /**
+   * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+   * one of the sections/tabs/pages.
+   */
+  public static class SectionsPagerAdapter extends FragmentPagerRebuildAdapter<Fragment> {
+
+
+    public SectionsPagerAdapter(FragmentManager fm, int pageSize) {
+      super(fm, pageSize);
+    }
+
+    @Override
+    protected Fragment createFragment(int position) {
+      Fragment fragment = null;
+      switch (position) {
+        case 0:
+          fragment = BottomSheetFragment.newInstance(title[position]);
+          break;
+        case 1:
+          fragment = TestFragment.newInstance(title[position]);
+          break;
+        case 2:
+          fragment = ViewFragment.newInstance(title[position]);
+          break;
+        case 3:
+          fragment = DownLoadFragment.newInstance(title[position]);
+          break;
+        case 4:
+          fragment = XmlFragment.newInstance(title[position]);
+          break;
+        case 5:
+          fragment = ConstraintLayoutFragment.newInstance(title[position], null);
+          break;
+        case 6:
+          fragment = ItemFragment.newInstance(1);
+          break;
+        case 7:
+          fragment = AnimateFragment.newInstance(title[position]);
+          break;
+        case 8:
+          fragment = ProcessViewFragment.newInstance(title[position]);
+          break;
+        case 9:
+          fragment = IOFragment.newInstance(title[position]);
+          break;
+        case 10:
+          fragment = ImageViewFragment.newInstance(title[position]);
+          break;
+      }
+      return fragment;
+    }
+
+    @Override
+    protected void bindFragment(Fragment fragment, int position) {
+
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+      return title[position];
+    }
+  }
+}

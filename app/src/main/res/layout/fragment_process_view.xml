@@ -1,0 +1,78 @@
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.licola.myandroiddemo.ProcessViewFragment">
+
+
+    <ImageView
+      android:id="@+id/img_target"
+      android:layout_width="match_parent"
+      android:layout_height="300dp"
+      android:layout_gravity="center"
+      tools:src="@drawable/a01" />
+
+    <TextView
+      android:id="@+id/txt_result"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:text="index" />
+    <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="50dp"
+      android:layout_marginTop="31dp"
+      android:layout_below="@+id/txt_result"
+      android:layout_centerHorizontal="true"
+      android:paddingLeft="30dp"
+      android:paddingRight="30dp">
+
+      <com.example.licola.myandroiddemo.view.ConditionSeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="50dp" />
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/R500"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="左右滑动"
+        android:textColor="@color/white_normal"
+        android:textSize="20sp" />
+
+    </FrameLayout>
+
+    <LinearLayout
+      android:background="@color/A300"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="30dp"
+      android:orientation="vertical">
+
+      <ImageView
+        android:id="@+id/img_bitmap"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center" />
+
+      <ImageView
+        android:id="@+id/img_bitmap_compress"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center" />
+
+    </LinearLayout>
+
+
+  </LinearLayout>
+
+
+</android.support.v4.widget.NestedScrollView>
