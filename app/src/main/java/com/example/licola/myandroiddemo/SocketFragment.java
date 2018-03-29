@@ -1,19 +1,20 @@
 package com.example.licola.myandroiddemo;
 
+
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import com.bumptech.glide.Glide;
-import com.example.licola.myandroiddemo.view.TouchImageView;
 
 
 /**
- *
+ * A simple {@link Fragment} subclass.
+ * Use the {@link SocketFragment#newInstance} factory method to
+ * create an instance of this fragment.
  */
-public class ImageViewFragment extends Fragment {
+public class SocketFragment extends Fragment {
 
   // TODO: Rename parameter arguments, choose names that match
   // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,7 +23,8 @@ public class ImageViewFragment extends Fragment {
   // TODO: Rename and change types of parameters
   private String mParam1;
 
-  public ImageViewFragment() {
+
+  public SocketFragment() {
     // Required empty public constructor
   }
 
@@ -31,11 +33,11 @@ public class ImageViewFragment extends Fragment {
    * this fragment using the provided parameters.
    *
    * @param param1 Parameter 1.
-   * @return A new instance of fragment ImageViewFragment.
+   * @return A new instance of fragment SocketFragment.
    */
   // TODO: Rename and change types and number of parameters
-  public static ImageViewFragment newInstance(String param1) {
-    ImageViewFragment fragment = new ImageViewFragment();
+  public static SocketFragment newInstance(String param1) {
+    SocketFragment fragment = new SocketFragment();
     Bundle args = new Bundle();
     args.putString(ARG_PARAM1, param1);
     fragment.setArguments(args);
@@ -54,15 +56,12 @@ public class ImageViewFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    View childView = inflater.inflate(R.layout.fragment_image_view, container, false);
-
-    TouchImageView imgTouch = childView.findViewById(R.id.img_touch);
-    imgTouch.setImageDrawable(getResources().getDrawable(R.drawable.p18684001092782349));
-
-    ImageView imageView=childView.findViewById(R.id.img_load);
-    Glide.with(getActivity()).load("").into(imageView);
-
-    return childView;
+    return inflater.inflate(R.layout.fragment_socket, container, false);
   }
 
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+
+  }
 }

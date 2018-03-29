@@ -5,7 +5,9 @@ import static android.os.Build.MANUFACTURER;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
@@ -16,6 +18,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -30,9 +33,9 @@ import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
 import com.example.licola.myandroiddemo.java.MainWork;
 import com.example.licola.myandroiddemo.java.SingleInit;
 import com.example.licola.myandroiddemo.messenger.MessengerService;
+import com.example.licola.myandroiddemo.receiver.MainLocalBroadcastReceiver;
 import com.example.licola.myandroiddemo.utils.FragmentPagerRebuildAdapter;
 import com.example.licola.myandroiddemo.utils.Logger;
-import dalvik.system.DexFile;
 import javax.inject.Inject;
 
 @RuntimeHandle()
@@ -65,7 +68,9 @@ public class MainActivity extends BaseActivity implements
   static Boolean value3 = new Boolean(true);
 
   static final String[] title = {"BottomSheetFragment", "Test", "View", "Download", "Xml",
-      "Constraint", "RecyclerView", "Animate", "ProgressView", "IO", "ImageView"};
+      "Constraint", "RecyclerView", "Animate", "ProgressView", "IO", "ImageView", "Module","Socket"};
+
+  MainLocalBroadcastReceiver receiver;
 
 
   @Override
@@ -111,20 +116,29 @@ public class MainActivity extends BaseActivity implements
     MainWork.work();
     testBuild();
 
-//    Logger.d("SingleInit.name:"+SingleInit.name);
-//    Logger.d("SingleInit instance:"+SingleInit.getInstance());
-//    Class<SingleInit> initClass=null;
+    Logger.d("SingleInit.name:"+SingleInit.name);
+    Logger.d("SingleInit instance:"+ SingleInit.getInstance());
+    Class<SingleInit> initClass=null;
 
     Intent intent = new Intent(this, MessengerService.class);
     bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
-    this.getClassLoader();
+
+    Logger.d("Build:" + Build.MANUFACTURER);
+
+    receiver = new MainLocalBroadcastReceiver();
+
+    LocalBroadcastManager.getInstance(this)
+        .registerReceiver(receiver, new IntentFilter(Intent.ACTION_PICK_ACTIVITY));
+
   }
+
 
   @Override
   protected void onDestroy() {
     unbindService(mConnection);
     super.onDestroy();
+    LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
   }
 
   private void testBuild() {
@@ -236,6 +250,12 @@ public class MainActivity extends BaseActivity implements
           break;
         case 10:
           fragment = ImageViewFragment.newInstance(title[position]);
+          break;
+        case 11:
+          fragment = ModuleFragment.newInstance(title[position]);
+          break;
+        case 12:
+          fragment=SocketFragment.newInstance(title[position]);
           break;
       }
       return fragment;

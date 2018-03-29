@@ -7,6 +7,7 @@ import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.example.licola.myandroiddemo.utils.Logger;
+import com.example.licola.myandroiddemo.utils.RomChecker;
 
 /**
  * Created by LiCola on 2017/6/16.
@@ -33,5 +34,7 @@ public class MyApplication extends Application {
         Logger.d( "init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
       }
     });
+
+    Logger.d("rom:"+ RomChecker.getName());
   }
 }

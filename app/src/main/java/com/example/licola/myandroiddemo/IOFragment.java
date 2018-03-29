@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.example.licola.myandroiddemo.utils.Logger;
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import okhttp3.internal.Util;
 import okio.BufferedSink;
 import okio.BufferedSource;
@@ -78,6 +79,8 @@ public class IOFragment extends Fragment {
       e.printStackTrace();
     }
     Logger.d("readData:" + readData);
+
+
   }
 
   private String readIO(File file) throws IOException {

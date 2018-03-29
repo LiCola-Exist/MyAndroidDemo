@@ -8,14 +8,20 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.View.OnLongClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
+import com.example.licola.myandroiddemo.utils.Logger;
 import com.example.licola.myandroiddemo.utils.PixelUtils;
 import com.example.licola.myandroiddemo.view.CanvasDemoView;
 import com.example.licola.myandroiddemo.view.InterpolatorExplainView;
@@ -50,8 +56,11 @@ public class ViewFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     final View rootView = inflater.inflate(R.layout.fragment_view, container, false);
-    final ViewGroup layoutGroup = (ViewGroup) rootView.findViewById(R.id.layout_group);
+    final LinearLayout layoutGroup =  rootView.findViewById(R.id.layout_group);
     final int screenHeight = PixelUtils.getScreenHeight(getContext());
+
+    ViewGroup touch = rootView.findViewById(R.id.layout_touche);
+    handleTouch(touch);
 
     final View canvasView = new CanvasDemoView(getContext());
     layoutGroup.addView(canvasView,
@@ -94,7 +103,31 @@ public class ViewFragment extends Fragment {
       }
     });
 
+    paintView.setOnKeyListener(new OnKeyListener() {
+      @Override
+      public boolean onKey(View v, int keyCode, KeyEvent event) {
+        return false;
+      }
+    });
+
     return rootView;
+  }
+
+  private void handleTouch(ViewGroup touch) {
+    touch.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Logger.d("响应了 点击事件");
+      }
+    });
+
+    touch.setOnTouchListener(new OnTouchListener() {
+      @Override
+      public boolean onTouch(View v, MotionEvent event) {
+        Logger.d("ViewGroup Touch 拦截点击事件");
+        return true;
+      }
+    });
   }
 
   public static Bitmap getScrollViewBitmap(NestedScrollView scrollView) {

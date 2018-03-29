@@ -2,6 +2,8 @@ package com.example.licola.myandroiddemo;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import org.junit.Test;
 
@@ -22,6 +24,8 @@ public class JavaTest {
 
   @Test
   public void methodTest(){
+
+
     JavaTest javaTest=new JavaTest();
     javaTest.work(new GetInput() {
       @Override public String input() {

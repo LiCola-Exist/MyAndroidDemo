@@ -19,6 +19,14 @@
       android:layout_height="160dp"
       app:rate="slow" />
 
+    <LinearLayout
+      android:id="@+id/layout_touche"
+      android:layout_width="match_parent"
+      android:layout_height="300dp"
+      android:background="@color/R500"
+      android:orientation="vertical">
+
+    </LinearLayout>
 
   </LinearLayout>
 

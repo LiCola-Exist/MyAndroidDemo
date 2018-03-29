@@ -24,4 +24,6 @@ public class SingleInit {
 //    name="123s";
     Logger.d("single init block this class");
   }
+
+
 }

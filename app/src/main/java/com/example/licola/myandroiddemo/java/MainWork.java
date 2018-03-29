@@ -1,23 +1,31 @@
 package com.example.licola.myandroiddemo.java;
 
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
 import com.example.licola.myandroiddemo.utils.Logger;
+import java.io.Serializable;
+import java.nio.channels.Channel;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by LiCola on 2017/9/5.
  */
 
-public class MainWork {
+public class MainWork{
 
   private static final String TAG = "MainWork";
 
@@ -30,14 +38,24 @@ public class MainWork {
 
 //    threadWorkHandler();
 //    workHandlerDelayed();
+    handlerThread();
     cale();
-  }
+
+
+   }
+
+
 
   private static int cale() {
     int a = 100;
     int b = 200;
     int c = 300;
     return (a + b) * c;
+  }
+
+  private static void handlerThread() {
+//    HandlerThread handlerThread=new HandlerThread("work");
+//    handlerThread.run();
   }
 
   private static void workHandlerDelayed() {
