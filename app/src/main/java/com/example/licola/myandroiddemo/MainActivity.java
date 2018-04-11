@@ -2,6 +2,7 @@ package com.example.licola.myandroiddemo;
 
 import static android.os.Build.MANUFACTURER;
 
+import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -23,10 +24,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.widget.Toast;
 import com.example.RuntimeHandle;
 import com.example.licola.myandroiddemo.AndroidRuntimeCode.RuntimeCode;
 import com.example.licola.myandroiddemo.ItemFragment.OnListFragmentInteractionListener;
+import com.example.licola.myandroiddemo.componet.MyLifeCycleObserver;
 import com.example.licola.myandroiddemo.dagger.SuperUserModel;
 import com.example.licola.myandroiddemo.dagger.UserModel;
 import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
@@ -131,8 +134,21 @@ public class MainActivity extends BaseActivity implements
     LocalBroadcastManager.getInstance(this)
         .registerReceiver(receiver, new IntentFilter(Intent.ACTION_PICK_ACTIVITY));
 
+    ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+    int memoryClass = manager.getMemoryClass();
+    int largeMemoryClass = manager.getLargeMemoryClass();
+    Logger.d("memoryClass:"+memoryClass+" largeMemoryClass:"+largeMemoryClass);
+
+    MyLifeCycleObserver.addObserver(this);
+
+
   }
 
+  @Override
+  protected void onResume() {
+    super.onResume();
+
+  }
 
   @Override
   protected void onDestroy() {

@@ -103,12 +103,7 @@ public class ViewFragment extends Fragment {
       }
     });
 
-    paintView.setOnKeyListener(new OnKeyListener() {
-      @Override
-      public boolean onKey(View v, int keyCode, KeyEvent event) {
-        return false;
-      }
-    });
+
 
     return rootView;
   }
@@ -118,6 +113,7 @@ public class ViewFragment extends Fragment {
       @Override
       public void onClick(View v) {
         Logger.d("响应了 点击事件");
+
       }
     });
 
@@ -125,6 +121,13 @@ public class ViewFragment extends Fragment {
       @Override
       public boolean onTouch(View v, MotionEvent event) {
         Logger.d("ViewGroup Touch 拦截点击事件");
+
+        try {
+          Thread.sleep(100000);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+
         return true;
       }
     });

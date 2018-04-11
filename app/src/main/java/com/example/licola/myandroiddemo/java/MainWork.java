@@ -41,7 +41,12 @@ public class MainWork{
     handlerThread();
     cale();
 
+    DispatcherTime dispatcher = new DispatcherTime();
+    dispatcher.run();
+    dispatcher.postSendTask("1", "data1");
+    dispatcher.postSendTask("2", "data2");
 
+    dispatcher.postAckTask("1");
    }
 
 

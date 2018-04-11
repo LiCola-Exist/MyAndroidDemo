@@ -13,6 +13,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import com.example.licola.myandroiddemo.dummy.DummyContent;
 import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
 import java.util.List;
@@ -80,8 +83,33 @@ public class ItemFragment extends Fragment {
     adapter = new MyItemRecyclerViewAdapter(mListener);
     recyclerView.setAdapter(adapter);
     adapter.initData(DummyContent.ITEMS);
+
+    ListView listView=new ListView(context);
+    listView.setAdapter(new BaseAdapter() {
+      @Override
+      public int getCount() {
+        return 0;
+      }
+
+      @Override
+      public Object getItem(int position) {
+        return null;
+      }
+
+      @Override
+      public long getItemId(int position) {
+        return 0;
+      }
+
+      @Override
+      public View getView(int position, View convertView, ViewGroup parent) {
+        return null;
+      }
+    });
+
     return view;
   }
+
 
   public void changeData() {
     List<DummyItem> items = DummyContent.ITEMS;

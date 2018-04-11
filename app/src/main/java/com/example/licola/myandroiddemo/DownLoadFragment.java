@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +21,15 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import com.example.licola.myandroiddemo.utils.Logger;
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.Timer;
 import java.util.TimerTask;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.EventListener;
 import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 import okhttp3.Response;
 
 /**
@@ -34,8 +39,10 @@ import okhttp3.Response;
 public class DownLoadFragment extends Fragment {
 
   private static final String ARG_SECTION_KEY = "section_key";
-  @BindView(R.id.button) Button button;
-  @BindView(R.id.textView) TextView textView;
+  @BindView(R.id.button)
+  Button button;
+  @BindView(R.id.textView)
+  TextView textView;
   Unbinder unbinder;
 
   public DownLoadFragment() {
@@ -53,7 +60,8 @@ public class DownLoadFragment extends Fragment {
     return fragment;
   }
 
-  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     final View rootView = inflater.inflate(R.layout.fragment_down, container, false);
 
@@ -62,31 +70,77 @@ public class DownLoadFragment extends Fragment {
     return rootView;
   }
 
-  @Override public void onDestroyView() {
+  @Override
+  public void onDestroyView() {
     super.onDestroyView();
     unbinder.unbind();
   }
 
-  @OnClick(R.id.button) public void onViewClicked() {
+  final static OkHttpClient client = new OkHttpClient.Builder()
+      .eventListener(new EventListener() {
+        @Override
+        public void callStart(Call call) {
+          super.callStart(call);
+          Logger.d();
+        }
+
+        @Override
+        public void connectEnd(Call call, InetSocketAddress inetSocketAddress, Proxy proxy,
+            @Nullable Protocol protocol) {
+          super.connectEnd(call, inetSocketAddress, proxy, protocol);
+          Logger.d();
+        }
+
+        @Override
+        public void connectFailed(Call call, InetSocketAddress inetSocketAddress, Proxy proxy,
+            @Nullable Protocol protocol, IOException ioe) {
+          super.connectFailed(call, inetSocketAddress, proxy, protocol, ioe);
+          Logger.d();
+
+        }
+
+        @Override
+        public void callEnd(Call call) {
+          super.callEnd(call);
+          Logger.d();
+
+        }
+
+        @Override
+        public void callFailed(Call call, IOException ioe) {
+          super.callFailed(call, ioe);
+          Logger.d();
+        }
+      })
+      .build();
+
+
+  @OnClick(R.id.button)
+  public void onViewClicked() {
     workDownLoad();
   }
 
-  @OnClick(R.id.btn_okhttp) public void onViewOkHttpClicked(final View view) {
-    final OkHttpClient client = new OkHttpClient();
+  @OnClick(R.id.btn_okhttp)
+  public void onViewOkHttpClicked(final View view) {
 
     okhttp3.Request request =
         new okhttp3.Request.Builder().url("http://publicobject.com/helloworld.txt").build();
 
     client.newCall(request).enqueue(new Callback() {
-      @Override public void onFailure(Call call, IOException e) {
+      @Override
+      public void onFailure(Call call, IOException e) {
         e.printStackTrace();
       }
 
-      @Override public void onResponse(Call call, Response response) throws IOException {
-        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+      @Override
+      public void onResponse(Call call, Response response) throws IOException {
+        if (!response.isSuccessful()) {
+          throw new IOException("Unexpected code " + response);
+        }
 
         view.post(new Runnable() {
-          @Override public void run() {
+          @Override
+          public void run() {
             view.setEnabled(false);
           }
         });
@@ -98,12 +152,14 @@ public class DownLoadFragment extends Fragment {
 
   private ThreadLocal<Boolean> mBooleanThreadLocal = new ThreadLocal<>();
 
-  @OnClick(R.id.btn_thread) public void onViewThread() {
+  @OnClick(R.id.btn_thread)
+  public void onViewThread() {
     mBooleanThreadLocal.set(true);
     Logger.d(Thread.currentThread().toString() + " value = " + mBooleanThreadLocal.get());
 
     new Thread("Thread#1") {
-      @Override public void run() {
+      @Override
+      public void run() {
         super.run();
         mBooleanThreadLocal.set(false);
         Logger.d(Thread.currentThread().toString() + " value = " + mBooleanThreadLocal.get());
@@ -111,7 +167,8 @@ public class DownLoadFragment extends Fragment {
     }.start();
 
     new Thread("Thread#2") {
-      @Override public void run() {
+      @Override
+      public void run() {
         super.run();
         Logger.d(Thread.currentThread().toString() + " value = " + mBooleanThreadLocal.get());
       }
@@ -137,7 +194,8 @@ public class DownLoadFragment extends Fragment {
     final DownloadManager.Query query = new Query();
     final Timer timer = new Timer();
     TimerTask timerTask = new TimerTask() {
-      @Override public void run() {
+      @Override
+      public void run() {
         Cursor cursor = downloadManager.query(query.setFilterById(id));
         if (cursor != null && cursor.moveToFirst()) {
           //下载的文件到本地的目录

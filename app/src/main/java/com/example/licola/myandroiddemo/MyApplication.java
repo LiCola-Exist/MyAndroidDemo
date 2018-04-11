@@ -22,18 +22,18 @@ public class MyApplication extends Application {
   }
 
   private void initCloudChannel(Context applicationContext) {
-    PushServiceFactory.init(applicationContext);
-    CloudPushService pushService = PushServiceFactory.getCloudPushService();
-    pushService.register(applicationContext, new CommonCallback() {
-      @Override
-      public void onSuccess(String response) {
-        Logger.d( "init cloudchannel success");
-      }
-      @Override
-      public void onFailed(String errorCode, String errorMessage) {
-        Logger.d( "init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
-      }
-    });
+//    PushServiceFactory.init(applicationContext);
+//    CloudPushService pushService = PushServiceFactory.getCloudPushService();
+//    pushService.register(applicationContext, new CommonCallback() {
+//      @Override
+//      public void onSuccess(String response) {
+//        Logger.d( "init cloudchannel success");
+//      }
+//      @Override
+//      public void onFailed(String errorCode, String errorMessage) {
+//        Logger.d( "init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
+//      }
+//    });
 
     Logger.d("rom:"+ RomChecker.getName());
   }
