@@ -13,10 +13,23 @@
     android:scaleType="center"
     />
 
+  <RatingBar
+    android:id="@+id/ratingBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
   <ImageView
     android:layout_width="match_parent"
     android:layout_height="300dp"
     android:id="@+id/img_load"
     />
+
+  <ImageView
+    android:id="@+id/img_bitmap"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="@color/blue_normal"
+    tools:src="@drawable/a01">
+
+  </ImageView>
 
 </LinearLayout>

@@ -84,11 +84,11 @@ public class TickView extends View {
     TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.TickView);
     Resources resources = getResources();
     unCheckBaseColor = typedArray
-        .getColor(R.styleable.TickView_uncheck_base_color, resources.getColor(R.color.tick_gray));
+        .getColor(R.styleable.TickView_uncheck_base_color, resources.getColor(R.color.red_normal));
     checkBaseColor = typedArray
-        .getColor(R.styleable.TickView_check_base_color, resources.getColor(R.color.tick_yellow));
+        .getColor(R.styleable.TickView_check_base_color, resources.getColor(R.color.blue_normal));
     checkTickColor = typedArray
-        .getColor(R.styleable.TickView_check_tick_color, resources.getColor(R.color.tick_white));
+        .getColor(R.styleable.TickView_check_tick_color, resources.getColor(R.color.white_normal));
     int rateMode = typedArray.getInt(R.styleable.TickView_rate, 1);
     mTickRateEnum = TickRateEnum.getRateEnum(rateMode);
     typedArray.recycle();//记得回收

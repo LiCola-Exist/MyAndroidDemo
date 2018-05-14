@@ -43,9 +43,9 @@ public class SocketFragment extends Fragment {
 
 //  private static final String HOST = "192.168.2.16";
   private static final String HOST = "192.168.2.3";
-//  private static final int PORT = 9999;
-  private static final int PORT = 4543;
-  private static final String HOST_HTTP = "http://192.168.2.3:"+PORT;
+  private static final int PORT = 9999;
+//  private static final int PORT = 4543;
+  private static final String HOST_HTTP = "http://192.168.2.10:"+PORT;
 //  private static final String HOST_HTTP = "http://192.168.2.16:9999";
 //  private static final String HOST_HTTP = "https://wxapp-socket.uboxs.com";
 

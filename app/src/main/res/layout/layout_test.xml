@@ -9,13 +9,13 @@
         android:layout_height="100dp"
         android:text="first"
         android:textSize="20sp"
-        android:background="@color/A300"
+        android:background="@color/blue_normal"
         />
 
     <TextView
         android:layout_width="160dp"
         android:layout_height="100dp"
-        android:background="@color/red"
+        android:background="@color/red_normal"
         android:text="second"
         android:gravity="center"
         android:textSize="30sp"

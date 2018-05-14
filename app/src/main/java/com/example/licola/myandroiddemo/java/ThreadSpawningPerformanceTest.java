@@ -25,7 +25,7 @@ public class ThreadSpawningPerformanceTest {
     }
     System.out.println(" Done in " + (System.nanoTime() - t0) * 1E-6 + " ms.");
     System.out.print("Starting " + tt.length + " threads with " + workAmountPerThread
-        + " steps of work per thread... ");
+        + " steps of main per thread... ");
     t0 = System.nanoTime();
     for (int i = 0; i < tt.length; i++) {
       tt[i].start();

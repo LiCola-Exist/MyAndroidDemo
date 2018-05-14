@@ -23,7 +23,7 @@
       android:id="@+id/layout_touche"
       android:layout_width="match_parent"
       android:layout_height="300dp"
-      android:background="@color/R500"
+      android:background="@color/blue_normal"
       android:orientation="vertical">
 
     </LinearLayout>

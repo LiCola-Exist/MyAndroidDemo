@@ -33,6 +33,11 @@ public class ExampleUnitTest {
     double sin = Math.sin(Math.toRadians(90));
     double sin1 = Math.sin(Math.toRadians(0));
     System.out.println("sin:"+sin+" sin1:"+sin1);
+
+    float value=8.233212f;
+    int intValue=Math.round(value);
+    System.out.println(intValue);
+
   }
 
   @Test

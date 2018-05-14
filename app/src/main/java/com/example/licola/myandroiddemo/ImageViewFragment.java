@@ -1,5 +1,10 @@
 package com.example.licola.myandroiddemo;
 
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -7,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
+import com.example.licola.myandroiddemo.utils.Logger;
 import com.example.licola.myandroiddemo.view.TouchImageView;
 
 
@@ -59,8 +65,22 @@ public class ImageViewFragment extends Fragment {
     TouchImageView imgTouch = childView.findViewById(R.id.img_touch);
     imgTouch.setImageDrawable(getResources().getDrawable(R.drawable.p18684001092782349));
 
-    ImageView imageView=childView.findViewById(R.id.img_load);
-    Glide.with(getActivity()).load("").into(imageView);
+    final ImageView imageView=childView.findViewById(R.id.img_load);
+    Glide.with(getActivity()).load(R.drawable.a01).into(imageView);
+    imageView.postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        Drawable drawable = imageView.getDrawable();
+      }
+    },1000);
+
+    ImageView imgBitmap=childView.findViewById(R.id.img_bitmap);
+    Options options=new Options();
+    options.inSampleSize=2;
+    Bitmap bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.a01,options);
+    imgBitmap.setImageBitmap(bitmap);
+    Logger.d("bitmap byte size:"+bitmap.getByteCount());
+    Logger.d("bitmap width:"+bitmap.getWidth()+" height:"+bitmap.getHeight()+" config："+bitmap.getConfig());
 
     return childView;
   }

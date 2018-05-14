@@ -1,12 +1,17 @@
 package com.example.licola.myandroiddemo;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import com.example.licola.myandroiddemo.utils.BitmapUtils;
 import com.example.licola.myandroiddemo.utils.Logger;
 import java.io.File;
 import java.io.IOException;
@@ -62,7 +67,9 @@ public class IOFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_io, container, false);
+    View viewRoot = inflater.inflate(R.layout.fragment_io, container, false);
+
+    return viewRoot;
   }
 
   @Override
@@ -79,6 +86,7 @@ public class IOFragment extends Fragment {
       e.printStackTrace();
     }
     Logger.d("readData:" + readData);
+
 
 
   }

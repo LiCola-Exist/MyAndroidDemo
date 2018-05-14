@@ -9,7 +9,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'org.aspectj:aspectjtools:1.8.6'
+        classpath "org.aspectj:aspectjtools:$rootProject.aspectjVersion"
     }
 }
 
@@ -84,7 +84,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation "junit:junit:$rootProject.ext.junitVersion"
-    implementation 'org.aspectj:aspectjrt:1.8.6'
+    implementation "org.aspectj:aspectjrt:$rootProject.aspectjVersion"
     implementation project(':annotation')
 }
 

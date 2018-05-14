@@ -23,6 +23,17 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                //配置注解解析参数
+                arguments = [
+                        eventBusIndex: 'com.demo.licola.myandroiddemo.EventBusIndex'//EventBus注解 生成的类全名
+                ]
+            }
+        }
+
     }
     buildTypes {
         release {
@@ -40,80 +51,111 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+//    implementation 'com.licola:virtual:1.0.3'
+    //简单路由-映射
+//    implementation "com.licola:routermapper-annotation:$rootProject.routeVersion"
+//    annotationProcessor "com.licola:routermapper-compiler:$rootProject.routeVersion"
+
     annotationProcessor project(':compiler')
     implementation project(':annotation')
     implementation project(':aspectj')
 
+    //log工具
+    implementation "com.github.zhaokaiqiang.klog:library:1.6.0"
+    implementation "com.licola:llogger:1.1.0"
+
     //aspectJ工具依赖
     implementation "org.aspectj:aspectjrt:$rootProject.aspectjVersion"
+
+    //数据可视化调试工具
+    implementation "com.facebook.stetho:stetho:$rootProject.stethoVersion"
+
+    //dex分包支持
+    implementation "com.android.support:multidex:$rootProject.supportMultidexVersion"
+
     //guava工具类
     implementation "com.google.guava:guava:$rootProject.guavaVersion"
+    //View辅助工具 注解工具
+    implementation "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
+    //事件总线 注解工具
+    implementation "org.greenrobot:eventbus:$rootProject.eventbusVersion"
+    annotationProcessor "org.greenrobot:eventbus-annotation-processor:$eventbusVersion"
+    //数据库
+    implementation "org.greenrobot:greendao:$rootProject.greendao"
+    //OkHttp网络
+    implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
+
+    //图片框架
+    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
+    implementation "com.github.bumptech.glide:okhttp3-integration:$rootProject.glideVersion"
+
+
     implementation 'io.reactivex.rxjava2:rxjava:2.1.3'
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'org.greenrobot:eventbus:3.1.1'
+
 
     implementation 'com.aliyun.ams:alicloud-android-push:2.3.7'
     implementation 'com.aliyun.ams:alicloud-android-third-push:3.0.2@aar'
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    implementation 'com.squareup.retrofit2:retrofit-mock:2.3.0'
-    implementation 'com.squareup.okio:okio:1.14.0'
 
-    implementation 'com.google.dagger:dagger:2.9'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.9'
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit2Version"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit2Version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofit2Version"
+    implementation "com.squareup.retrofit2:retrofit-mock:$rootProject.retrofit2Version"
+    implementation "com.squareup.okio:okio:1.14.0"
 
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation "com.google.dagger:dagger:$rootProject.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 
     implementation('io.socket:socket.io-client:1.0.0') {
         // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'
     }
 
-    implementation "com.android.support:multidex:1.0.3"
+    //support
+
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintVersion"
     implementation "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
     implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:exifinterface:$rootProject.supportLibraryVersion"
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
     implementation "com.android.support:design:$rootProject.supportLibraryVersion"
     implementation "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
     implementation "com.android.support:gridlayout-v7:$rootProject.supportLibraryVersion"
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'com.google.android:flexbox:0.3.2'
+    implementation "com.google.android:flexbox:$rootProject.flexboxVersion"
 
     // ViewModel and LiveData
-    implementation "android.arch.lifecycle:extensions:1.1.1"
+    implementation "android.arch.lifecycle:extensions:$rootProject.lifecycleVersion"
     // alternatively, just ViewModel
-    implementation "android.arch.lifecycle:viewmodel:1.1.1"
+    implementation "android.arch.lifecycle:viewmodel:$rootProject.lifecycleVersion"
     // alternatively, just LiveData
-    implementation "android.arch.lifecycle:livedata:1.1.1"
+    implementation "android.arch.lifecycle:livedata:$rootProject.lifecycleVersion"
 
-    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
+    annotationProcessor "android.arch.lifecycle:compiler:$rootProject.lifecycleVersion"
 
     // Dependencies for local unit tests
-    testImplementation "junit:junit:$rootProject.ext.junitVersion"
-    testImplementation "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
-    testImplementation "org.mockito:mockito-inline:$rootProject.ext.mockitoVersion"
-    androidTestImplementation "org.mockito:mockito-android:$rootProject.ext.mockitoVersion"
-    testImplementation "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
+    testImplementation "junit:junit:$rootProject.junitVersion"
+    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    testImplementation "org.mockito:mockito-inline:$rootProject.mockitoVersion"
+    androidTestImplementation "org.mockito:mockito-android:$rootProject.mockitoVersion"
+    testImplementation "org.hamcrest:hamcrest-all:$rootProject.hamcrestVersion"
+    //测试依赖Json
     testImplementation 'org.json:json:20160810'
-
     // Android Testing Support Library's runner and rules
-    androidTestImplementation "com.android.support.test:runner:$rootProject.ext.runnerVersion"
-    androidTestImplementation "com.android.support.test:rules:$rootProject.ext.runnerVersion"
-
+    androidTestImplementation "com.android.support.test:runner:$rootProject.runnerVersion"
+    androidTestImplementation "com.android.support.test:rules:$rootProject.runnerVersion"
     // Dependencies for Android unit tests
-    androidTestImplementation "junit:junit:$rootProject.ext.junitVersion"
-    androidTestImplementation "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
-
-    // Espresso UI Testing
+    androidTestImplementation "junit:junit:$rootProject.junitVersion"
+    androidTestImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    //Espresso UI Testing idling需要注入到release版
+    implementation "com.android.support.test.espresso:espresso-idling-resource:$rootProject.espressoVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$rootProject.espressoVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-intents:$rootProject.espressoVersion"
-
-    // Resolve conflicts between main and test APK:
+    //Resolve conflicts between main and test APK:
     androidTestImplementation "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
     androidTestImplementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
     androidTestImplementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"

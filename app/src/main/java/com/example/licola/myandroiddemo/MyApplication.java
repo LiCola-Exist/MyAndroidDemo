@@ -2,12 +2,15 @@ package com.example.licola.myandroiddemo;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.multidex.MultiDex;
 import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.example.licola.myandroiddemo.utils.Logger;
 import com.example.licola.myandroiddemo.utils.RomChecker;
+import com.licola.llogger.LLogger;
+import com.socks.library.KLog;
 
 /**
  * Created by LiCola on 2017/6/16.
@@ -19,6 +22,9 @@ public class MyApplication extends Application {
     super.onCreate();
     initCloudChannel(this);
     MultiDex.install(this);
+
+    KLog.init(true,"Klog2");
+    LLogger.init(true,"Demo",getCacheDir(),"demo-log_");
   }
 
   private void initCloudChannel(Context applicationContext) {

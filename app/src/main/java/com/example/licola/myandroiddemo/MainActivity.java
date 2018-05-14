@@ -1,13 +1,12 @@
 package com.example.licola.myandroiddemo;
 
-import static android.os.Build.MANUFACTURER;
-
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -19,12 +18,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.widget.Toast;
 import com.example.RuntimeHandle;
 import com.example.licola.myandroiddemo.AndroidRuntimeCode.RuntimeCode;
@@ -33,13 +32,25 @@ import com.example.licola.myandroiddemo.componet.MyLifeCycleObserver;
 import com.example.licola.myandroiddemo.dagger.SuperUserModel;
 import com.example.licola.myandroiddemo.dagger.UserModel;
 import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
-import com.example.licola.myandroiddemo.java.MainWork;
-import com.example.licola.myandroiddemo.java.SingleInit;
+import com.example.licola.myandroiddemo.java.JavaMain;
 import com.example.licola.myandroiddemo.messenger.MessengerService;
 import com.example.licola.myandroiddemo.receiver.MainLocalBroadcastReceiver;
+import com.example.licola.myandroiddemo.thread.MyHandler;
+import com.example.licola.myandroiddemo.thread.ThreadWork;
 import com.example.licola.myandroiddemo.utils.FragmentPagerRebuildAdapter;
 import com.example.licola.myandroiddemo.utils.Logger;
+import com.example.licola.myandroiddemo.utils.PixelUtils;
+import com.licola.llogger.LLogger;
+import com.socks.library.KLog;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import javax.inject.Inject;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 @RuntimeHandle()
 public class MainActivity extends BaseActivity implements
@@ -71,7 +82,8 @@ public class MainActivity extends BaseActivity implements
   static Boolean value3 = new Boolean(true);
 
   static final String[] title = {"BottomSheetFragment", "Test", "View", "Download", "Xml",
-      "Constraint", "RecyclerView", "Animate", "ProgressView", "IO", "ImageView", "Module","Socket"};
+      "Constraint", "RecyclerView", "Animate", "ProgressView", "Module", "ImageView", "IO",
+      "Socket", "Thread"};
 
   MainLocalBroadcastReceiver receiver;
 
@@ -98,13 +110,110 @@ public class MainActivity extends BaseActivity implements
       @Override
       public void run() {
         mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-//        mViewPager.setCurrentItem(2);
+//        mViewPager.setCurrentItem(7);
       }
     });
 
+    asepctJRun();
+    daggerInject();
+
+    activityBindService();
+
+    testSystemInfo();
+
+    testLocalBroad();
+
+    testLifeCycle();
+
+    testView();
+
+    testEventBus();
+
+    JavaMain.main();
+    ThreadWork.main();
+    MyHandler.main();
+    testLog("name");
+  }
+
+
+  private void testLog(String type) {
+
+//    Thread thread=new MyThread();
+//    thread.start();
+//
+//    KLog.file("file-tag",getCacheDir(),"test file write");
+    LLogger.d("test");
+  }
+
+  private void testEventBus() {
+    EventBus eventBus = EventBus.getDefault();
+
+    eventBus.register(this);
+
+    eventBus.post("123");
+  }
+
+
+  @Subscribe
+  public void onEvent(String event) {
+    Logger.d(event);
+  }
+
+  private void testView() {
+
+    int screenHeight = PixelUtils.getScreenHeight(this);
+    Logger.d("screenHeight:" + screenHeight);
+
+    int color = ContextCompat.getColor(this, R.color.orange_normal);
+    int alpha = (int) (1 * 255.0f + 0.5f);
+//      FF9800
+    int argb = Color.argb(alpha, 255, 152, 0);
+  }
+
+  private void testLifeCycle() {
+    MyLifeCycleObserver.addObserver(this);
+  }
+
+  private void testLocalBroad() {
+    receiver = new MainLocalBroadcastReceiver();
+    LocalBroadcastManager.getInstance(this)
+        .registerReceiver(receiver, new IntentFilter(Intent.ACTION_PICK_ACTIVITY));
+  }
+
+  private void testSystemInfo() {
+    Logger.d("Build:" + Build.MANUFACTURER);
+
+    ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+    int memoryClass = manager.getMemoryClass();
+    int largeMemoryClass = manager.getLargeMemoryClass();
+    Logger.d("memoryClass:" + memoryClass + " largeMemoryClass:" + largeMemoryClass);
+
+    String packageCodePath = this.getPackageCodePath();
+    String packageResourcePath = this.getPackageResourcePath();
+    String codeCacheDir = this.getCodeCacheDir().getAbsolutePath();
+    Logger.d("packageCodePath:" + packageCodePath + " packageResourcePath:" + packageResourcePath
+        + " codeCacheDir:" + codeCacheDir);
+
+    File cacheDir = this.getCacheDir();
+    Logger.d("cacheDir:" + cacheDir);
+    ClassLoader classLoader = this.getClassLoader();
+    while (classLoader != null) {
+      Logger.d(classLoader.toString());
+      classLoader = classLoader.getParent();
+    }
+  }
+
+  private void activityBindService() {
+    Intent intent = new Intent(this, MessengerService.class);
+    bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+  }
+
+  private void asepctJRun() {
     RuntimeCode runtimeCode = new RuntimeCode();
     runtimeCode.init();
+  }
 
+  private void daggerInject() {
     //        ActivitySuperComponent superComponent = DaggerActivitySuperComponent.builder()
     //                .activitySuperUserModel(new ActivitySuperUserModel())
     //                .build();
@@ -115,33 +224,11 @@ public class MainActivity extends BaseActivity implements
     //                .build();
     //
     //        component.inject(this);
+  }
 
-    MainWork.work();
-    testBuild();
-
-    Logger.d("SingleInit.name:"+SingleInit.name);
-    Logger.d("SingleInit instance:"+ SingleInit.getInstance());
-    Class<SingleInit> initClass=null;
-
-    Intent intent = new Intent(this, MessengerService.class);
-    bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-
-
-    Logger.d("Build:" + Build.MANUFACTURER);
-
-    receiver = new MainLocalBroadcastReceiver();
-
-    LocalBroadcastManager.getInstance(this)
-        .registerReceiver(receiver, new IntentFilter(Intent.ACTION_PICK_ACTIVITY));
-
-    ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-    int memoryClass = manager.getMemoryClass();
-    int largeMemoryClass = manager.getLargeMemoryClass();
-    Logger.d("memoryClass:"+memoryClass+" largeMemoryClass:"+largeMemoryClass);
-
-    MyLifeCycleObserver.addObserver(this);
-
-
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
   }
 
   @Override
@@ -155,11 +242,6 @@ public class MainActivity extends BaseActivity implements
     unbindService(mConnection);
     super.onDestroy();
     LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
-  }
-
-  private void testBuild() {
-    String manufacturer = MANUFACTURER;
-    Logger.d("manufacturer:" + manufacturer);
   }
 
 
@@ -262,16 +344,19 @@ public class MainActivity extends BaseActivity implements
           fragment = ProcessViewFragment.newInstance(title[position]);
           break;
         case 9:
-          fragment = IOFragment.newInstance(title[position]);
+          fragment = ModuleFragment.newInstance(title[position]);
           break;
         case 10:
           fragment = ImageViewFragment.newInstance(title[position]);
           break;
         case 11:
-          fragment = ModuleFragment.newInstance(title[position]);
+          fragment = IOFragment.newInstance(title[position]);
           break;
         case 12:
-          fragment=SocketFragment.newInstance(title[position]);
+          fragment = SocketFragment.newInstance(title[position]);
+          break;
+        case 13:
+          fragment = ThreadFragment.newInstance(title[position]);
           break;
       }
       return fragment;

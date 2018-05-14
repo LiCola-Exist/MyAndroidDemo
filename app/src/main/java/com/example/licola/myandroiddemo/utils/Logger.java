@@ -132,4 +132,8 @@ public final class Logger {
 
     return "";
   }
+
+  static class FileWriteHelper{
+
+  }
 }

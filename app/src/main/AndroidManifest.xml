@@ -34,6 +34,9 @@
   <!-- 允许task重排序 -->
   <uses-permission android:name="android.permission.REORDER_TASKS" />
 
+
+  <uses-permission android:name="android.permission.READ_LOGS" />
+
   <application
       android:name=".MyApplication"
       android:allowBackup="true"
@@ -134,6 +137,8 @@
         android:name=".ScrollingActivity"
         android:label="@string/title_activity_scrolling"
         android:theme="@style/AppTheme.NoActionBar"/>
+    <activity android:name=".BottomSheetActivity" />
+
     <service android:name=".messenger.MessengerService"
       android:process=":remote"
       />

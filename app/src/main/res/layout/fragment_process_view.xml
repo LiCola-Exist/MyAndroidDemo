@@ -40,7 +40,7 @@
       <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/R500"
+        android:background="@color/blue_normal"
         android:enabled="false"
         android:gravity="center"
         android:text="左右滑动"
@@ -50,7 +50,7 @@
     </FrameLayout>
 
     <LinearLayout
-      android:background="@color/A300"
+      android:background="@color/green_normal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="30dp"

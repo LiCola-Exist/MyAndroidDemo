@@ -1,4 +1,4 @@
-package com.example.licola.myandroiddemo.Model;
+package com.example.licola.myandroiddemo.model;
 
 import org.junit.Test;
 
