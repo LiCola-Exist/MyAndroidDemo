@@ -1,6 +1,6 @@
 package com.example.licola.myandroiddemo.java;
 
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 import com.google.common.collect.Maps;
 import java.util.HashMap;
 
@@ -22,8 +22,8 @@ public class JavaMain {
   }
 
   private static void testSingle() {
-    Logger.d("SingleInit.name:" + SingleInit.name);
-    Logger.d("SingleInit instance:" + SingleInit.getInstance());
+    LLogger.d("SingleInit.name:" + SingleInit.name);
+    LLogger.d("SingleInit instance:" + SingleInit.getInstance());
     Class<SingleInit> initClass = null;
   }
 

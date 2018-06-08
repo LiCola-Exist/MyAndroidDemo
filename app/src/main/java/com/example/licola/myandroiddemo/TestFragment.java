@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -71,11 +71,11 @@ public class TestFragment extends Fragment {
 
     testMap();
 
-    Logger.d(DateUtils.formatDateTime(getContext(), System.currentTimeMillis(),
+    LLogger.d(DateUtils.formatDateTime(getContext(), System.currentTimeMillis(),
         DateUtils.FORMAT_SHOW_TIME));
-    Logger.d(DateUtils.formatDateTime(getContext(), System.currentTimeMillis(),
+    LLogger.d(DateUtils.formatDateTime(getContext(), System.currentTimeMillis(),
         DateUtils.FORMAT_ABBREV_ALL));
-    Logger.d(DateUtils.formatDateTime(getContext(), System.currentTimeMillis(),
+    LLogger.d(DateUtils.formatDateTime(getContext(), System.currentTimeMillis(),
         DateUtils.FORMAT_ABBREV_WEEKDAY
             | DateUtils.FORMAT_ABBREV_ALL
             | DateUtils.FORMAT_ABBREV_TIME));
@@ -126,7 +126,7 @@ public class TestFragment extends Fragment {
         }
         end = System.currentTimeMillis();
 
-        Logger.d("time=" + (end - begin));
+        LLogger.d("time=" + (end - begin));
       }
     });
 
@@ -180,12 +180,12 @@ public class TestFragment extends Fragment {
     //HashMap<DoubleClass,String> map=new HashMap<>();
     //map.put(new DoubleClass(2),"double2_0");
     //map.put(new DoubleClass(3),"double2_1");
-    //Logger.d("sub:"+(5/2));
+    //LLogger.d("sub:"+(5/2));
     //String s = map.get(new DoubleClass(2));
-    //Logger.d("first:"+s);
+    //LLogger.d("first:"+s);
     //String s1 = map.get(new DoubleClass(3));
-    //Logger.d("second:"+s1);
-    //Logger.d(map.size());
+    //LLogger.d("second:"+s1);
+    //LLogger.d(map.size());
 
     Hashtable<String,Integer> hashtable=new Hashtable<>();
     hashtable.put("s",1);
@@ -219,7 +219,7 @@ public class TestFragment extends Fragment {
       }
     }
 
-    Logger.d(" time ="+(System.currentTimeMillis()-time)+" sum="+sum);
+    LLogger.d(" time ="+(System.currentTimeMillis()-time)+" sum="+sum);
   }
 
   /**
@@ -237,7 +237,7 @@ public class TestFragment extends Fragment {
       executorService.execute(command);
     }
     countDownLatch.await();
-    Logger.d("testThreadPool:" + (System.currentTimeMillis() - bg));
+    LLogger.d("testThreadPool:" + (System.currentTimeMillis() - bg));
   }
 
   /**
@@ -255,7 +255,7 @@ public class TestFragment extends Fragment {
       thread.start();
     }
     countDownLatch.await();
-    Logger.d("testNewThread:" + (System.currentTimeMillis() - bg));
+    LLogger.d("testNewThread:" + (System.currentTimeMillis() - bg));
   }
 
   private static class TestRunnable implements Runnable {
@@ -268,7 +268,7 @@ public class TestFragment extends Fragment {
 
     @Override
     public void run() {
-      //      Logger.d("Thread-Log,调用了创建线程");
+      //      LLogger.d("Thread-Log,调用了创建线程");
       countDownLatch.countDown();
     }
   }

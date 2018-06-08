@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -76,43 +76,7 @@ public class DownLoadFragment extends Fragment {
     unbinder.unbind();
   }
 
-  final static OkHttpClient client = new OkHttpClient.Builder()
-      .eventListener(new EventListener() {
-        @Override
-        public void callStart(Call call) {
-          super.callStart(call);
-          Logger.d();
-        }
 
-        @Override
-        public void connectEnd(Call call, InetSocketAddress inetSocketAddress, Proxy proxy,
-            @Nullable Protocol protocol) {
-          super.connectEnd(call, inetSocketAddress, proxy, protocol);
-          Logger.d();
-        }
-
-        @Override
-        public void connectFailed(Call call, InetSocketAddress inetSocketAddress, Proxy proxy,
-            @Nullable Protocol protocol, IOException ioe) {
-          super.connectFailed(call, inetSocketAddress, proxy, protocol, ioe);
-          Logger.d();
-
-        }
-
-        @Override
-        public void callEnd(Call call) {
-          super.callEnd(call);
-          Logger.d();
-
-        }
-
-        @Override
-        public void callFailed(Call call, IOException ioe) {
-          super.callFailed(call, ioe);
-          Logger.d();
-        }
-      })
-      .build();
 
 
   @OnClick(R.id.button)
@@ -120,49 +84,21 @@ public class DownLoadFragment extends Fragment {
     workDownLoad();
   }
 
-  @OnClick(R.id.btn_okhttp)
-  public void onViewOkHttpClicked(final View view) {
 
-    okhttp3.Request request =
-        new okhttp3.Request.Builder().url("http://publicobject.com/helloworld.txt").build();
-
-    client.newCall(request).enqueue(new Callback() {
-      @Override
-      public void onFailure(Call call, IOException e) {
-        e.printStackTrace();
-      }
-
-      @Override
-      public void onResponse(Call call, Response response) throws IOException {
-        if (!response.isSuccessful()) {
-          throw new IOException("Unexpected code " + response);
-        }
-
-        view.post(new Runnable() {
-          @Override
-          public void run() {
-            view.setEnabled(false);
-          }
-        });
-        Logger.d(
-            "Thread:" + Thread.currentThread().toString() + " body:" + response.body().string());
-      }
-    });
-  }
 
   private ThreadLocal<Boolean> mBooleanThreadLocal = new ThreadLocal<>();
 
   @OnClick(R.id.btn_thread)
   public void onViewThread() {
     mBooleanThreadLocal.set(true);
-    Logger.d(Thread.currentThread().toString() + " value = " + mBooleanThreadLocal.get());
+    LLogger.d(Thread.currentThread().toString() + " value = " + mBooleanThreadLocal.get());
 
     new Thread("Thread#1") {
       @Override
       public void run() {
         super.run();
         mBooleanThreadLocal.set(false);
-        Logger.d(Thread.currentThread().toString() + " value = " + mBooleanThreadLocal.get());
+        LLogger.d(Thread.currentThread().toString() + " value = " + mBooleanThreadLocal.get());
       }
     }.start();
 
@@ -170,7 +106,7 @@ public class DownLoadFragment extends Fragment {
       @Override
       public void run() {
         super.run();
-        Logger.d(Thread.currentThread().toString() + " value = " + mBooleanThreadLocal.get());
+        LLogger.d(Thread.currentThread().toString() + " value = " + mBooleanThreadLocal.get());
       }
     }.start();
   }
@@ -223,7 +159,7 @@ public class DownLoadFragment extends Fragment {
           if (bytes_downloaded >= bytes_total) {
             timer.cancel();
           }
-          Logger.d(address, "finish=" + bytes_downloaded, "total=" + bytes_total);
+          LLogger.d(address, "finish=" + bytes_downloaded, "total=" + bytes_total);
         }
         cursor.close();
       }

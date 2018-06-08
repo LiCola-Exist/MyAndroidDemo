@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.example.licola.myandroiddemo.utils.BitmapUtils;
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -77,7 +77,7 @@ public class IOFragment extends Fragment {
     super.onActivityCreated(savedInstanceState);
 
     File file = new File(getContext().getCacheDir(), "OkioTemp.txt");
-    Logger.d("file:" + file.toString());
+    LLogger.d("file:" + file.toString());
     String readData = null;
     try {
       File fileWrite = writeIO(file);
@@ -85,7 +85,7 @@ public class IOFragment extends Fragment {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    Logger.d("readData:" + readData);
+    LLogger.d("readData:" + readData);
 
 
 

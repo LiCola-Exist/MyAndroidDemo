@@ -5,7 +5,7 @@ import android.arch.lifecycle.Lifecycle.Event;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.OnLifecycleEvent;
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 
 /**
  * Created by LiCola on 2018/4/10.
@@ -20,18 +20,18 @@ public class MyLifeCycleObserver implements LifecycleObserver {
 
   @OnLifecycleEvent(Event.ON_CREATE)
   public void onCreate() {
-    Logger.d();
+    LLogger.d();
   }
 
   @OnLifecycleEvent(Event.ON_RESUME)
   public void onResume() {
-    Logger.d();
+    LLogger.d();
 
   }
 
   @OnLifecycleEvent(Event.ON_PAUSE)
   public void onPause() {
-    Logger.d();
+    LLogger.d();
   }
 
 

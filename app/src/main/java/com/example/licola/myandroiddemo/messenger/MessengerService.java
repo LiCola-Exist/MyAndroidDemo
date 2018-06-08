@@ -7,7 +7,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.support.annotation.Nullable;
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 
 /**
  * Created by LiCola on 2017/11/14.
@@ -21,7 +21,7 @@ public class MessengerService extends Service {
     public void handleMessage(Message msg) {
       switch (msg.what) {
         case 100:
-          Logger.d("receive msg from client:"+msg.getData().getString("msg"));
+          LLogger.d("receive msg from client:"+msg.getData().getString("msg"));
           break;
         default:
           super.handleMessage(msg);

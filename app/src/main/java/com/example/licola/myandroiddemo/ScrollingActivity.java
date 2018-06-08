@@ -9,7 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.util.ArrayMap;
 import android.view.View;
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class ScrollingActivity extends BaseActivity {
     ActivityManager systemService = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
     List<RunningAppProcessInfo> runningAppProcesses = systemService.getRunningAppProcesses();
     for (RunningAppProcessInfo runningAppProcess : runningAppProcesses) {
-      Logger.d(runningAppProcess.lru);
+      LLogger.d(runningAppProcess.lru);
     }
   }
 }

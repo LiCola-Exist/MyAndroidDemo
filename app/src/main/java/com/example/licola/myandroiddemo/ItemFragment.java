@@ -7,17 +7,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.util.DiffUtil;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.OnScrollListener;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
+import com.example.licola.myandroiddemo.adapter.MyItemRecyclerViewAdapter;
 import com.example.licola.myandroiddemo.dummy.DummyContent;
 import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
+import com.licola.llogger.LLogger;
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -38,6 +39,8 @@ public class ItemFragment extends Fragment {
   private SwipeRefreshLayout swipeRefreshLayout;
   private RecyclerView recyclerView;
 
+  private LinearLayoutManager layoutManager;
+
   /**
    * Mandatory empty constructor for the fragment manager to instantiate the
    * fragment (e.g. upon screen orientation changes).
@@ -46,7 +49,8 @@ public class ItemFragment extends Fragment {
   }
 
   // TODO: Customize parameter initialization
-  @SuppressWarnings("unused") public static ItemFragment newInstance(int columnCount) {
+  @SuppressWarnings("unused")
+  public static ItemFragment newInstance(int columnCount) {
     ItemFragment fragment = new ItemFragment();
     Bundle args = new Bundle();
     args.putInt(ARG_COLUMN_COUNT, columnCount);
@@ -54,58 +58,44 @@ public class ItemFragment extends Fragment {
     return fragment;
   }
 
-  @Override public void onCreate(Bundle savedInstanceState) {
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    if (getArguments() != null) {
-      mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-    }
+//    if (getArguments() != null) {
+//      mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+//    }
   }
 
-  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_item_list, container, false);
     recyclerView = (RecyclerView) view.findViewById(R.id.list);
     swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
 
     swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-      @Override public void onRefresh() {
+      @Override
+      public void onRefresh() {
         changeData();
       }
     });
 
     Context context = view.getContext();
-    if (mColumnCount <= 1) {
-      recyclerView.setLayoutManager(new LinearLayoutManager(context));
-    } else {
-      recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-    }
+
+    layoutManager = new LinearLayoutManager(context);
+    recyclerView.setLayoutManager(layoutManager);
+
+//    if (mColumnCount <= 1) {
+//      recyclerView.setLayoutManager(new LinearLayoutManager(context));
+//    } else {
+//      recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+//    }
     adapter = new MyItemRecyclerViewAdapter(mListener);
     recyclerView.setAdapter(adapter);
     adapter.initData(DummyContent.ITEMS);
 
-    ListView listView=new ListView(context);
-    listView.setAdapter(new BaseAdapter() {
-      @Override
-      public int getCount() {
-        return 0;
-      }
-
-      @Override
-      public Object getItem(int position) {
-        return null;
-      }
-
-      @Override
-      public long getItemId(int position) {
-        return 0;
-      }
-
-      @Override
-      public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
-      }
-    });
+    recyclerView.addOnScrollListener(new MyScrollListener(layoutManager));
 
     return view;
   }
@@ -120,7 +110,8 @@ public class ItemFragment extends Fragment {
     swipeRefreshLayout.setRefreshing(false);
   }
 
-  @Override public void onAttach(Context context) {
+  @Override
+  public void onAttach(Context context) {
     super.onAttach(context);
     if (context instanceof OnListFragmentInteractionListener) {
       mListener = (OnListFragmentInteractionListener) context;
@@ -130,7 +121,8 @@ public class ItemFragment extends Fragment {
     }
   }
 
-  @Override public void onDetach() {
+  @Override
+  public void onDetach() {
     super.onDetach();
     mListener = null;
   }
@@ -146,6 +138,7 @@ public class ItemFragment extends Fragment {
    * >Communicating with Other Fragments</a> for more information.
    */
   public interface OnListFragmentInteractionListener {
+
     // TODO: Update argument type and name
     void onListFragmentInteraction(DummyItem item);
   }
@@ -160,25 +153,101 @@ public class ItemFragment extends Fragment {
       this.newList = newList;
     }
 
-    @Override public int getOldListSize() {
+    @Override
+    public int getOldListSize() {
       return oldList.size();
     }
 
-    @Override public int getNewListSize() {
+    @Override
+    public int getNewListSize() {
       return newList.size();
     }
 
-    @Override public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+    @Override
+    public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
       return oldList.get(oldItemPosition).id.equals(newList.get(newItemPosition).id);
     }
 
-    @Override public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+    @Override
+    public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
       return oldList.get(oldItemPosition).equals(newList.get(newItemPosition));
     }
 
-    @Nullable @Override public Object getChangePayload(int oldItemPosition, int newItemPosition) {
+    @Nullable
+    @Override
+    public Object getChangePayload(int oldItemPosition, int newItemPosition) {
 
       return null;
+    }
+  }
+
+  private static class MyScrollListener extends OnScrollListener {
+
+    private LinearLayoutManager layoutManager;
+
+    public MyScrollListener(LinearLayoutManager layoutManager) {
+      this.layoutManager = layoutManager;
+    }
+
+    @Override
+    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+      super.onScrollStateChanged(recyclerView, newState);
+      LLogger.d(newState);
+      if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+        int position = layoutManager.findFirstVisibleItemPosition();
+        View viewByPosition = layoutManager.findViewByPosition(position);
+        int top = Math.abs(viewByPosition.getTop());
+        if ((recyclerView.getHeight() >> 2) < top) {
+          ++position;
+        }
+        LLogger.d("放手了", position, top);
+
+        recyclerView.smoothScrollToPosition(position);
+      }
+    }
+
+    @Override
+    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+      super.onScrolled(recyclerView, dx, dy);
+//      LLogger.d(dy);
+    }
+  }
+
+  public static final class MyRecyclerView extends android.support.v7.widget.RecyclerView {
+
+    public MyRecyclerView(Context context) {
+      super(context);
+      init();
+    }
+
+    public MyRecyclerView(Context context, @Nullable AttributeSet attrs) {
+      super(context, attrs);
+      init();
+    }
+
+    public MyRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
+      super(context, attrs, defStyle);
+      init();
+    }
+
+    private void init() {
+      try {
+        Field mMaxFlingVelocity = RecyclerView.class.getDeclaredField("mMaxFlingVelocity");
+        mMaxFlingVelocity.setAccessible(true);
+        mMaxFlingVelocity.setInt(this, getMaxFlingVelocity() >> 2);
+        LLogger.d("修改滑动速度", getMaxFlingVelocity());
+      } catch (NoSuchFieldException | IllegalAccessException e) {
+        e.printStackTrace();
+      }
+
+
+    }
+
+
+    @Override
+    public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
+//      return super.onNestedPreFling(target, velocityX, velocityY);
+      return true;
     }
   }
 }

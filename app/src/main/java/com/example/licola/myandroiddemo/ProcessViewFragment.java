@@ -15,10 +15,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.ButterKnife;
-import com.example.licola.myandroiddemo.utils.Logger;
 import com.example.licola.myandroiddemo.view.ConditionSeekBar;
 import com.example.licola.myandroiddemo.view.ConditionSeekBar.OnProcessChangeListener;
 import com.example.licola.myandroiddemo.view.ImageProgressView;
+import com.licola.llogger.LLogger;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -130,9 +130,9 @@ public class ProcessViewFragment extends Fragment {
     AssetManager assetManager = getResources().getAssets();
     try {
       InputStream inputStream = assetManager.open("a01.png");
-      Logger.d("available:" + inputStream.available());
+      LLogger.d("available:" + inputStream.available());
       Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-      Logger
+      LLogger
           .d("assets bitmap :" + bitmap.getByteCount() + " width:" + bitmap.getWidth() + " height:"
               + bitmap.getHeight());
 
@@ -142,7 +142,7 @@ public class ProcessViewFragment extends Fragment {
       bitmap.compress(CompressFormat.JPEG, 50, byteArrayOutputStream);
       byte[] bytesCompress = byteArrayOutputStream.toByteArray();
       Bitmap bitmapCompress = BitmapFactory.decodeByteArray(bytesCompress, 0, bytesCompress.length);
-      Logger.d("compress bitmap:" + bitmapCompress.getByteCount() + " width:" + bitmapCompress
+      LLogger.d("compress bitmap:" + bitmapCompress.getByteCount() + " width:" + bitmapCompress
           .getWidth() + " height:" + bitmapCompress.getHeight());
       viewBitmapCompress.setImageBitmap(bitmapCompress);
     } catch (IOException e) {
@@ -152,7 +152,7 @@ public class ProcessViewFragment extends Fragment {
     int size = drawableRedIds.length;
     Drawable[] drawables = new Drawable[size];
     Options options = new Options();
-    options.inSampleSize=2;
+    options.inSampleSize = 2;
     for (int i = 0; i < size; i++) {
       Bitmap bitmap = BitmapFactory.decodeResource(getResources(), drawableRedIds[i], options);
       BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(),
@@ -162,7 +162,7 @@ public class ProcessViewFragment extends Fragment {
 
     BitmapDrawable drawable = (BitmapDrawable) drawables[0];
     Bitmap drawableBitmap = drawable.getBitmap();
-    Logger.d("drawableBitmap:"+drawableBitmap.getByteCount());
+    LLogger.d("drawableBitmap:" + drawableBitmap.getByteCount());
 
     imageProgressView = new ImageProgressView(imageView, drawables);
 
@@ -170,14 +170,14 @@ public class ProcessViewFragment extends Fragment {
 
       @Override
       public void onProgressChanged(int progress, boolean isPressedSlide) {
-        Logger.d("progress:" + progress + " pressed:" + isPressedSlide);
+        LLogger.d("progress:" + progress + " pressed:" + isPressedSlide);
         imageProgressView.updateByProcessStep(progress, isPressedSlide);
 
       }
 
       @Override
       public void onProgressChangeStatus(boolean isStart) {
-        Logger.d("isChange:" + isStart);
+        LLogger.d("isChange:" + isStart);
         imageProgressView.updateChange(isStart);
       }
 

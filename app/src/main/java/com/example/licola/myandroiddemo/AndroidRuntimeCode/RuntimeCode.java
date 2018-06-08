@@ -1,7 +1,7 @@
 package com.example.licola.myandroiddemo.AndroidRuntimeCode;
 
 import com.example.Wrapper;
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 import com.zaofeng.aspectj.DebugTrace;
 
 /**
@@ -17,7 +17,7 @@ public class RuntimeCode {
     testWrapperAsepctJ(new Wrapper.Component() {
       @Override
       public void method(String date) {
-       Logger.d("原代码输出 data="+date);
+       LLogger.d("原代码输出 data="+date);
       }
     });
 
@@ -41,7 +41,7 @@ public class RuntimeCode {
 
 
   public void testWrapperAsepctJ(Wrapper.Component component){
-    Logger.d("代码调用");
+    LLogger.d("代码调用");
     component.method("代码调用的输入数据");
   }
 
@@ -75,15 +75,15 @@ public class RuntimeCode {
     @Override
     public void run() {
 
-      Logger.d(tag);
+      LLogger.d(tag);
       synchronized (callback) {
-        Logger.d(tag);
+        LLogger.d(tag);
         try {
           Thread.sleep(time);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
-        Logger.d(tag);
+        LLogger.d(tag);
         callback.onBack(time);
       }
 

@@ -7,14 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import com.alibaba.sdk.android.push.AndroidPopupActivity;
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 import java.util.Map;
 
 public class AliActivity extends AndroidPopupActivity {
 
   @Override
   protected void onSysNoticeOpened(String title, String summary, Map<String, String> extMap) {
-    Logger.d("OnMiPushSysNoticeOpened, title: " + title + ", content: " + summary + ", extMap: " + extMap);
+    LLogger.d("OnMiPushSysNoticeOpened, title: " + title + ", content: " + summary + ", extMap: " + extMap);
   }
 
   @Override

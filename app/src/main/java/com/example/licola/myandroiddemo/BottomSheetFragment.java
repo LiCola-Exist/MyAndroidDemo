@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 
 /**
  * Created by 李可乐 on 2016/12/9 0009.
@@ -75,12 +75,12 @@ public class BottomSheetFragment extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Logger.d("bitmap");
+                LLogger.d("bitmap");
                 Drawable drawable = imageView.getDrawable();
                 if (drawable instanceof BitmapDrawable){
                     BitmapDrawable bitmapDrawable= (BitmapDrawable) drawable;
                     Bitmap bitmap = bitmapDrawable.getBitmap();
-                    Logger.d(bitmap.getByteCount(),bitmap.getConfig(),bitmap.getWidth(),bitmap.getHeight());
+                    LLogger.d(bitmap.getByteCount(),bitmap.getConfig(),bitmap.getWidth(),bitmap.getHeight());
                 }
             }
         },2000);

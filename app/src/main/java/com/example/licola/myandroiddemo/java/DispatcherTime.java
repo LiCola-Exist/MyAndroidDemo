@@ -2,7 +2,7 @@ package com.example.licola.myandroiddemo.java;
 
 import android.os.Handler;
 import android.os.HandlerThread;
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 import java.util.HashMap;
 
 /**
@@ -33,7 +33,7 @@ public class DispatcherTime {
       public void run() {
         //发送任务的操作 如准备数据等
 
-        Logger.d("开始发送任务",data);
+        LLogger.d("开始发送任务",data);
         Runnable checkTimeOutTask = checkTimeOutTask(id, data);
         timeoutTask.put(id, checkTimeOutTask);
 
@@ -49,7 +49,7 @@ public class DispatcherTime {
       public void run() {
         //回应任务的操作 如解析回应等
 
-        Logger.d("开始回应任务",id);
+        LLogger.d("开始回应任务",id);
         Runnable runnable = timeoutTask.remove(id);
         mHandler.removeCallbacks(runnable);
       }
@@ -61,7 +61,7 @@ public class DispatcherTime {
       @Override
       public void run() {
 
-        Logger.d("超时任务执行 ",id,data);
+        LLogger.d("超时任务执行 ",id,data);
         postSendTask(id, data);
       }
     };

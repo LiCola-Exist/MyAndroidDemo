@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-  <android.support.v7.widget.RecyclerView
+  <view class="com.example.licola.myandroiddemo.ItemFragment$MyRecyclerView"
       android:id="@+id/list"
       android:name="com.example.licola.myandroiddemo.ItemFragment"
       android:layout_width="match_parent"

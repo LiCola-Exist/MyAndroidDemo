@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 import com.example.licola.myandroiddemo.utils.PixelUtils;
 
 /**
@@ -110,7 +110,7 @@ public class AnimateFragment extends Fragment {
         float value = (float) animation.getAnimatedValue();
         float processValue = value * process;
         float resultScale = 1 - processValue;
-        Logger.d("value:" + value + " resultScale:" + resultScale);
+        LLogger.d("value:" + value + " resultScale:" + resultScale);
         viewGroup.setScaleX(resultScale);
         viewGroup.setScaleY(resultScale);
 

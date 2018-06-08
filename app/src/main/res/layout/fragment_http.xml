@@ -1,0 +1,21 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  tools:context="com.example.licola.myandroiddemo.HttpFragment">
+
+  <Button
+    android:id="@+id/btn_okhttp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="okhttp-post"
+    />
+  <Button
+    android:id="@+id/btn_retrofit"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="retrofit-post"
+    />
+
+</LinearLayout>

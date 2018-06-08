@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 import io.socket.client.IO;
 import io.socket.emitter.Emitter.Listener;
 import java.io.BufferedReader;
@@ -150,33 +150,33 @@ public class SocketFragment extends Fragment {
         socketClient.on(io.socket.client.Socket.EVENT_CONNECT, new Listener() {
           @Override
           public void call(Object... args) {
-            Logger.d("socket 连接事件");
+            LLogger.d("socket 连接事件");
             socketClient.emit("post", "hello");
           }
         }).on("post", new Listener() {
           @Override
           public void call(Object... args) {
-            Logger.d("socket event post:"+args[0]);
+            LLogger.d("socket event post:"+args[0]);
           }
         }).on("event-send", new Listener() {
           @Override
           public void call(Object... args) {
-            Logger.d("socket event send:"+args[0]);
+            LLogger.d("socket event send:"+args[0]);
           }
         }).on(io.socket.client.Socket.EVENT_DISCONNECT, new Listener() {
           @Override
           public void call(Object... args) {
-            Logger.d("socket 断开连接事件");
+            LLogger.d("socket 断开连接事件");
           }
         }).on(io.socket.client.Socket.EVENT_CONNECT_ERROR, new Listener() {
           @Override
           public void call(Object... args) {
-            Logger.d("socket 连接错误");
+            LLogger.d("socket 连接错误");
           }
         }).on(io.socket.client.Socket.EVENT_ERROR, new Listener() {
           @Override
           public void call(Object... args) {
-            Logger.d("socket 错误");
+            LLogger.d("socket 错误");
           }
         });
 
@@ -224,7 +224,7 @@ public class SocketFragment extends Fragment {
     try {
       while (true) {
         if ((receiveMsg = in.readLine()) != null) {
-          Logger.d("客户端收到 receive:" + receiveMsg);
+          LLogger.d("客户端收到 receive:" + receiveMsg);
           getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

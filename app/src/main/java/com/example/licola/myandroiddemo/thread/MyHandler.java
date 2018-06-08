@@ -5,8 +5,9 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
+import android.os.MessageQueue.IdleHandler;
 import android.os.SystemClock;
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 
 /**
  * Created by LiCola on 2018/5/7.
@@ -15,10 +16,10 @@ public class MyHandler {
 
   private static final String TAG = "MyHandler";
 
-  public static final void main(){
+  public static final void main() {
 //    threadWorkHandler();
-//    workHandlerDelayed();
-//    handlerThread();
+    workHandlerDelayed();
+    handlerThread();
 
     //    DispatcherTime dispatcher = new DispatcherTime();
 //    dispatcher.run();
@@ -27,22 +28,31 @@ public class MyHandler {
 //
 //    dispatcher.postAckTask("1");
 
-    AsyncWorker asyncWorker=new AsyncWorker();
+    AsyncWorker asyncWorker = new AsyncWorker();
     asyncWorker.execute("data1");
 //    asyncWorker.execute("data2");
+
+    Looper.myQueue().addIdleHandler(new IdleHandler() {
+      @Override
+      public boolean queueIdle() {
+        LLogger.d("执行空闲任务 :" + Thread.currentThread());
+        return false;
+      }
+    });
+
   }
 
-  private static class AsyncWorker extends AsyncTask<String,Integer,String>{
+  private static class AsyncWorker extends AsyncTask<String, Integer, String> {
 
     @Override
     protected String doInBackground(String... strings) {
-      Logger.d((Object[]) strings);
+      LLogger.d((Object[]) strings);
       return strings[0];
     }
 
     @Override
     protected void onProgressUpdate(Integer... values) {
-      Logger.d((Object[]) values);
+      LLogger.d((Object[]) values);
       super.onProgressUpdate(values);
     }
   }
@@ -56,71 +66,77 @@ public class MyHandler {
         final Handler handler = new Handler() {
           @Override
           public void handleMessage(Message msg) {
-            Logger.d("thread:" + Thread.currentThread() + " msg:" + msg);
+            LLogger.d("thread:" + Thread.currentThread() + " msg:" + msg);
             if (msg.what == -1) {
-              Logger.d("handle quit msg");
+              LLogger.d("handle quit msg");
               Looper.myLooper().quit();
             }
           }
         };
 
-        Logger.d("thread:" + Thread.currentThread() + " post empty msg");
+        LLogger.d("thread:" + Thread.currentThread() + " post empty msg");
         handler.sendEmptyMessage(0);
 
         handler.sendEmptyMessageDelayed(-1, 1000);
         Looper.loop();
 
-        Logger.d("thread exit:" + Thread.currentThread());
+        LLogger.d("thread exit:" + Thread.currentThread());
       }
     });
 
-    Logger.d("main :" + Thread.currentThread());
+    LLogger.d("main :" + Thread.currentThread());
     thread.start();
 
   }
 
 
   private static void handlerThread() {
-    HandlerThread handlerThread=new HandlerThread("main");
-    handlerThread.run();
+//    HandlerThread handlerThread = new HandlerThread("main");
+//    handlerThread.run();
   }
 
   private static void workHandlerDelayed() {
     Handler handler = new Handler() {
       @Override
       public void handleMessage(Message msg) {
-        Logger.d(msg.toString());
+        LLogger.d(msg.toString());
       }
     };
 
-    Logger.d("handle start SystemClock.uptimeMillis():" + SystemClock.uptimeMillis());
+    LLogger.d("handle start SystemClock.uptimeMillis():" + SystemClock.uptimeMillis());
 //    handler.sendEmptyMessage(0);
 //    handler.sendEmptyMessage(1);
 //    handler.sendEmptyMessage(2);
 
+    Runnable runnable = new Runnable() {
+      @Override
+      public void run() {
+        LLogger.d("post delayed main 1");
+      }
+    };
+    Message message = handler.obtainMessage();
+    message.obj = runnable;
+
+    handler.sendMessageDelayed(message, 100);
+
     handler.postDelayed(new Runnable() {
       @Override
       public void run() {
-        Logger.d("post delayed main 1");
+        LLogger.d("post delayed main 2");
       }
-    }, 5);
+    }, 100);
     handler.postDelayed(new Runnable() {
       @Override
       public void run() {
-        Logger.d("post delayed main 2");
+        LLogger.d("post delayed main 3");
       }
-    }, 5);
-    handler.postDelayed(new Runnable() {
-      @Override
-      public void run() {
-        Logger.d("post delayed main 3");
-      }
-    }, 5);
+    }, 100);
+
 //
 //    handler.post(new Runnable() {
 //      @Override
 //      public void run() {
-//        Logger.d("post main");
+//        LLogger.d("post main");
 //      }
 //    });
   }

@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 import com.example.licola.myandroiddemo.view.TouchImageView;
 
 
@@ -79,8 +79,8 @@ public class ImageViewFragment extends Fragment {
     options.inSampleSize=2;
     Bitmap bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.a01,options);
     imgBitmap.setImageBitmap(bitmap);
-    Logger.d("bitmap byte size:"+bitmap.getByteCount());
-    Logger.d("bitmap width:"+bitmap.getWidth()+" height:"+bitmap.getHeight()+" config："+bitmap.getConfig());
+    LLogger.d("bitmap byte size:"+bitmap.getByteCount());
+    LLogger.d("bitmap width:"+bitmap.getWidth()+" height:"+bitmap.getHeight()+" config："+bitmap.getConfig());
 
     return childView;
   }

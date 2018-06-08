@@ -2,15 +2,11 @@ package com.example.licola.myandroiddemo;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Bundle;
 import android.support.multidex.MultiDex;
-import com.alibaba.sdk.android.push.CloudPushService;
-import com.alibaba.sdk.android.push.CommonCallback;
-import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
-import com.example.licola.myandroiddemo.utils.Logger;
 import com.example.licola.myandroiddemo.utils.RomChecker;
 import com.licola.llogger.LLogger;
-import com.socks.library.KLog;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 /**
  * Created by LiCola on 2017/6/16.
@@ -18,13 +14,24 @@ import com.socks.library.KLog;
 
 public class MyApplication extends Application {
 
-  @Override public void onCreate() {
+  private RefWatcher refWatcher;
+
+  @Override
+  public void onCreate() {
     super.onCreate();
     initCloudChannel(this);
     MultiDex.install(this);
 
-    KLog.init(true,"Klog2");
-    LLogger.init(true,"Demo",getCacheDir(),"demo-log_");
+    LLogger.init(true, "Demo", getCacheDir(), "demo-log_");
+
+    if (!LeakCanary.isInAnalyzerProcess(this)) {
+      refWatcher = LeakCanary.install(this);
+    }
+  }
+
+  public static RefWatcher getRefWatcher(Context context) {
+    MyApplication applicationContext = (MyApplication) context.getApplicationContext();
+    return applicationContext.refWatcher;
   }
 
   private void initCloudChannel(Context applicationContext) {
@@ -33,14 +40,14 @@ public class MyApplication extends Application {
 //    pushService.register(applicationContext, new CommonCallback() {
 //      @Override
 //      public void onSuccess(String response) {
-//        Logger.d( "init cloudchannel success");
+//        LLogger.d( "init cloudchannel success");
 //      }
 //      @Override
 //      public void onFailed(String errorCode, String errorMessage) {
-//        Logger.d( "init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
+//        LLogger.d( "init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
 //      }
 //    });
 
-    Logger.d("rom:"+ RomChecker.getName());
+    LLogger.d("rom:" + RomChecker.getName());
   }
 }

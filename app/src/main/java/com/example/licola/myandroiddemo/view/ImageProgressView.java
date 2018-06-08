@@ -3,7 +3,7 @@ package com.example.licola.myandroiddemo.view;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IntRange;
 import android.widget.ImageView;
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 
 /**
  * Created by LiCola on 2017/9/15.
@@ -41,7 +41,7 @@ public class ImageProgressView {
    * 根据 移动步长 更新索引
    */
   public void updateByProcessStep(@IntRange(from = 0, to = 100) int process, boolean isPressed) {
-    Logger.d("isPressed:" + isPressed + " lastProcess:" + lastProcess + " process:" + process);
+    LLogger.d("isPressed:" + isPressed + " lastProcess:" + lastProcess + " process:" + process);
 
     if (!isPressed) {
       //无效的移动状态 只更新进度值

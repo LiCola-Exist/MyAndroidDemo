@@ -1,6 +1,7 @@
 package com.example.licola.myandroiddemo;
 
 import android.app.ActivityManager;
+import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -14,12 +15,14 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.util.LruCache;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -29,28 +32,30 @@ import com.example.RuntimeHandle;
 import com.example.licola.myandroiddemo.AndroidRuntimeCode.RuntimeCode;
 import com.example.licola.myandroiddemo.ItemFragment.OnListFragmentInteractionListener;
 import com.example.licola.myandroiddemo.componet.MyLifeCycleObserver;
+import com.example.licola.myandroiddemo.dagger.ActivityComponent;
+import com.example.licola.myandroiddemo.dagger.ActivitySuperComponent;
+import com.example.licola.myandroiddemo.dagger.ActivitySuperUserModel;
+import com.example.licola.myandroiddemo.dagger.ActivityUserModel;
+import com.example.licola.myandroiddemo.dagger.DaggerActivityComponent;
+import com.example.licola.myandroiddemo.dagger.DaggerActivitySuperComponent;
 import com.example.licola.myandroiddemo.dagger.SuperUserModel;
 import com.example.licola.myandroiddemo.dagger.UserModel;
 import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
 import com.example.licola.myandroiddemo.java.JavaMain;
 import com.example.licola.myandroiddemo.messenger.MessengerService;
 import com.example.licola.myandroiddemo.receiver.MainLocalBroadcastReceiver;
+import com.example.licola.myandroiddemo.rxjava.RxJava;
 import com.example.licola.myandroiddemo.thread.MyHandler;
 import com.example.licola.myandroiddemo.thread.ThreadWork;
 import com.example.licola.myandroiddemo.utils.FragmentPagerRebuildAdapter;
-import com.example.licola.myandroiddemo.utils.Logger;
 import com.example.licola.myandroiddemo.utils.PixelUtils;
+import com.example.licola.myandroiddemo.utils.WindowsController;
 import com.licola.llogger.LLogger;
-import com.socks.library.KLog;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONException;
-import org.json.JSONObject;
+import virtual.VirtualData;
 
 @RuntimeHandle()
 public class MainActivity extends BaseActivity implements
@@ -69,6 +74,7 @@ public class MainActivity extends BaseActivity implements
   /**
    * The {@link ViewPager} that will host the section contents.
    */
+  private CoordinatorLayout coordinatorLayout;
   private ViewPager mViewPager;
   Toolbar toolbar;
   @Inject
@@ -91,8 +97,10 @@ public class MainActivity extends BaseActivity implements
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    WindowsController.setTranslucentWindows(this);
     setContentView(R.layout.activity_main);
-
+    WindowsController.addStatusBarBackground(this, R.color.gray_normal_A32);
+    coordinatorLayout=findViewById(R.id.main_content);
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     // Create the adapter that will return a fragment for each of the three
@@ -109,8 +117,8 @@ public class MainActivity extends BaseActivity implements
     mViewPager.post(new Runnable() {
       @Override
       public void run() {
-        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-//        mViewPager.setCurrentItem(7);
+//        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
+        mViewPager.setCurrentItem(6);
       }
     });
 
@@ -132,9 +140,41 @@ public class MainActivity extends BaseActivity implements
     JavaMain.main();
     ThreadWork.main();
     MyHandler.main();
+    RxJava.main();
     testLog("name");
-  }
 
+    LruCache<String ,String > lruCache=new LruCache<>(100);
+
+    runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        int height = mViewPager.getHeight();
+        LLogger.d(height);
+      }
+    });
+
+    JobScheduler scheduler;
+  }
+  @Override
+  protected void onResume() {
+    super.onResume();
+    runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        int height = mViewPager.getHeight();
+        LLogger.d(height);
+        LLogger.trace();
+      }
+    });
+    mViewPager.post(new Runnable() {
+      @Override
+      public void run() {
+        int height = mViewPager.getHeight();
+        LLogger.d(height);
+        LLogger.trace();
+      }
+    });
+  }
 
   private void testLog(String type) {
 
@@ -142,7 +182,8 @@ public class MainActivity extends BaseActivity implements
 //    thread.start();
 //
 //    KLog.file("file-tag",getCacheDir(),"test file write");
-    LLogger.d("test");
+    LLogger.d("test log");
+    LLogger.d(System.currentTimeMillis());
   }
 
   private void testEventBus() {
@@ -156,18 +197,20 @@ public class MainActivity extends BaseActivity implements
 
   @Subscribe
   public void onEvent(String event) {
-    Logger.d(event);
+    LLogger.d(event);
   }
 
   private void testView() {
 
     int screenHeight = PixelUtils.getScreenHeight(this);
-    Logger.d("screenHeight:" + screenHeight);
+    int screenWidth = PixelUtils.getScreenWidth(this);
+    LLogger.d("screenHeight:" + screenHeight+" screenWidth:"+screenWidth);
 
     int color = ContextCompat.getColor(this, R.color.orange_normal);
     int alpha = (int) (1 * 255.0f + 0.5f);
 //      FF9800
     int argb = Color.argb(alpha, 255, 152, 0);
+
   }
 
   private void testLifeCycle() {
@@ -181,24 +224,24 @@ public class MainActivity extends BaseActivity implements
   }
 
   private void testSystemInfo() {
-    Logger.d("Build:" + Build.MANUFACTURER);
+    LLogger.d("Build:" + Build.MANUFACTURER);
 
     ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
     int memoryClass = manager.getMemoryClass();
     int largeMemoryClass = manager.getLargeMemoryClass();
-    Logger.d("memoryClass:" + memoryClass + " largeMemoryClass:" + largeMemoryClass);
+    LLogger.d("memoryClass:" + memoryClass + " largeMemoryClass:" + largeMemoryClass);
 
     String packageCodePath = this.getPackageCodePath();
     String packageResourcePath = this.getPackageResourcePath();
     String codeCacheDir = this.getCodeCacheDir().getAbsolutePath();
-    Logger.d("packageCodePath:" + packageCodePath + " packageResourcePath:" + packageResourcePath
+    LLogger.d("packageCodePath:" + packageCodePath + " packageResourcePath:" + packageResourcePath
         + " codeCacheDir:" + codeCacheDir);
 
     File cacheDir = this.getCacheDir();
-    Logger.d("cacheDir:" + cacheDir);
+    LLogger.d("cacheDir:" + cacheDir);
     ClassLoader classLoader = this.getClassLoader();
     while (classLoader != null) {
-      Logger.d(classLoader.toString());
+      LLogger.d(classLoader.toString());
       classLoader = classLoader.getParent();
     }
   }
@@ -214,16 +257,17 @@ public class MainActivity extends BaseActivity implements
   }
 
   private void daggerInject() {
-    //        ActivitySuperComponent superComponent = DaggerActivitySuperComponent.builder()
-    //                .activitySuperUserModel(new ActivitySuperUserModel())
-    //                .build();
-    //
-    //        ActivityComponent component = DaggerActivityComponent.builder()
-    //                .activitySuperComponent(superComponent)
-    //                .activityUserModel(new ActivityUserModel())
-    //                .build();
-    //
-    //        component.inject(this);
+
+            ActivitySuperComponent superComponent = DaggerActivitySuperComponent.builder()
+                    .activitySuperUserModel(new ActivitySuperUserModel())
+                    .build();
+
+            ActivityComponent component = DaggerActivityComponent.builder()
+                    .activitySuperComponent(superComponent)
+                    .activityUserModel(new ActivityUserModel())
+                    .build();
+
+            component.inject(this);
   }
 
   @Override
@@ -231,11 +275,7 @@ public class MainActivity extends BaseActivity implements
     super.onActivityResult(requestCode, resultCode, data);
   }
 
-  @Override
-  protected void onResume() {
-    super.onResume();
 
-  }
 
   @Override
   protected void onDestroy() {

@@ -1,12 +1,15 @@
-package com.example.licola.myandroiddemo;
+package com.example.licola.myandroiddemo.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnScrollChangeListener;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
 import com.example.licola.myandroiddemo.ItemFragment.OnListFragmentInteractionListener;
+import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
@@ -34,6 +37,8 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     View view =
         LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_item, parent, false);
+
+
     return new ViewHolder(view);
   }
 

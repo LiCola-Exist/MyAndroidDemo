@@ -12,7 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 
 /**
  *
@@ -91,7 +91,7 @@ public class ThreadFragment extends Fragment {
       @Override
       public void run() {
         boolean isMain = getActivity().getMainLooper() == workHandler.getLooper();
-        Logger.d(Thread.currentThread(),getActivity().getMainLooper(),isMain);
+        LLogger.d(Thread.currentThread(),getActivity().getMainLooper(),isMain);
         Toast.makeText(getContext(),"子线程发出",Toast.LENGTH_SHORT).show();
       }
     });

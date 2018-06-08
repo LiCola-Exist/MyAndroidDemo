@@ -3,7 +3,7 @@ package com.example.licola.myandroiddemo.thread;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

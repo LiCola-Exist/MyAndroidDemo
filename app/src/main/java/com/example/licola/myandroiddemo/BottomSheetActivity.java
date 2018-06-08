@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.view.View;
 import android.view.View.OnLongClickListener;
-import com.example.licola.myandroiddemo.utils.Logger;
+import com.licola.llogger.LLogger;
 
 public class BottomSheetActivity extends BaseActivity {
 
@@ -59,7 +59,7 @@ public class BottomSheetActivity extends BaseActivity {
             log = "default";
             break;
         }
-        Logger.d(log);
+        LLogger.d(log);
       }
 
       @Override
