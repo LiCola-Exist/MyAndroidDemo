@@ -30,7 +30,7 @@ import java.util.concurrent.Executors;
  * Created by 李可乐 on 2017/1/16 0016.
  */
 
-public class TestFragment extends Fragment {
+public class TestFragment extends BaseFragment {
 
   private static final String ARG_SECTION_NUMBER = "section_number";
   TextView txtResult;
@@ -42,6 +42,11 @@ public class TestFragment extends Fragment {
   int size = 10;
 
   public TestFragment() {
+  }
+
+  @Override
+  protected boolean isLife() {
+    return true;
   }
 
   public static TestFragment newInstance(String key) {

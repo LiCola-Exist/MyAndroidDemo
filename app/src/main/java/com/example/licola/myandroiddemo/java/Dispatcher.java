@@ -6,12 +6,15 @@ import android.util.Pair;
 import com.licola.llogger.LLogger;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import reversesuper.ReverseExtend;
+import reversesuper.ReverseImpl;
+import reversesuper.ReverseOutMode;
 
 /**
  * Created by LiCola on 2018/4/10.
  * 支持超时重试机制版非阻塞任务队列
  */
-public class Dispatcher {
+public class Dispatcher{
 
   private static final String THREAD_NAME = "dispatcher-worker";
 

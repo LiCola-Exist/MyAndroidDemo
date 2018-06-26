@@ -56,12 +56,17 @@ dependencies {
 //    annotationProcessor "com.licola:routermapper-compiler:$rootProject.routeVersion"
 
     implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
     annotationProcessor project(':compiler')
     implementation project(':annotation')
     implementation project(':aspectj')
 
     //log工具
     implementation "com.licola:llogger:1.4.0"
+
+    //代码工具
+    implementation 'com.licola:reversesuper-annotation:1.2.2'//注解库
+    annotationProcessor 'com.licola:reversesuper-compiler:1.2.2'//代码生成工具库
 
     //数据模拟工具
     implementation 'com.licola:virtual:1.2.1'
@@ -75,6 +80,7 @@ dependencies {
 
     //数据可视化调试工具
     implementation "com.facebook.stetho:stetho:$rootProject.stethoVersion"
+    implementation "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
 
     //dex分包支持
     implementation "com.android.support:multidex:$rootProject.supportMultidexVersion"
@@ -97,6 +103,8 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
     implementation "com.github.bumptech.glide:okhttp3-integration:$rootProject.glideVersion"
 
+    //图片框架
+    implementation 'com.facebook.fresco:fresco:1.9.0'
 
     implementation 'io.reactivex.rxjava2:rxjava:2.1.3'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
@@ -160,7 +168,8 @@ dependencies {
     implementation "android.arch.navigation:navigation-fragment:$nav_version" // use -ktx for Kotlin
     implementation "android.arch.navigation:navigation-ui:$nav_version" // use -ktx for Kotlin
     // optional - Test helpers
-    androidTestImplementation "android.arch.navigation:navigation-testing:$nav_version" // use -ktx for Kotlin
+    androidTestImplementation "android.arch.navigation:navigation-testing:$nav_version"
+    // use -ktx for Kotlin
 
 
     def work_version = "1.0.0-alpha02"

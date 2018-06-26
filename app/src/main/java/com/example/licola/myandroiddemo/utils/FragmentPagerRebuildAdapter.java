@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.ViewGroup;
+import com.example.licola.myandroiddemo.BaseFragment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  * 建议项目中所有的有关FragmentPagerAdapter 都直接继承该抽象类，或按照该思路管理Fragment
  */
 
-public abstract class FragmentPagerRebuildAdapter<T extends Fragment> extends FragmentPagerAdapter {
+public abstract class FragmentPagerRebuildAdapter<T extends BaseFragment> extends FragmentPagerAdapter {
 
   protected final int pageSize;
 

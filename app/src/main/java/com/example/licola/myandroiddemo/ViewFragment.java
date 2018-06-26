@@ -35,7 +35,7 @@ import com.example.licola.myandroiddemo.view.PaintDemoView;
  * Created by 李可乐 on 2016/12/9 0009.
  */
 
-public class ViewFragment extends Fragment {
+public class ViewFragment extends BaseFragment {
 
   private static final String ARG_SECTION_KEY = "section_key";
 

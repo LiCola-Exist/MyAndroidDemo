@@ -17,7 +17,7 @@ import com.licola.llogger.LLogger;
 /**
  *
  */
-public class ThreadFragment extends Fragment {
+public class ThreadFragment extends BaseFragment {
 
   // TODO: Rename parameter arguments, choose names that match
   // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

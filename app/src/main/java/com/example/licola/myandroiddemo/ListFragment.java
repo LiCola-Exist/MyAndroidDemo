@@ -3,12 +3,12 @@ package com.example.licola.myandroiddemo;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.OnFlingListener;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -18,22 +18,21 @@ import com.example.licola.myandroiddemo.adapter.MyItemRecyclerViewAdapter;
 import com.example.licola.myandroiddemo.dummy.DummyContent;
 import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
 import com.licola.llogger.LLogger;
-import java.lang.reflect.Field;
 import java.util.List;
 
 /**
  * A fragment representing a list of Items.
  * <p />
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnListFragmentListener}
  * interface.
  */
-public class ItemFragment extends Fragment {
+public class ListFragment extends BaseFragment {
 
   // TODO: Customize parameter argument names
   private static final String ARG_COLUMN_COUNT = "column-count";
   // TODO: Customize parameters
   private int mColumnCount = 1;
-  private OnListFragmentInteractionListener mListener;
+  private OnListFragmentListener mListener;
   private MyItemRecyclerViewAdapter adapter;
 
   private SwipeRefreshLayout swipeRefreshLayout;
@@ -45,13 +44,13 @@ public class ItemFragment extends Fragment {
    * Mandatory empty constructor for the fragment manager to instantiate the
    * fragment (e.g. upon screen orientation changes).
    */
-  public ItemFragment() {
+  public ListFragment() {
   }
 
   // TODO: Customize parameter initialization
   @SuppressWarnings("unused")
-  public static ItemFragment newInstance(int columnCount) {
-    ItemFragment fragment = new ItemFragment();
+  public static ListFragment newInstance(int columnCount) {
+    ListFragment fragment = new ListFragment();
     Bundle args = new Bundle();
     args.putInt(ARG_COLUMN_COUNT, columnCount);
     fragment.setArguments(args);
@@ -77,9 +76,11 @@ public class ItemFragment extends Fragment {
     swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
       @Override
       public void onRefresh() {
+//        LLogger.d(swipeRefreshLayout.isRefreshing());
         changeData();
       }
     });
+    setRetainInstance(true);
 
     Context context = view.getContext();
 
@@ -97,6 +98,8 @@ public class ItemFragment extends Fragment {
 
     recyclerView.addOnScrollListener(new MyScrollListener(layoutManager));
 
+    recyclerView.setOnFlingListener(new MyFlingListener());
+
     return view;
   }
 
@@ -113,11 +116,11 @@ public class ItemFragment extends Fragment {
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
-    if (context instanceof OnListFragmentInteractionListener) {
-      mListener = (OnListFragmentInteractionListener) context;
+    if (context instanceof OnListFragmentListener) {
+      mListener = (OnListFragmentListener) context;
     } else {
       throw new RuntimeException(
-          context.toString() + " must implement OnListFragmentInteractionListener");
+          context.toString() + " must implement OnRecyclerFragmentListener");
     }
   }
 
@@ -137,7 +140,7 @@ public class ItemFragment extends Fragment {
    * "http://developer.android.com/training/basics/fragments/communicating.html"
    * >Communicating with Other Fragments</a> for more information.
    */
-  public interface OnListFragmentInteractionListener {
+  public interface OnListFragmentListener {
 
     // TODO: Update argument type and name
     void onListFragmentInteraction(DummyItem item);
@@ -183,7 +186,12 @@ public class ItemFragment extends Fragment {
 
   private static class MyScrollListener extends OnScrollListener {
 
+    private int sumDy = 0;
+
+    private boolean canScroll = false;
+
     private LinearLayoutManager layoutManager;
+
 
     public MyScrollListener(LinearLayoutManager layoutManager) {
       this.layoutManager = layoutManager;
@@ -194,22 +202,42 @@ public class ItemFragment extends Fragment {
       super.onScrollStateChanged(recyclerView, newState);
       LLogger.d(newState);
       if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+        canScroll = false;
         int position = layoutManager.findFirstVisibleItemPosition();
         View viewByPosition = layoutManager.findViewByPosition(position);
         int top = Math.abs(viewByPosition.getTop());
-        if ((recyclerView.getHeight() >> 2) < top) {
+        if (top == 0) {
+          return;
+        }
+
+        if ((recyclerView.getHeight() / 3) < top) {
           ++position;
         }
-        LLogger.d("放手了", position, top);
+        LLogger.d("放手了", layoutManager.findFirstVisibleItemPosition(), viewByPosition.getTop(),
+            position);
 
         recyclerView.smoothScrollToPosition(position);
+      } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+        canScroll = true;
+      } else if (newState == RecyclerView.SCROLL_STATE_SETTLING) {
+        canScroll = false;
       }
     }
 
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
       super.onScrolled(recyclerView, dx, dy);
-//      LLogger.d(dy);
+//      sumDy += dy;
+//      LLogger.d(dy,sumDy);
+//      if (canScroll) {
+//        int position = sumDy / recyclerView.getHeight();
+//        if (dy>0){
+//          position++;
+//        }else {
+//        }
+//        recyclerView.smoothScrollToPosition(position);
+//        LLogger.d(dy, sumDy, position);
+//      }
     }
   }
 
@@ -231,15 +259,14 @@ public class ItemFragment extends Fragment {
     }
 
     private void init() {
-      try {
-        Field mMaxFlingVelocity = RecyclerView.class.getDeclaredField("mMaxFlingVelocity");
-        mMaxFlingVelocity.setAccessible(true);
-        mMaxFlingVelocity.setInt(this, getMaxFlingVelocity() >> 2);
-        LLogger.d("修改滑动速度", getMaxFlingVelocity());
-      } catch (NoSuchFieldException | IllegalAccessException e) {
-        e.printStackTrace();
-      }
-
+//      try {
+//        Field mMaxFlingVelocity = RecyclerView.class.getDeclaredField("mMaxFlingVelocity");
+//        mMaxFlingVelocity.setAccessible(true);
+//        mMaxFlingVelocity.setInt(this, (int) (getMaxFlingVelocity() / 2));
+//        LLogger.d("修改滑动速度", getMaxFlingVelocity());
+//      } catch (NoSuchFieldException | IllegalAccessException e) {
+//        e.printStackTrace();
+//      }
 
     }
 
@@ -247,6 +274,26 @@ public class ItemFragment extends Fragment {
     @Override
     public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
 //      return super.onNestedPreFling(target, velocityX, velocityY);
+      return true;
+    }
+  }
+
+  private class MyFlingListener extends OnFlingListener {
+
+    @Override
+    public boolean onFling(int velocityX, int velocityY) {
+      LLogger.d(velocityY);
+//
+      int position = layoutManager.findFirstVisibleItemPosition();
+      int height = recyclerView.getHeight();
+      int criticalPoint = height / 2;
+      if (velocityY > criticalPoint) {
+        position++;
+      } else if (Math.abs(velocityX) > criticalPoint) {
+        position--;
+      }
+//      View viewByPosition = layoutManager.findViewByPosition(position);
+      recyclerView.smoothScrollToPosition(position);
       return true;
     }
   }

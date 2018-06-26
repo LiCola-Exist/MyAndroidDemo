@@ -29,7 +29,7 @@ import okio.Source;
  * Use the {@link IOFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class IOFragment extends Fragment {
+public class IOFragment extends BaseFragment {
 
   private static final String ARG_PARAM1 = "param1";
 

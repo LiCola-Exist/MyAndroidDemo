@@ -52,7 +52,7 @@ ext {
     // third lib
     aspectjVersion = '1.8.6'
     stethoVersion = "1.5.0"
-    daggerVersion = "2.9"
+    daggerVersion = "2.16"
     glideVersion = "4.7.1"
     butterknifeVersion = "8.8.1"
     okhttpVersion = "3.8.1"

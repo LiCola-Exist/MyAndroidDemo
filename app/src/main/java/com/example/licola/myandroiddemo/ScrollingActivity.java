@@ -6,11 +6,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
-import android.util.ArrayMap;
 import android.view.View;
 import com.licola.llogger.LLogger;
-import java.util.HashMap;
 import java.util.List;
 
 public class ScrollingActivity extends BaseActivity {
@@ -30,7 +29,8 @@ public class ScrollingActivity extends BaseActivity {
       }
     });
 
-
+    FragmentManager fragmentManager = getSupportFragmentManager();
+    fragmentManager.beginTransaction().replace(R.id.container,new NestedScrollFragment()).commit();
 
     ActivityManager systemService = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
     List<RunningAppProcessInfo> runningAppProcesses = systemService.getRunningAppProcesses();

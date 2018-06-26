@@ -1,13 +1,15 @@
 package com.example.licola.myandroiddemo;
 
 import android.app.ActivityManager;
-import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.location.GpsStatus;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -30,7 +32,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import com.example.RuntimeHandle;
 import com.example.licola.myandroiddemo.AndroidRuntimeCode.RuntimeCode;
-import com.example.licola.myandroiddemo.ItemFragment.OnListFragmentInteractionListener;
+import com.example.licola.myandroiddemo.ListFragment.OnListFragmentListener;
+import com.example.licola.myandroiddemo.RecyclerFragment.OnRecyclerFragmentListener;
 import com.example.licola.myandroiddemo.componet.MyLifeCycleObserver;
 import com.example.licola.myandroiddemo.dagger.ActivityComponent;
 import com.example.licola.myandroiddemo.dagger.ActivitySuperComponent;
@@ -42,6 +45,8 @@ import com.example.licola.myandroiddemo.dagger.SuperUserModel;
 import com.example.licola.myandroiddemo.dagger.UserModel;
 import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
 import com.example.licola.myandroiddemo.java.JavaMain;
+import com.example.licola.myandroiddemo.location.LocationHelper;
+import com.example.licola.myandroiddemo.location.MyLocationListener;
 import com.example.licola.myandroiddemo.messenger.MessengerService;
 import com.example.licola.myandroiddemo.receiver.MainLocalBroadcastReceiver;
 import com.example.licola.myandroiddemo.rxjava.RxJava;
@@ -55,11 +60,10 @@ import java.io.File;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import virtual.VirtualData;
 
 @RuntimeHandle()
 public class MainActivity extends BaseActivity implements
-    OnListFragmentInteractionListener {
+    OnListFragmentListener,OnRecyclerFragmentListener {
 
   /**
    * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -87,9 +91,9 @@ public class MainActivity extends BaseActivity implements
   static Boolean value2 = false;
   static Boolean value3 = new Boolean(true);
 
-  static final String[] title = {"BottomSheetFragment", "Test", "View", "Download", "Xml",
-      "Constraint", "RecyclerView", "Animate", "ProgressView", "Module", "ImageView", "IO",
-      "Socket", "Thread"};
+  static final String[] titles = {"BottomSheetFragment", "Test", "View", "Download", "Xml",
+      "Constraint", "MyRecyclerView", "Animate", "ProgressView", "Module", "ImageView", "IO",
+      "Socket", "Thread","Recycler"};
 
   MainLocalBroadcastReceiver receiver;
 
@@ -100,25 +104,39 @@ public class MainActivity extends BaseActivity implements
     WindowsController.setTranslucentWindows(this);
     setContentView(R.layout.activity_main);
     WindowsController.addStatusBarBackground(this, R.color.gray_normal_A32);
-    coordinatorLayout=findViewById(R.id.main_content);
+    coordinatorLayout = findViewById(R.id.main_content);
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     // Create the adapter that will return a fragment for each of the three
     // primary sections of the activity.
 
-    mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), title.length);
+    FragmentManager fragmentManager = getSupportFragmentManager();
+    mSectionsPagerAdapter = new SectionsPagerAdapter(fragmentManager, titles.length);
     // Set up the ViewPager with the sections adapter.
     mViewPager = (ViewPager) findViewById(R.id.container);
     mViewPager.setAdapter(mSectionsPagerAdapter);
 
-    TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+    final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
     tabLayout.setupWithViewPager(mViewPager);
     tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
     mViewPager.post(new Runnable() {
       @Override
       public void run() {
 //        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-        mViewPager.setCurrentItem(6);
+        mViewPager.setCurrentItem(findTitlePosition("Recycler"));
+      }
+
+      private int findTitlePosition(String target) {
+
+        int index = 0;
+        for (String title : titles) {
+          if (target.toLowerCase().equals(title.toLowerCase())) {
+            return index;
+          }
+          index++;
+        }
+
+        return 0;
       }
     });
 
@@ -134,6 +152,7 @@ public class MainActivity extends BaseActivity implements
     testLifeCycle();
 
     testView();
+    testClass();
 
     testEventBus();
 
@@ -143,7 +162,7 @@ public class MainActivity extends BaseActivity implements
     RxJava.main();
     testLog("name");
 
-    LruCache<String ,String > lruCache=new LruCache<>(100);
+    LruCache<String, String> lruCache = new LruCache<>(100);
 
     runOnUiThread(new Runnable() {
       @Override
@@ -153,8 +172,42 @@ public class MainActivity extends BaseActivity implements
       }
     });
 
-    JobScheduler scheduler;
+//    initLocation();
   }
+
+  private void testClass() {
+    Uri uri=Uri.parse("http://www.github.com");
+    LLogger.d(uri);
+    LLogger.d(uri.toString());
+  }
+
+  private LocationHelper mLocationHelper;
+
+
+  private void initLocation() {
+    mLocationHelper = new LocationHelper(this);
+    mLocationHelper.initLocation(new MyLocationListener() {
+      @Override
+      public void updateLastLocation(Location location) {
+        LLogger.d(location.toString());
+      }
+
+      @Override
+      public void updateLocation(Location location) {
+
+      }
+
+      @Override
+      public void updateStatus(String provider, int status, Bundle extras) {
+
+      }
+
+      @Override
+      public void updateGpsStatus(GpsStatus gpsStatus) {
+      }
+    });
+  }
+
   @Override
   protected void onResume() {
     super.onResume();
@@ -163,7 +216,7 @@ public class MainActivity extends BaseActivity implements
       public void run() {
         int height = mViewPager.getHeight();
         LLogger.d(height);
-        LLogger.trace();
+//        LLogger.trace();
       }
     });
     mViewPager.post(new Runnable() {
@@ -171,7 +224,7 @@ public class MainActivity extends BaseActivity implements
       public void run() {
         int height = mViewPager.getHeight();
         LLogger.d(height);
-        LLogger.trace();
+//        LLogger.trace();
       }
     });
   }
@@ -191,12 +244,19 @@ public class MainActivity extends BaseActivity implements
 
     eventBus.register(this);
 
-    eventBus.post("123");
+    String event = "123";
+    eventBus.postSticky(event);
+
   }
 
 
-  @Subscribe
+  @Subscribe()
   public void onEvent(String event) {
+    LLogger.d(event);
+  }
+
+  @Subscribe()
+  public void onEvent(CharSequence event) {
     LLogger.d(event);
   }
 
@@ -204,12 +264,14 @@ public class MainActivity extends BaseActivity implements
 
     int screenHeight = PixelUtils.getScreenHeight(this);
     int screenWidth = PixelUtils.getScreenWidth(this);
-    LLogger.d("screenHeight:" + screenHeight+" screenWidth:"+screenWidth);
+    LLogger.d("screenHeight:" + screenHeight + " screenWidth:" + screenWidth);
 
     int color = ContextCompat.getColor(this, R.color.orange_normal);
     int alpha = (int) (1 * 255.0f + 0.5f);
 //      FF9800
     int argb = Color.argb(alpha, 255, 152, 0);
+
+    int px = PixelUtils.dp2px(this, 10);
 
   }
 
@@ -258,23 +320,22 @@ public class MainActivity extends BaseActivity implements
 
   private void daggerInject() {
 
-            ActivitySuperComponent superComponent = DaggerActivitySuperComponent.builder()
-                    .activitySuperUserModel(new ActivitySuperUserModel())
-                    .build();
+    ActivitySuperComponent superComponent = DaggerActivitySuperComponent.builder()
+        .activitySuperUserModel(new ActivitySuperUserModel())
+        .build();
 
-            ActivityComponent component = DaggerActivityComponent.builder()
-                    .activitySuperComponent(superComponent)
-                    .activityUserModel(new ActivityUserModel())
-                    .build();
+    ActivityComponent component = DaggerActivityComponent.builder()
+        .activitySuperComponent(superComponent)
+        .activityUserModel(new ActivityUserModel())
+        .build();
 
-            component.inject(this);
+    component.inject(this);
   }
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
   }
-
 
 
   @Override
@@ -345,7 +406,7 @@ public class MainActivity extends BaseActivity implements
    * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
    * one of the sections/tabs/pages.
    */
-  public static class SectionsPagerAdapter extends FragmentPagerRebuildAdapter<Fragment> {
+  public static class SectionsPagerAdapter extends FragmentPagerRebuildAdapter<BaseFragment> {
 
 
     public SectionsPagerAdapter(FragmentManager fm, int pageSize) {
@@ -353,63 +414,68 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    protected Fragment createFragment(int position) {
-      Fragment fragment = null;
+    protected BaseFragment createFragment(int position) {
+      BaseFragment fragment = null;
       switch (position) {
         case 0:
-          fragment = BottomSheetFragment.newInstance(title[position]);
+          fragment = BottomSheetFragment.newInstance(titles[position]);
           break;
         case 1:
-          fragment = TestFragment.newInstance(title[position]);
+          fragment = TestFragment.newInstance(titles[position]);
           break;
         case 2:
-          fragment = ViewFragment.newInstance(title[position]);
+          fragment = ViewFragment.newInstance(titles[position]);
           break;
         case 3:
-          fragment = DownLoadFragment.newInstance(title[position]);
+          fragment = DownLoadFragment.newInstance(titles[position]);
           break;
         case 4:
-          fragment = XmlFragment.newInstance(title[position]);
+          fragment = XmlFragment.newInstance(titles[position]);
           break;
         case 5:
-          fragment = ConstraintLayoutFragment.newInstance(title[position], null);
+          fragment = ConstraintLayoutFragment.newInstance(titles[position], null);
           break;
         case 6:
-          fragment = ItemFragment.newInstance(1);
+          fragment = ListFragment.newInstance(1);
           break;
         case 7:
-          fragment = AnimateFragment.newInstance(title[position]);
+          fragment = AnimateFragment.newInstance(titles[position]);
           break;
         case 8:
-          fragment = ProcessViewFragment.newInstance(title[position]);
+          fragment = ProcessViewFragment.newInstance(titles[position]);
           break;
         case 9:
-          fragment = ModuleFragment.newInstance(title[position]);
+          fragment = ModuleFragment.newInstance(titles[position]);
           break;
         case 10:
-          fragment = ImageViewFragment.newInstance(title[position]);
+          fragment = ImageViewFragment.newInstance(titles[position]);
           break;
         case 11:
-          fragment = IOFragment.newInstance(title[position]);
+          fragment = IOFragment.newInstance(titles[position]);
           break;
         case 12:
-          fragment = SocketFragment.newInstance(title[position]);
+          fragment = SocketFragment.newInstance(titles[position]);
           break;
         case 13:
-          fragment = ThreadFragment.newInstance(title[position]);
+          fragment = ThreadFragment.newInstance(titles[position]);
+          break;
+        case 14:
+          fragment=RecyclerFragment.newInstance(titles[position],1);
           break;
       }
+
+
       return fragment;
     }
 
     @Override
-    protected void bindFragment(Fragment fragment, int position) {
+    protected void bindFragment(BaseFragment fragment, int position) {
 
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-      return title[position];
+      return titles[position];
     }
   }
 }

@@ -38,7 +38,7 @@
         android:id="@+id/entry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Entry_TabActivity"
+        android:text="Entry_Scrolling_Aty"
         />
     <Button
         android:layout_width="wrap_content"

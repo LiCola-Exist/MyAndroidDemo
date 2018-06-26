@@ -1,35 +1,54 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:fresco="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:orientation="vertical"
   tools:context="com.example.licola.myandroiddemo.ImageViewFragment">
 
-  <com.example.licola.myandroiddemo.view.TouchImageView
-    android:id="@+id/img_touch"
+  <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="300dp"
-    tools:src="@drawable/p18684001092782349"
-    android:scaleType="center"
-    />
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-  <RatingBar
-    android:id="@+id/ratingBar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
-  <ImageView
-    android:layout_width="match_parent"
-    android:layout_height="300dp"
-    android:id="@+id/img_load"
-    />
+    <com.facebook.drawee.view.SimpleDraweeView
+      android:id="@+id/img_load_fresco"
+      android:layout_width="match_parent"
+      android:layout_height="300dp"
+      fresco:actualImageScaleType="center"
+      fresco:placeholderImage="@color/colorPrimary" />
 
-  <ImageView
-    android:id="@+id/img_bitmap"
-    android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:background="@color/blue_normal"
-    tools:src="@drawable/a01">
+    <ImageView
+      android:id="@+id/img_load_glide"
+      android:layout_width="match_parent"
+      android:layout_height="300dp"
+      tools:background="@color/gray_normal_A54" />
 
-  </ImageView>
+    <ImageView
+      android:id="@+id/img_load_drawable_first"
+      android:layout_width="match_parent"
+      android:layout_height="60dp"
+      android:background="@color/red_normal_A54" />
+    <ImageView
+      android:id="@+id/img_load_drawable_second"
+      android:layout_width="match_parent"
+      android:layout_height="60dp"
+      android:background="@color/orange_normal_A54" />
 
-</LinearLayout>
+    <ImageView
+      android:id="@+id/img_load_bitmap"
+      android:layout_width="match_parent"
+      android:layout_height="300dp"
+      android:background="@color/blue_normal"
+      tools:src="@drawable/a01" />
+
+    <com.example.licola.myandroiddemo.view.TouchImageView
+      android:id="@+id/img_load_touch"
+      android:layout_width="match_parent"
+      android:layout_height="300dp"
+      android:background="@color/red_normal_A54"
+      android:scaleType="center"
+      tools:src="@drawable/p18684001092782349" />
+
+  </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

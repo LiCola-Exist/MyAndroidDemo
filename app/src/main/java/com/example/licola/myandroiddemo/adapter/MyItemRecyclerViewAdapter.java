@@ -1,31 +1,31 @@
 package com.example.licola.myandroiddemo.adapter;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnScrollChangeListener;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
-import com.example.licola.myandroiddemo.ItemFragment.OnListFragmentInteractionListener;
+import com.example.licola.myandroiddemo.ListFragment.OnListFragmentListener;
 import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
 
+import com.licola.llogger.LLogger;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * specified {@link OnListFragmentListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
 
   private final List<DummyItem> mValues=new ArrayList<>();
-  private final OnListFragmentInteractionListener mListener;
+  private final OnListFragmentListener mListener;
 
-  public MyItemRecyclerViewAdapter( OnListFragmentInteractionListener listener) {
+  public MyItemRecyclerViewAdapter( OnListFragmentListener listener) {
     mListener = listener;
   }
 
@@ -43,10 +43,11 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
   }
 
   @Override public void onBindViewHolder(final ViewHolder holder, int position) {
+    LLogger.d(position);
     holder.mItem = mValues.get(position);
     holder.mIdView.setText(mValues.get(position).id);
     holder.mContentView.setText(mValues.get(position).content);
-
+    holder.itemView.setBackgroundColor(Color.argb(255,50*(position%5),0,0));
     holder.mView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         if (null != mListener) {

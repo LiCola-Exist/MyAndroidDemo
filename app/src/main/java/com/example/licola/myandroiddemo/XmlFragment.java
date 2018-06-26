@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
  * Use the {@link XmlFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class XmlFragment extends Fragment {
+public class XmlFragment extends BaseFragment {
   private static final String ARG_PARAM1 = "param1";
 
   private String mParam1;

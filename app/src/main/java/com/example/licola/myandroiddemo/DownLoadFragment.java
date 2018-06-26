@@ -36,7 +36,7 @@ import okhttp3.Response;
  * Created by 李可乐 on 2016/12/9 0009.
  */
 
-public class DownLoadFragment extends Fragment {
+public class DownLoadFragment extends BaseFragment {
 
   private static final String ARG_SECTION_KEY = "section_key";
   @BindView(R.id.button)

@@ -21,7 +21,7 @@ import com.licola.llogger.LLogger;
  * Created by 李可乐 on 2016/12/9 0009.
  */
 
-public class BottomSheetFragment extends Fragment {
+public class BottomSheetFragment extends BaseFragment {
     /**
      * The fragment argument representing the section number for this
      * fragment.

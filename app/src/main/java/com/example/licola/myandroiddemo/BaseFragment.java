@@ -1,12 +1,13 @@
 package com.example.licola.myandroiddemo;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import com.licola.llogger.LLogger;
 
 
 /**
@@ -14,22 +15,103 @@ import android.widget.TextView;
  */
 public class BaseFragment extends Fragment {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
+  protected boolean isLife() {
+    return false;
+  }
 
-    public BaseFragment() {
-    }
+  public BaseFragment() {
+  }
 
-    @Nullable @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-        @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
 
-    public static BaseFragment newInstance(String key) {
-        BaseFragment fragment = new BaseFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_SECTION_NUMBER, key);
-        fragment.setArguments(args);
-        return fragment;
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+    if (isLife()) {
+      LLogger.d(this);
     }
+  }
+
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    if (isLife()) {
+      LLogger.d(this);
+    }
+  }
+
+
+  @Nullable
+  @Override
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+      @Nullable Bundle savedInstanceState) {
+    View rootView = super.onCreateView(inflater, container, savedInstanceState);
+    if (isLife()) {
+      LLogger.d(this);
+    }
+    return rootView;
+  }
+
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    if (isLife()) {
+      LLogger.d(this);
+    }
+  }
+
+  @Override
+  public void onStart() {
+    super.onStart();
+    if (isLife()) {
+      LLogger.d(this);
+    }
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    if (isLife()) {
+      LLogger.d(this);
+    }
+  }
+
+  @Override
+  public void onPause() {
+    super.onPause();
+    if (isLife()) {
+      LLogger.d(this);
+    }
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    if (isLife()) {
+      LLogger.d(this);
+    }
+  }
+
+  @Override
+  public void onDestroyView() {
+    super.onDestroyView();
+    if (isLife()) {
+      LLogger.d(this);
+    }
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    if (isLife()) {
+      LLogger.d(this);
+    }
+  }
+
+  @Override
+  public void onDetach() {
+    super.onDetach();
+    if (isLife()) {
+      LLogger.d(this);
+    }
+  }
 }

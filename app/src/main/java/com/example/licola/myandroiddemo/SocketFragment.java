@@ -31,7 +31,7 @@ import java.util.concurrent.Executors;
  * Use the {@link SocketFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SocketFragment extends Fragment {
+public class SocketFragment extends BaseFragment {
 
   // TODO: Rename parameter arguments, choose names that match
   // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

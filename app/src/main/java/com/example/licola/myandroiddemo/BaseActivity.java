@@ -17,6 +17,12 @@ public class BaseActivity extends AppCompatActivity {
   }
 
   @Override
+  protected void onStart() {
+    super.onStart();
+    LLogger.d(this);
+  }
+
+  @Override
   protected void onResume() {
     super.onResume();
     LLogger.d(this);
@@ -25,6 +31,12 @@ public class BaseActivity extends AppCompatActivity {
   @Override
   protected void onPause() {
     super.onPause();
+    LLogger.d(this);
+  }
+
+  @Override
+  protected void onStop() {
+    super.onStop();
     LLogger.d(this);
   }
 
@@ -48,5 +60,8 @@ public class BaseActivity extends AppCompatActivity {
     super.onPostResume();
   }
 
-
+  @Override
+  public String toString() {
+    return getClass().getSimpleName() + "@" + Integer.toHexString(hashCode());
+  }
 }

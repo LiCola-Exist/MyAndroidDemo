@@ -19,7 +19,7 @@ import com.example.licola.myandroiddemo.utils.PixelUtils;
  * Use the {@link AnimateFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AnimateFragment extends Fragment {
+public class AnimateFragment extends BaseFragment {
 
   private static final String ARG_PARAM1 = "param1";
 
@@ -103,6 +103,7 @@ public class AnimateFragment extends Fragment {
     }
     final float minValue = 0.3f;
     final float process = 1 - minValue;
+
 
     animator.addUpdateListener(new AnimatorUpdateListener() {
       @Override

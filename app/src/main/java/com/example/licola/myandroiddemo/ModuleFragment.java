@@ -17,7 +17,7 @@ import android.view.ViewGroup;
  * Use the {@link ModuleFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ModuleFragment extends Fragment {
+public class ModuleFragment extends BaseFragment {
 
   View viewRoot;
 

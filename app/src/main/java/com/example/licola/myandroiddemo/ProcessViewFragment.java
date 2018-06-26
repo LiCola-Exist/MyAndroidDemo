@@ -31,7 +31,7 @@ import java.io.InputStream;
  * Use the {@link ProcessViewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProcessViewFragment extends Fragment {
+public class ProcessViewFragment extends BaseFragment {
 
   private static final String ARG_PARAM1 = "param1";
 
@@ -124,7 +124,7 @@ public class ProcessViewFragment extends Fragment {
     textView = ButterKnife.findById(viewRoot, R.id.txt_result);
     seekBar = ButterKnife.findById(viewRoot, R.id.seekBar);
 
-    ImageView viewBitmap = ButterKnife.findById(viewRoot, R.id.img_bitmap);
+    ImageView viewBitmap = ButterKnife.findById(viewRoot, R.id.img_load_bitmap);
     ImageView viewBitmapCompress = ButterKnife.findById(viewRoot, R.id.img_bitmap_compress);
 
     AssetManager assetManager = getResources().getAssets();

@@ -56,6 +56,7 @@ public class ImageProgressView {
       return;
     }
 
+
     int oneStep = process - lastProcess;
     if (Math.abs(oneStep) >= step) {
       //这次进度差值 大于步长 更新视图
