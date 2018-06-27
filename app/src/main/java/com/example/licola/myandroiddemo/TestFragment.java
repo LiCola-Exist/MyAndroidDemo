@@ -3,9 +3,6 @@ package com.example.licola.myandroiddemo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.text.format.DateUtils;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,11 +14,9 @@ import butterknife.OnClick;
 import com.licola.llogger.LLogger;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -62,36 +57,35 @@ public class TestFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable final Bundle savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragment_test, container, false);
-    ButterKnife.bind(this,rootView);
+    ButterKnife.bind(this, rootView);
     btnStart = (Button) rootView.findViewById(R.id.btn_start);
     btnTest = (Button) rootView.findViewById(R.id.btn_test);
     txtResult = (TextView) rootView.findViewById(R.id.txt_result);
-    Button button= (Button) rootView.findViewById(R.id.entry);
-    button.setOnClickListener(new OnClickListener() {
-      @Override public void onClick(View v) {
-        Intent intent=new Intent(getContext(),ScrollingActivity.class);
+
+    rootView.findViewById(R.id.entry).setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(getContext(), ScrollingActivity.class);
         startActivity(intent);
       }
     });
 
-    testMap();
-
-    LLogger.d(DateUtils.formatDateTime(getContext(), System.currentTimeMillis(),
-        DateUtils.FORMAT_SHOW_TIME));
-    LLogger.d(DateUtils.formatDateTime(getContext(), System.currentTimeMillis(),
-        DateUtils.FORMAT_ABBREV_ALL));
-    LLogger.d(DateUtils.formatDateTime(getContext(), System.currentTimeMillis(),
-        DateUtils.FORMAT_ABBREV_WEEKDAY
-            | DateUtils.FORMAT_ABBREV_ALL
-            | DateUtils.FORMAT_ABBREV_TIME));
+    rootView.findViewById(R.id.btn_block).setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        try {
+          Thread.sleep(2000);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+    });
 
     btnStart.setOnClickListener(new View.OnClickListener() {
 
       @Override
       public void onClick(View v) {
-        //                size = size * 10;
-        //                if (size==1000000)size=10000;
-        //        testFor(size);
+
         if (isPool) {
           isPool = false;
           try {
@@ -112,57 +106,64 @@ public class TestFragment extends BaseFragment {
     });
 
     btnTest.setOnClickListener(new OnClickListener() {
-      @Override public void onClick(View v) {
+      @Override
+      public void onClick(View v) {
         for (int i = 0; i < 100; i++) {
-          testMapPut(1024);
+          testMapPutTime(1024);
         }
       }
 
-      private void testMapPut(int size) {
-        int initSize = (int) (size / 0.75f + 1);
-        HashMap<Integer, String> map = new HashMap<>(initSize);
-
-        long begin;
-        long end;
-        System.out.println();
-        begin = System.currentTimeMillis();
-        for (int i = 0; i < size; i++) {
-          map.put(i, String.valueOf(i));
-        }
-        end = System.currentTimeMillis();
-
-        LLogger.d("time=" + (end - begin));
-      }
     });
-
-
 
     return rootView;
   }
 
-  private static class DoubleClass{
+  private void testMapPutTime(int size) {
+    int initSize = (int) (size / 0.75f + 1);
+    HashMap<Integer, String> map = new HashMap<>(initSize);
+
+    long begin;
+    long end;
+    System.out.println();
+    begin = System.currentTimeMillis();
+    for (int i = 0; i < size; i++) {
+      map.put(i, String.valueOf(i));
+    }
+    end = System.currentTimeMillis();
+
+    LLogger.d("time=" + (end - begin));
+  }
+
+  private static class DoubleClass {
+
     private Integer name;
 
     public DoubleClass(Integer name) {
       this.name = name;
     }
 
-    @Override public boolean equals(Object o) {
-      if (this == o) return true;
-      if (!(o instanceof DoubleClass)) return false;
-
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (!(o instanceof DoubleClass)) {
+        return false;
+      }
 
       DoubleClass that = (DoubleClass) o;
 
       return name != null ? name.equals(that.name) : that.name == null;
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
       //return name != null ? name.hashCode() : 0;
       return Integer.valueOf(2).hashCode();
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
       final StringBuilder sb = new StringBuilder("DoubleClass{");
       sb.append("name=").append(name);
       sb.append('}');
@@ -170,35 +171,6 @@ public class TestFragment extends BaseFragment {
     }
   }
 
-  private void testMap() {
-    HashMap<Integer,String> map=new HashMap<>();
-    for (int i = 0; i < 10; i++) {
-      map.put(i,"data"+i);
-    }
-    map.get(2);
-    map.containsValue("data2");
-    map.remove(2);
-
-    SparseArray<String> stringSparseArray=new SparseArray<>();
-    stringSparseArray.put(1,"23");
-
-    //HashMap<DoubleClass,String> map=new HashMap<>();
-    //map.put(new DoubleClass(2),"double2_0");
-    //map.put(new DoubleClass(3),"double2_1");
-    //LLogger.d("sub:"+(5/2));
-    //String s = map.get(new DoubleClass(2));
-    //LLogger.d("first:"+s);
-    //String s1 = map.get(new DoubleClass(3));
-    //LLogger.d("second:"+s1);
-    //LLogger.d(map.size());
-
-    Hashtable<String,Integer> hashtable=new Hashtable<>();
-    hashtable.put("s",1);
-    ConcurrentHashMap<String,Integer> concurrentHashMap=new ConcurrentHashMap<>();
-    concurrentHashMap.put("1",2);
-
-
-  }
 
   @Override
   public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -208,23 +180,23 @@ public class TestFragment extends BaseFragment {
   boolean isWrap;
 
   @OnClick(R.id.btn_value)
-  public void onClickValue(){
-    long time=System.currentTimeMillis();
-    int sum=0;
-    if (isWrap){
-      isWrap=false;
+  public void onClickValue() {
+    long time = System.currentTimeMillis();
+    int sum = 0;
+    if (isWrap) {
+      isWrap = false;
       for (int i = 0; i < 100000; i++) {
-        sum=+i;
+        sum = +i;
       }
-    }else {
-      isWrap=true;
+    } else {
+      isWrap = true;
       for (int i = 0; i < 100000; i++) {
-        Integer integer=i;
-        sum=+integer;
+        Integer integer = i;
+        sum = +integer;
       }
     }
 
-    LLogger.d(" time ="+(System.currentTimeMillis()-time)+" sum="+sum);
+    LLogger.d(" time =" + (System.currentTimeMillis() - time) + " sum=" + sum);
   }
 
   /**

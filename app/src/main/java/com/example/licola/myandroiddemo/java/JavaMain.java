@@ -1,5 +1,6 @@
 package com.example.licola.myandroiddemo.java;
 
+import android.text.format.DateUtils;
 import com.licola.llogger.LLogger;
 import com.google.common.collect.Maps;
 import java.util.HashMap;
@@ -19,6 +20,9 @@ public class JavaMain {
     testSingle();
 
     HashMap<Object, Object> hashMap = Maps.newHashMapWithExpectedSize(10);
+
+
+
   }
 
   private static void testSingle() {

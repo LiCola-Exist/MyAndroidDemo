@@ -34,6 +34,7 @@ import com.example.RuntimeHandle;
 import com.example.licola.myandroiddemo.AndroidRuntimeCode.RuntimeCode;
 import com.example.licola.myandroiddemo.ListFragment.OnListFragmentListener;
 import com.example.licola.myandroiddemo.RecyclerFragment.OnRecyclerFragmentListener;
+import com.example.licola.myandroiddemo.android.AndroidMain;
 import com.example.licola.myandroiddemo.componet.MyLifeCycleObserver;
 import com.example.licola.myandroiddemo.dagger.ActivityComponent;
 import com.example.licola.myandroiddemo.dagger.ActivitySuperComponent;
@@ -157,8 +158,11 @@ public class MainActivity extends BaseActivity implements
     testEventBus();
 
     JavaMain.main();
+    AndroidMain.main(MainActivity.this);
     ThreadWork.main();
     MyHandler.main();
+
+
     RxJava.main();
     testLog("name");
 

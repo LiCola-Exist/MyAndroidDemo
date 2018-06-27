@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
@@ -26,6 +27,7 @@ public class ScrollingActivity extends BaseActivity {
         Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
             .setAction("Action", null)
             .show();
+        postDelayRunnable();
       }
     });
 
@@ -37,5 +39,16 @@ public class ScrollingActivity extends BaseActivity {
     for (RunningAppProcessInfo runningAppProcess : runningAppProcesses) {
       LLogger.d(runningAppProcess.lru);
     }
+  }
+
+  private Handler handler=new Handler();
+
+  private void postDelayRunnable() {
+    handler.postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        LLogger.d("延迟任务执行");
+      }
+    },10000);
   }
 }

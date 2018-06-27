@@ -84,9 +84,11 @@ public class RecyclerFragment extends BaseFragment {
     button.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-//        adapter.notifyItemChanged(4);
+        adapter.notifyItemChanged(0);
       }
     });
+
+
 
 
     return view;

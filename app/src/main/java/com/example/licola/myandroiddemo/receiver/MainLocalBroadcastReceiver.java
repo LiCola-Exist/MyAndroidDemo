@@ -14,6 +14,7 @@ public class MainLocalBroadcastReceiver extends BroadcastReceiver {
 
   @Override
   public void onReceive(Context context, Intent intent) {
-    LLogger.d(Thread.currentThread().toString()+": "+intent.getAction());
+    LLogger.d(intent.getAction());
+    LLogger.trace();
   }
 }

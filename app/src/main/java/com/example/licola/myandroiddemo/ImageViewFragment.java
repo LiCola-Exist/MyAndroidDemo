@@ -96,6 +96,8 @@ public class ImageViewFragment extends BaseFragment {
     Glide.with(getActivity())
         .load("https://raw.githubusercontent.com/bumptech/glide/master/static/glide_logo.png")
         .into(imageView);
+
+
 //    imageView.postDelayed(new Runnable() {
 //      @Override
 //      public void run() {

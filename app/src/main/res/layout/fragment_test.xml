@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+
+
+  <TextView
+    android:id="@+id/txt_result"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:text="result:" />
 
+  <Button
+    android:id="@+id/btn_start"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="开始" />
 
-    <TextView
-        android:id="@+id/txt_result"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="result:" />
-
-    <Button
-        android:id="@+id/btn_start"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="开始" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Time-Test"
-        android:id="@+id/btn_test"
-        />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_input"
-        android:hint="with id"
-        />
-    <EditText
-        android:hint="not id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-    <Button
-        android:id="@+id/entry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Entry_Scrolling_Aty"
-        />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ValueOfStart"
-        android:id="@+id/btn_value"
-        />
+  <Button
+    android:id="@+id/btn_test"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Time-Test" />
+  <EditText
+    android:id="@+id/edit_input"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="with id" />
+  <EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="not id" />
+  <Button
+    android:id="@+id/entry"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Entry_Scrolling_Aty" />
+  <Button
+    android:id="@+id/btn_value"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="ValueOfStart" />
+  <Button
+    android:id="@+id/btn_block"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="block-ui-click" />
 
 
 </LinearLayout>
