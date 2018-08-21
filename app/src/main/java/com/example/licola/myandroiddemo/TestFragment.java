@@ -62,10 +62,18 @@ public class TestFragment extends BaseFragment {
     btnTest = (Button) rootView.findViewById(R.id.btn_test);
     txtResult = (TextView) rootView.findViewById(R.id.txt_result);
 
-    rootView.findViewById(R.id.entry).setOnClickListener(new OnClickListener() {
+    rootView.findViewById(R.id.btn_entry_scroll).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(getContext(), ScrollingActivity.class);
+        startActivity(intent);
+      }
+    });
+
+    rootView.findViewById(R.id.btn_entry_soft).setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(getContext(), SoftKeyActivity.class);
         startActivity(intent);
       }
     });

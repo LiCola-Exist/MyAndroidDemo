@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
 
 import org.aspectj.bridge.IMessage
 import org.aspectj.bridge.MessageHandler
@@ -29,7 +30,8 @@ android {
             annotationProcessorOptions {
                 //配置注解解析参数
                 arguments = [
-                        eventBusIndex: 'com.demo.licola.myandroiddemo.EventBusIndex'//EventBus注解 生成的类全名
+                        eventBusIndex: 'com.demo.licola.myandroiddemo.EventBusIndex',//EventBus注解 生成的类全名
+                        moduleName   : project.getName()
                 ]
             }
         }
@@ -48,15 +50,22 @@ android {
     }
 }
 
+greendao {
+    schemaVersion 1
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    //简单路由-映射
-//    implementation "com.licola:routermapper-annotation:$rootProject.routeVersion"
-//    annotationProcessor "com.licola:routermapper-compiler:$rootProject.routeVersion"
+
+
+    implementation 'com.licola:route-annotation:1.1.1'
+    implementation 'com.licola:route-api:1.1.1'
+    annotationProcessor 'com.licola:route-compiler:1.1.1'
 
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     annotationProcessor project(':compiler')
     implementation project(':annotation')
     implementation project(':aspectj')
@@ -70,6 +79,7 @@ dependencies {
 
     //数据模拟工具
     implementation 'com.licola:virtual:1.2.1'
+//    implementation 'com.github.LiCola:VirtualData:master'
 
     //代码工具
     implementation 'com.licola:reversesuper-annotation:1.2.0'//注解库
@@ -94,7 +104,7 @@ dependencies {
     implementation "org.greenrobot:eventbus:$rootProject.eventbusVersion"
     annotationProcessor "org.greenrobot:eventbus-annotation-processor:$eventbusVersion"
     //数据库
-    implementation "org.greenrobot:greendao:$rootProject.greendao"
+    implementation "org.greenrobot:greendao:$rootProject.greendaoVersion"
     //OkHttp网络
     implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
 

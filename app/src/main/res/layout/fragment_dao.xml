@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:padding="@dimen/text_margin"
+  android:orientation="vertical"
+  tools:context="com.example.licola.myandroiddemo.DaoFragment">
+
+  <Button
+    android:id="@+id/bt_insert"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="DB-fetch"
+    />
+  <Button
+    android:id="@+id/bt_query"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="DB-fetch"
+    />
+
+  <TextView
+    android:id="@+id/tv_result"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    />
+
+</LinearLayout>

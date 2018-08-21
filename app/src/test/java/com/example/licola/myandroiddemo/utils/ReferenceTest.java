@@ -1,6 +1,6 @@
 package com.example.licola.myandroiddemo.utils;
 
-import com.example.licola.myandroiddemo.model.ViewWrapModel;
+import com.example.licola.myandroiddemo.data.model.ViewWrapModel;
 import java.lang.ref.WeakReference;
 import org.junit.Test;
 

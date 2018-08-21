@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.licola.myandroiddemo">
+  package="com.example.licola.myandroiddemo">
 
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.INTERNET" />
-  <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION"/>
+  <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
   <!-- 阿里移动推送相关权限 -->
   <!-- Android 6.0版本可去除，用于选举信息（通道复用）的同步 -->
   <uses-permission android:name="android.permission.WRITE_SETTINGS" />
@@ -33,31 +33,28 @@
   <uses-permission android:name="android.permission.VIBRATE" />
   <!-- 允许task重排序 -->
   <uses-permission android:name="android.permission.REORDER_TASKS" />
-
-
   <uses-permission android:name="android.permission.READ_LOGS" />
-
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
   <application
-      android:name=".MyApplication"
-      android:allowBackup="true"
-      android:icon="@mipmap/ic_launcher"
-      android:label="@string/app_name"
-      android:supportsRtl="true"
-      android:theme="@style/AppTheme">
+    android:allowBackup="true"
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/app_name"
+    android:name=".MyApplication"
+    android:supportsRtl="true"
+    android:theme="@style/AppTheme">
     <meta-data
-        android:name="com.alibaba.app.appkey"
-        android:value="24406330" /> <!-- 请填写你自己的- appKey -->
+      android:name="com.alibaba.app.appkey"
+      android:value="24406330" /> <!-- 请填写你自己的- appKey -->
     <meta-data
-        android:name="com.alibaba.app.appsecret"
-        android:value="399dba2c397adf66f5e70c26960f58c4" /> <!-- 请填写你自己的appSecret -->
+      android:name="com.alibaba.app.appsecret"
+      android:value="399dba2c397adf66f5e70c26960f58c4" /> <!-- 请填写你自己的appSecret -->
 
     <activity
-        android:name=".MainActivity"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme.NoActionBar">
+      android:label="@string/app_name"
+      android:name=".MainActivity"
+      android:theme="@style/AppTheme.NoActionBar">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
@@ -67,9 +64,9 @@
 
     <!-- 通道保持服务 -->
     <service
-        android:name="com.alibaba.sdk.android.push.ChannelService"
-        android:exported="true"
-        android:process=":channel">
+      android:exported="true"
+      android:name="com.alibaba.sdk.android.push.ChannelService"
+      android:process=":channel">
       <intent-filter>
         <action android:name="com.taobao.accs.intent.action.SERVICE" />
       </intent-filter>
@@ -81,8 +78,8 @@
     </service>
     <!-- 消息接收服务 -->
     <service
-        android:name="com.alibaba.sdk.android.push.MsgService"
-        android:exported="false">
+      android:exported="false"
+      android:name="com.alibaba.sdk.android.push.MsgService">
       <intent-filter>
         <action android:name="com.taobao.accs.intent.action.RECEIVE" />
       </intent-filter>
@@ -92,8 +89,8 @@
     </service>
     <!-- 消息接收增强服务（可提高通知/消息达到率） -->
     <service
-        android:name="com.alibaba.sdk.android.push.channel.TaobaoRecvService"
-        android:exported="true">
+      android:exported="true"
+      android:name="com.alibaba.sdk.android.push.channel.TaobaoRecvService">
       <intent-filter>
         <action android:name="org.android.agoo.client.MessageReceiverService" />
       </intent-filter>
@@ -133,18 +130,25 @@
     </receiver>
 
     <activity
-        android:name=".AliActivity"
-        android:label="@string/title_activity_ali"
-        android:theme="@style/AppTheme.NoActionBar" />
+      android:label="@string/title_activity_ali"
+      android:name=".AliActivity"
+      android:theme="@style/AppTheme.NoActionBar" />
     <activity
-        android:name=".ScrollingActivity"
-        android:label="@string/title_activity_scrolling"
-        android:theme="@style/AppTheme.NoActionBar"/>
+      android:label="@string/title_activity_scrolling"
+      android:name=".ScrollingActivity"
+      android:theme="@style/AppTheme.NoActionBar" />
     <activity android:name=".BottomSheetActivity" />
 
-    <service android:name=".messenger.MessengerService"
-      android:process=":remote"
-      />
+    <service
+      android:name=".messenger.MessengerService"
+      android:process=":remote" />
+
+    <activity
+      android:name=".SoftKeyActivity"
+      android:screenOrientation="portrait"
+      android:theme="@style/AppTheme"
+      android:windowSoftInputMode="adjustResize"></activity>
+    <activity android:name=".LayoutActivity"></activity>
   </application>
 
 </manifest>

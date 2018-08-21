@@ -117,8 +117,6 @@ public class MyHandler {
     Message message = handler.obtainMessage();
     message.obj = runnable;
 
-    handler.sendMessageDelayed(message, 100);
-
     handler.postDelayed(new Runnable() {
       @Override
       public void run() {
@@ -132,13 +130,16 @@ public class MyHandler {
       }
     }, 100);
 
-//
-//    handler.post(new Runnable() {
-//      @Override
-//      public void run() {
-//        LLogger.d("post main");
-//      }
-//    });
+
+    final long start = SystemClock.uptimeMillis();//系统开启到现在的时间
+    LLogger.d(start);
+    handler.post(new Runnable() {
+      @Override
+      public void run() {
+        long end = SystemClock.uptimeMillis();//系统开启到现在的时间
+        LLogger.d(end-start);
+      }
+    });
   }
 
 

@@ -11,8 +11,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import com.licola.llogger.LLogger;
+import com.licola.route.annotation.Route;
 import java.util.List;
 
+@Route(name = "scrolling")
 public class ScrollingActivity extends BaseActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {

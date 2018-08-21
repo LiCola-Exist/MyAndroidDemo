@@ -2,21 +2,33 @@ package com.example.licola.myandroiddemo.android;
 
 import android.content.Context;
 import android.text.format.DateUtils;
-import com.example.licola.myandroiddemo.utils.ui.BlockDetectByPrinter;
 import com.licola.llogger.LLogger;
 
 /**
- * Created by LiCola on 2018/6/26.
+ * @author LiCola
+ * @date 2018/6/26
  */
 public class AndroidMain {
 
 
-  public static void main(Context context){
+  public static void main(Context context) {
+
+
+    testClassLoad(context);
 
     testDateUtils(context);
 
-    BlockDetectByPrinter.checkLooper();
+//    BlockDetectByPrinter.checkLooper();
 
+
+  }
+
+  private static void testClassLoad(Context context) {
+    ClassLoader classLoader = context.getClassLoader();
+    while (classLoader != null) {
+      LLogger.d(classLoader.toString());
+      classLoader = classLoader.getParent();
+    }
   }
 
   private static void testDateUtils(Context context) {

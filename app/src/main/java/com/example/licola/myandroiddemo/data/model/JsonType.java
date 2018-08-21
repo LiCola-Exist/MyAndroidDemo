@@ -1,4 +1,4 @@
-package com.example.licola.myandroiddemo.model;
+package com.example.licola.myandroiddemo.data.model;
 
 import java.util.List;
 

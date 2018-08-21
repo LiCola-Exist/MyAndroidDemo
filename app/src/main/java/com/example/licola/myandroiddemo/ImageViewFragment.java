@@ -3,7 +3,6 @@ package com.example.licola.myandroiddemo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -96,14 +95,6 @@ public class ImageViewFragment extends BaseFragment {
     Glide.with(getActivity())
         .load("https://raw.githubusercontent.com/bumptech/glide/master/static/glide_logo.png")
         .into(imageView);
-
-
-//    imageView.postDelayed(new Runnable() {
-//      @Override
-//      public void run() {
-//        Drawable drawable = imageView.getDrawable();
-//      }
-//    },1000);
   }
 
   private void loadByOriginal(View childView) {
@@ -114,12 +105,21 @@ public class ImageViewFragment extends BaseFragment {
   private void loadByOriginalWithOptions(View childView) {
     ImageView imgBitmap = childView.findViewById(R.id.img_load_bitmap);
     Options options = new Options();
-    options.inSampleSize = 2;
-    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.a01, options);
+
+    options.inJustDecodeBounds = true;//只获取图片边界信息
+    BitmapFactory.decodeResource(getResources(), R.drawable.a01, options);
+    int outHeight = options.outHeight;
+    int outWidth = options.outWidth;
+    String outMimeType = options.outMimeType;
+    LLogger.d(outHeight, outWidth, outMimeType);
+
+    options.inJustDecodeBounds=false;
+    options.inSampleSize = 2;//缩放设置 缩小2倍
+    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.a01, options);//从drawable中加载 能够取出默认的图片比例：系统dpi/drawable的dpi
     imgBitmap.setImageBitmap(bitmap);
     LLogger.d("bitmap byte size:" + bitmap.getByteCount());
-    LLogger.d("bitmap width:" + bitmap.getWidth() + " height:" + bitmap.getHeight() + " config："
-        + bitmap.getConfig());
+    LLogger.d( bitmap.getHeight(),bitmap.getWidth(),
+        bitmap.getConfig());
   }
 
 

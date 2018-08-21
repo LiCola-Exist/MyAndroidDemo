@@ -2,8 +2,8 @@ package com.example.licola.myandroiddemo;
 
 import static org.junit.Assert.assertEquals;
 
-import com.example.licola.myandroiddemo.model.JsonArrayType;
-import com.example.licola.myandroiddemo.model.JsonType;
+import com.example.licola.myandroiddemo.data.model.JsonArrayType;
+import com.example.licola.myandroiddemo.data.model.JsonType;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;

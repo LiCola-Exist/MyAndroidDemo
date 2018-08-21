@@ -1,4 +1,4 @@
-package com.example.licola.myandroiddemo.model;
+package com.example.licola.myandroiddemo.data.model;
 
 /**
  * Created by LiCola on 2018/5/19.

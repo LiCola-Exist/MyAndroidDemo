@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  tools:context="com.example.licola.myandroiddemo.LayoutFragment">
+
+  <TextView
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:id="@+id/tv_layout_linear"
+    android:background="@color/red_normal_A87"
+    android:gravity="center"
+    android:text="线性"
+    android:textSize="18dp" />
+  <TextView
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:id="@+id/tv_layout_relative"
+    android:background="@color/blue_normal_A87"
+    android:gravity="center"
+    android:text="相对"
+    android:textSize="18dp" />
+</LinearLayout>

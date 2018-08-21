@@ -12,6 +12,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
@@ -19,7 +20,6 @@ import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
@@ -57,12 +57,17 @@ import com.example.licola.myandroiddemo.utils.FragmentPagerRebuildAdapter;
 import com.example.licola.myandroiddemo.utils.PixelUtils;
 import com.example.licola.myandroiddemo.utils.WindowsController;
 import com.licola.llogger.LLogger;
+import com.licola.route.RouteApp;
+import com.licola.route.annotation.Route;
+import com.licola.route.api.Api;
+import com.licola.route.api.RouterApiImpl;
 import java.io.File;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 @RuntimeHandle()
+@Route(name = "main")
 public class MainActivity extends BaseActivity implements
     OnListFragmentListener,OnRecyclerFragmentListener {
 
@@ -88,13 +93,15 @@ public class MainActivity extends BaseActivity implements
   SuperUserModel superUserModel;
 
 
+  private Handler handler=new Handler();
+
   static Boolean value1 = true;
   static Boolean value2 = false;
   static Boolean value3 = new Boolean(true);
 
   static final String[] titles = {"BottomSheetFragment", "Test", "View", "Download", "Xml",
       "Constraint", "MyRecyclerView", "Animate", "ProgressView", "Module", "ImageView", "IO",
-      "Socket", "Thread","Recycler"};
+      "Socket", "Thread","Recycler","Dao","layout"};
 
   MainLocalBroadcastReceiver receiver;
 
@@ -102,6 +109,7 @@ public class MainActivity extends BaseActivity implements
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
     WindowsController.setTranslucentWindows(this);
     setContentView(R.layout.activity_main);
     WindowsController.addStatusBarBackground(this, R.color.gray_normal_A32);
@@ -123,8 +131,8 @@ public class MainActivity extends BaseActivity implements
     mViewPager.post(new Runnable() {
       @Override
       public void run() {
-//        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-        mViewPager.setCurrentItem(findTitlePosition("Recycler"));
+        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
+//        mViewPager.setCurrentItem(findTitlePosition("ImageView"));
       }
 
       private int findTitlePosition(String target) {
@@ -162,9 +170,8 @@ public class MainActivity extends BaseActivity implements
     ThreadWork.main();
     MyHandler.main();
 
-
     RxJava.main();
-    testLog("name");
+    testLib();
 
     LruCache<String, String> lruCache = new LruCache<>(100);
 
@@ -233,7 +240,7 @@ public class MainActivity extends BaseActivity implements
     });
   }
 
-  private void testLog(String type) {
+  private void testLib() {
 
 //    Thread thread=new MyThread();
 //    thread.start();
@@ -241,6 +248,11 @@ public class MainActivity extends BaseActivity implements
 //    KLog.file("file-tag",getCacheDir(),"test file write");
     LLogger.d("test log");
     LLogger.d(System.currentTimeMillis());
+
+
+    Api api=new RouterApiImpl.Builder(getApplication())
+        .addRouteRoot(new RouteApp.Route())
+        .build();
   }
 
   private void testEventBus() {
@@ -305,11 +317,10 @@ public class MainActivity extends BaseActivity implements
 
     File cacheDir = this.getCacheDir();
     LLogger.d("cacheDir:" + cacheDir);
-    ClassLoader classLoader = this.getClassLoader();
-    while (classLoader != null) {
-      LLogger.d(classLoader.toString());
-      classLoader = classLoader.getParent();
-    }
+
+
+    LLogger.d(getResources().getDisplayMetrics().toString());
+
   }
 
   private void activityBindService() {
@@ -465,6 +476,12 @@ public class MainActivity extends BaseActivity implements
           break;
         case 14:
           fragment=RecyclerFragment.newInstance(titles[position],1);
+          break;
+        case 15:
+          fragment=DaoFragment.newInstance(titles[position]);
+          break;
+        case 16:
+          fragment= LayoutFragment.newInstance(titles[position]);
           break;
       }
 

@@ -19,7 +19,7 @@
 
   <Button
     android:id="@+id/btn_test"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="Time-Test" />
   <EditText
@@ -32,20 +32,26 @@
     android:layout_height="wrap_content"
     android:hint="not id" />
   <Button
-    android:id="@+id/entry"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Entry_Scrolling_Aty" />
-  <Button
     android:id="@+id/btn_value"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="ValueOfStart" />
   <Button
     android:id="@+id/btn_block"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="block-ui-click" />
+  <Button
+    android:id="@+id/btn_entry_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="entry-Scrolling-aty" />
+  <Button
+    android:id="@+id/btn_entry_soft"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="entry-soft-key-aty" />
+
 
 
 </LinearLayout>
