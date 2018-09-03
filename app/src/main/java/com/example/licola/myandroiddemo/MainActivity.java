@@ -131,8 +131,9 @@ public class MainActivity extends BaseActivity implements
     mViewPager.post(new Runnable() {
       @Override
       public void run() {
-        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
+//        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
 //        mViewPager.setCurrentItem(findTitlePosition("ImageView"));
+        mViewPager.setCurrentItem(10);
       }
 
       private int findTitlePosition(String target) {

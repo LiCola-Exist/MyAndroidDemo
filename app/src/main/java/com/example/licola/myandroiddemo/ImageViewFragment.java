@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.licola.myandroiddemo.view.TouchImageView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.licola.llogger.LLogger;
@@ -67,6 +68,7 @@ public class ImageViewFragment extends BaseFragment {
   private void loadByDrawable(View childView) {
     final ImageView imgFirst = childView.findViewById(R.id.img_load_drawable_first);
     final ImageView imgSecond = childView.findViewById(R.id.img_load_drawable_second);
+    final ImageView imgThird = childView.findViewById(R.id.img_load_drawable_third);
 
     final StateListDrawable drawable = (StateListDrawable) ContextCompat
         .getDrawable(getContext(), R.drawable.selector_app_enable);
@@ -81,6 +83,10 @@ public class ImageViewFragment extends BaseFragment {
       }
     });
 
+    imgThird.setImageURI(
+        Uri.parse("android.resource://" + getActivity().getPackageName() + "//"+R.drawable.ic_action_app_white));
+
+
   }
 
   private void loadByFresco(View childView) {
@@ -88,13 +94,25 @@ public class ImageViewFragment extends BaseFragment {
         .parse("https://raw.githubusercontent.com/facebook/fresco/master/docs/static/logo.png");
     SimpleDraweeView imageView = childView.findViewById(R.id.img_load_fresco);
     imageView.setImageURI(uri);
+
   }
 
   private void loadByGlide(View childView) {
     final ImageView imageView = childView.findViewById(R.id.img_load_glide);
     Glide.with(getActivity())
-        .load("https://raw.githubusercontent.com/bumptech/glide/master/static/glide_logo.png")
+        .load("http://inthecheesefactory.com/uploads/source/glidepicasso/cover.jpg")
         .into(imageView);
+
+    imageView.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        RequestOptions options = new RequestOptions().circleCrop();
+        Glide.with(getActivity())
+            .load("http://inthecheesefactory.com/uploads/source/glidepicasso/cover.jpg")
+            .apply(options)
+            .into(imageView);
+      }
+    });
   }
 
   private void loadByOriginal(View childView) {
@@ -113,12 +131,13 @@ public class ImageViewFragment extends BaseFragment {
     String outMimeType = options.outMimeType;
     LLogger.d(outHeight, outWidth, outMimeType);
 
-    options.inJustDecodeBounds=false;
+    options.inJustDecodeBounds = false;
     options.inSampleSize = 2;//缩放设置 缩小2倍
-    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.a01, options);//从drawable中加载 能够取出默认的图片比例：系统dpi/drawable的dpi
+    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.a01,
+        options);//从drawable中加载 能够取出默认的图片比例：系统dpi/drawable的dpi
     imgBitmap.setImageBitmap(bitmap);
     LLogger.d("bitmap byte size:" + bitmap.getByteCount());
-    LLogger.d( bitmap.getHeight(),bitmap.getWidth(),
+    LLogger.d(bitmap.getHeight(), bitmap.getWidth(),
         bitmap.getConfig());
   }
 

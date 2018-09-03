@@ -7,8 +7,11 @@ import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.AsyncLayoutInflater;
+import android.support.v4.view.AsyncLayoutInflater.OnInflateFinishedListener;
 import android.support.v4.widget.NestedScrollView;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -59,6 +62,15 @@ public class ViewFragment extends BaseFragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
+    AsyncLayoutInflater asyncLayoutInflater=new AsyncLayoutInflater(getContext());
+    asyncLayoutInflater.inflate(R.layout.fragment_image_view, container,
+        new OnInflateFinishedListener() {
+          @Override
+          public void onInflateFinished(@NonNull View view, int resid, @Nullable ViewGroup parent) {
+
+          }
+        });
+
     final View rootView = inflater.inflate(R.layout.fragment_view, container, false);
     final LinearLayout layoutGroup =  rootView.findViewById(R.id.layout_group);
     final int screenHeight = PixelUtils.getScreenHeight(getContext());
@@ -70,6 +82,7 @@ public class ViewFragment extends BaseFragment {
     myTextView.setTextColor(Color.BLACK);
     myTextView.setText("color");
     layoutGroup.addView(myTextView);
+
 
     final View canvasView = new CanvasDemoView(getContext());
     layoutGroup.addView(canvasView,
@@ -155,7 +168,7 @@ public class ViewFragment extends BaseFragment {
     return bitmap;
   }
 
-  private static class MyTextView extends TextView{
+  private static class MyTextView extends android.support.v7.widget.AppCompatTextView{
 
     public MyTextView(Context context) {
       super(context);

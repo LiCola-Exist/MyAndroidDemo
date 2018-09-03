@@ -58,32 +58,12 @@ public class BottomSheetFragment extends BaseFragment {
 
         Button btnImage = (Button) rootView.findViewById(R.id.btn_image_select);
 
-        final ImageView imageView= (ImageView) rootView.findViewById(R.id.img_loading);
-
         btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
             }
         });
-        Glide.with(getActivity()).load("http://inthecheesefactory.com/uploads/source/glidepicasso/cover.jpg")
-            .into(imageView)
-        ;
-
-        Handler handler=new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                LLogger.d("bitmap");
-                Drawable drawable = imageView.getDrawable();
-                if (drawable instanceof BitmapDrawable){
-                    BitmapDrawable bitmapDrawable= (BitmapDrawable) drawable;
-                    Bitmap bitmap = bitmapDrawable.getBitmap();
-                    LLogger.d(bitmap.getByteCount(),bitmap.getConfig(),bitmap.getWidth(),bitmap.getHeight());
-                }
-            }
-        },2000);
 
         return rootView;
     }

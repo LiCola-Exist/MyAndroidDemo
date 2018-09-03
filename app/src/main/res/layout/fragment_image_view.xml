@@ -13,14 +13,14 @@
     <com.facebook.drawee.view.SimpleDraweeView
       android:id="@+id/img_load_fresco"
       android:layout_width="match_parent"
-      android:layout_height="300dp"
+      android:layout_height="180dp"
       fresco:actualImageScaleType="center"
       fresco:placeholderImage="@color/colorPrimary" />
 
     <ImageView
       android:id="@+id/img_load_glide"
       android:layout_width="match_parent"
-      android:layout_height="300dp"
+      android:layout_height="180dp"
       tools:background="@color/gray_normal_A54" />
 
     <ImageView
@@ -33,6 +33,11 @@
       android:layout_width="match_parent"
       android:layout_height="60dp"
       android:background="@color/orange_normal_A54" />
+    <ImageView
+      android:id="@+id/img_load_drawable_third"
+      android:layout_width="match_parent"
+      android:layout_height="60dp"
+      android:background="@color/gray_normal_A54" />
 
     <ImageView
       android:id="@+id/img_load_bitmap"
