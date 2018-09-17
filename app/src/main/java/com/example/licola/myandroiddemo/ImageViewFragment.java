@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.licola.myandroiddemo.view.TouchImageView;
@@ -56,6 +57,8 @@ public class ImageViewFragment extends BaseFragment {
     // Inflate the layout for this fragment
     View childView = inflater.inflate(R.layout.fragment_image_view, container, false);
 
+    loadNinePath(childView);
+
     loadByFresco(childView);
     loadByGlide(childView);
     loadByOriginalWithOptions(childView);
@@ -63,6 +66,23 @@ public class ImageViewFragment extends BaseFragment {
     loadByOriginal(childView);
 
     return childView;
+  }
+
+  private void loadNinePath(final View childView) {
+    View layoutLeft = childView.findViewById(R.id.layout_patch_left);
+    final TextView content = layoutLeft.findViewById(R.id.tv_patch_content_left);
+    layoutLeft.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        boolean activated = content.isActivated();
+        if (activated) {
+          content.setText("激活长文本显示");
+        } else {
+          content.setText("1");
+        }
+        content.setActivated(!activated);
+      }
+    });
   }
 
   private void loadByDrawable(View childView) {
@@ -84,7 +104,8 @@ public class ImageViewFragment extends BaseFragment {
     });
 
     imgThird.setImageURI(
-        Uri.parse("android.resource://" + getActivity().getPackageName() + "//"+R.drawable.ic_action_app_white));
+        Uri.parse("android.resource://" + getActivity().getPackageName() + "//"
+            + R.drawable.ic_action_app_white));
 
 
   }

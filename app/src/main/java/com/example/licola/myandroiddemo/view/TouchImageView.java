@@ -31,6 +31,11 @@ public class TouchImageView extends android.support.v7.widget.AppCompatImageView
     init();
   }
 
+  @Override
+  protected void onDraw(Canvas canvas) {
+    super.onDraw(canvas);
+  }
+
   private void init() {
     super.setScaleType(ScaleType.MATRIX);
   }
