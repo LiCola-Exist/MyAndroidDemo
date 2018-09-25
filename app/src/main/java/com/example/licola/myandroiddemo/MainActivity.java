@@ -60,7 +60,7 @@ import com.licola.llogger.LLogger;
 import com.licola.route.RouteApp;
 import com.licola.route.annotation.Route;
 import com.licola.route.api.Api;
-import com.licola.route.api.RouterApiImpl;
+import com.licola.route.api.RouterApi.Builder;
 import java.io.File;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
@@ -69,15 +69,13 @@ import org.greenrobot.eventbus.Subscribe;
 @RuntimeHandle()
 @Route(name = "main")
 public class MainActivity extends BaseActivity implements
-    OnListFragmentListener,OnRecyclerFragmentListener {
+    OnListFragmentListener, OnRecyclerFragmentListener {
 
   /**
-   * The {@link android.support.v4.view.PagerAdapter} that will provide
-   * fragments for each of the sections. We use a
-   * {@link FragmentPagerAdapter} derivative, which will keep every
-   * loaded fragment in memory. If this becomes too memory intensive, it
-   * may be best to switch to a
-   * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+   * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
+   * sections. We use a {@link FragmentPagerAdapter} derivative, which will keep every loaded
+   * fragment in memory. If this becomes too memory intensive, it may be best to switch to a {@link
+   * android.support.v4.app.FragmentStatePagerAdapter}.
    */
   private SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -93,7 +91,7 @@ public class MainActivity extends BaseActivity implements
   SuperUserModel superUserModel;
 
 
-  private Handler handler=new Handler();
+  private Handler handler = new Handler();
 
   static Boolean value1 = true;
   static Boolean value2 = false;
@@ -101,7 +99,7 @@ public class MainActivity extends BaseActivity implements
 
   static final String[] titles = {"BottomSheetFragment", "Test", "View", "Download", "Xml",
       "Constraint", "MyRecyclerView", "Animate", "ProgressView", "Module", "ImageView", "IO",
-      "Socket", "Thread","Recycler","Dao","layout"};
+      "Socket", "Thread", "Recycler", "Dao", "layout"};
 
   MainLocalBroadcastReceiver receiver;
 
@@ -188,7 +186,7 @@ public class MainActivity extends BaseActivity implements
   }
 
   private void testClass() {
-    Uri uri=Uri.parse("http://www.github.com");
+    Uri uri = Uri.parse("http://www.github.com");
     LLogger.d(uri);
     LLogger.d(uri.toString());
   }
@@ -250,8 +248,7 @@ public class MainActivity extends BaseActivity implements
     LLogger.d("test log");
     LLogger.d(System.currentTimeMillis());
 
-
-    Api api=new RouterApiImpl.Builder(getApplication())
+    Api api = new Builder(getApplication())
         .addRouteRoot(new RouteApp.Route())
         .build();
   }
@@ -318,7 +315,6 @@ public class MainActivity extends BaseActivity implements
 
     File cacheDir = this.getCacheDir();
     LLogger.d("cacheDir:" + cacheDir);
-
 
     LLogger.d(getResources().getDisplayMetrics().toString());
 
@@ -419,8 +415,8 @@ public class MainActivity extends BaseActivity implements
   }
 
   /**
-   * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-   * one of the sections/tabs/pages.
+   * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the
+   * sections/tabs/pages.
    */
   public static class SectionsPagerAdapter extends FragmentPagerRebuildAdapter<BaseFragment> {
 
@@ -476,16 +472,15 @@ public class MainActivity extends BaseActivity implements
           fragment = ThreadFragment.newInstance(titles[position]);
           break;
         case 14:
-          fragment=RecyclerFragment.newInstance(titles[position],1);
+          fragment = RecyclerFragment.newInstance(titles[position], 1);
           break;
         case 15:
-          fragment=DaoFragment.newInstance(titles[position]);
+          fragment = DaoFragment.newInstance(titles[position]);
           break;
         case 16:
-          fragment= LayoutFragment.newInstance(titles[position]);
+          fragment = LayoutFragment.newInstance(titles[position]);
           break;
       }
-
 
       return fragment;
     }

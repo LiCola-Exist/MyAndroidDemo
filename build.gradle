@@ -9,7 +9,7 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.android.tools.build:gradle:3.2.0'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' // add plugin
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -37,7 +37,7 @@ ext {
     // Sdk and tools
     minSdkVersion = 21
     targetSdkVersion = 24
-    compileSdkVersion = 27
+    compileSdkVersion = 28
     sourceCompatibilityVersion = JavaVersion.VERSION_1_8
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
 
@@ -47,7 +47,7 @@ ext {
     routeVersion = "1.0.0"
 
     // App dependencies
-    supportLibraryVersion = '27.1.1'
+    supportLibraryVersion = '28.0.0'
     supportMultidexVersion = "1.0.3"
     flexboxVersion = "0.3.0"
     lifecycleVersion = "1.1.1"
@@ -67,7 +67,7 @@ ext {
 
     //test lib
     leakcanaryVersion = "1.5.4"
-    guavaVersion = '18.0'
+    guavaVersion = '19.0'
     junitVersion = '4.12'
     mockitoVersion = '2.7.22'
     powerMockito = '1.6.2'
