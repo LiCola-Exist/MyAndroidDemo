@@ -91,7 +91,6 @@ public class MainActivity extends BaseActivity implements
   SuperUserModel superUserModel;
 
 
-  private Handler handler = new Handler();
 
   static Boolean value1 = true;
   static Boolean value2 = false;
