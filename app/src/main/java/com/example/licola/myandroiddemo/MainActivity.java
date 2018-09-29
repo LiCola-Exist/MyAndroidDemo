@@ -12,7 +12,6 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
@@ -61,7 +60,9 @@ import com.licola.route.RouteApp;
 import com.licola.route.annotation.Route;
 import com.licola.route.api.Api;
 import com.licola.route.api.RouterApi.Builder;
+import com.tencent.mmkv.MMKV;
 import java.io.File;
+import java.util.Arrays;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -129,8 +130,8 @@ public class MainActivity extends BaseActivity implements
       @Override
       public void run() {
 //        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-//        mViewPager.setCurrentItem(findTitlePosition("ImageView"));
-        mViewPager.setCurrentItem(10);
+        mViewPager.setCurrentItem(findTitlePosition("View"));
+//        mViewPager.setCurrentItem(10);
       }
 
       private int findTitlePosition(String target) {
@@ -169,7 +170,8 @@ public class MainActivity extends BaseActivity implements
     MyHandler.main();
 
     RxJava.main();
-    testLib();
+    testMyLib();
+    testThirdLib();
 
     LruCache<String, String> lruCache = new LruCache<>(100);
 
@@ -238,7 +240,7 @@ public class MainActivity extends BaseActivity implements
     });
   }
 
-  private void testLib() {
+  private void testMyLib() {
 
 //    Thread thread=new MyThread();
 //    thread.start();
@@ -250,6 +252,19 @@ public class MainActivity extends BaseActivity implements
     Api api = new Builder(getApplication())
         .addRouteRoot(new RouteApp.Route())
         .build();
+  }
+
+  private void testThirdLib(){
+    String rootDir = MMKV.initialize(this);
+    LLogger.d(rootDir);
+
+    MMKV mmkv = MMKV.defaultMMKV();
+    mmkv.encode("input","input_value" );
+    String dValue = mmkv.decodeString("input");
+    LLogger.d(Arrays.toString(mmkv.allKeys()),dValue);
+
+    mmkv.removeValueForKey("input");
+    LLogger.d(Arrays.toString(mmkv.allKeys()));
   }
 
   private void testEventBus() {

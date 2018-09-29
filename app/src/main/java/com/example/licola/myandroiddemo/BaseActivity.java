@@ -1,10 +1,9 @@
 package com.example.licola.myandroiddemo;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import com.licola.llogger.LLogger;
+import com.tencent.mmkv.MMKV;
 
 /**
  * Created by LiCola on 2017/6/8.
@@ -15,6 +14,7 @@ public class BaseActivity extends AppCompatActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     LLogger.d(this);
+
   }
 
   @Override

@@ -6,33 +6,31 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.AsyncLayoutInflater;
-import android.support.v4.view.AsyncLayoutInflater.OnInflateFinishedListener;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.view.View.OnLongClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.TextView;
 import android.widget.Toast;
-import com.licola.llogger.LLogger;
 import com.example.licola.myandroiddemo.utils.PixelUtils;
 import com.example.licola.myandroiddemo.view.CanvasDemoView;
 import com.example.licola.myandroiddemo.view.InterpolatorExplainView;
-import com.example.licola.myandroiddemo.view.PaintDemoView;
+import com.example.licola.myandroiddemo.view.ShaderDemoView;
+import com.example.licola.myandroiddemo.view.TextCaptionView;
+import com.licola.llogger.LLogger;
 
 /**
  * Created by 李可乐 on 2016/12/9 0009.
@@ -46,8 +44,7 @@ public class ViewFragment extends BaseFragment {
   }
 
   /**
-   * Returns a new instance of this fragment for the given section
-   * number.
+   * Returns a new instance of this fragment for the given section number.
    */
   public static ViewFragment newInstance(String key) {
     ViewFragment fragment = new ViewFragment();
@@ -62,37 +59,98 @@ public class ViewFragment extends BaseFragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    AsyncLayoutInflater asyncLayoutInflater=new AsyncLayoutInflater(getContext());
-    asyncLayoutInflater.inflate(R.layout.fragment_image_view, container,
-        new OnInflateFinishedListener() {
-          @Override
-          public void onInflateFinished(@NonNull View view, int resid, @Nullable ViewGroup parent) {
-
-          }
-        });
+//    AsyncLayoutInflater asyncLayoutInflater=new AsyncLayoutInflater(getContext());
+//    asyncLayoutInflater.inflate(R.layout.fragment_image_view, container,
+//        new OnInflateFinishedListener() {
+//          @Override
+//          public void onInflateFinished(@NonNull View view, int resid, @Nullable ViewGroup parent) {
+//
+//          }
+//        });
 
     final View rootView = inflater.inflate(R.layout.fragment_view, container, false);
-    final LinearLayout layoutGroup =  rootView.findViewById(R.id.layout_group);
-    final int screenHeight = PixelUtils.getScreenHeight(getContext());
+    final LinearLayout layoutGroup = rootView.findViewById(R.id.layout_group);
 
-    ViewGroup touch = rootView.findViewById(R.id.layout_touche);
-    handleTouch(touch);
+    final int screenWidth = PixelUtils.getScreenWidth(getContext());
 
-    MyTextView myTextView=new MyTextView(getContext());
-    myTextView.setTextColor(Color.BLACK);
-    myTextView.setText("color");
-    layoutGroup.addView(myTextView);
+    handleTouch((NestedScrollView) rootView, (ViewGroup) rootView.findViewById(R.id.layout_touche));
+
+    addTextCaptionView((ViewGroup) rootView.findViewById(R.id.layout_draw_group), screenWidth);
+
+    addInterpolatorView(layoutGroup, screenWidth);
+    addCanvasView(layoutGroup, screenWidth);
+    addShaderView(layoutGroup, screenWidth);
+
+    return rootView;
+  }
+
+  private void addTextCaptionView(final ViewGroup layoutGroup, final int maxWidth) {
+
+    final int fixHeight = 400;
+
+    final FrameLayout frameGroup = new FrameLayout(getContext());
+    frameGroup.setBackgroundResource(R.color.blue_normal_A54);
+    layoutGroup.addView(frameGroup, new LayoutParams(maxWidth, maxWidth));
+
+    final TextCaptionView textCaptionView = new TextCaptionView(getContext());
+
+//    Drawable topDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_action_album);
+//    textCaptionView.setCompoundDrawablesWithIntrinsicBounds(null, topDrawable, null, null);
+
+    textCaptionView.setTextSize(TypedValue.COMPLEX_UNIT_PX, 80);
+    textCaptionView.setMaxWidth(80);
+    textCaptionView.setText("Caption字幕1");
+    textCaptionView.setGravity(Gravity.CENTER);
+//    textCaptionView.setVisibility(View.INVISIBLE);
+    textCaptionView.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "font.ttf"));
+    textCaptionView.setBackgroundResource(R.color.black_normal_A12);
+
+    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT);
+    layoutParams.gravity = Gravity.CENTER;
+
+    frameGroup.addView(textCaptionView, layoutParams);
+
+    textCaptionView.post(new Runnable() {
+      @Override
+      public void run() {
+        int copyWidth = frameGroup.getWidth();
+        int copyHeight = frameGroup.getHeight();
+        Bitmap textBmp = Bitmap.createBitmap(copyWidth, copyHeight, Bitmap.Config.ARGB_8888);
+
+        final Canvas canvas = new Canvas(textBmp);
+        frameGroup.draw(canvas);
+
+        ImageView copyImageView = new ImageView(getContext());
+        copyImageView.setBackgroundResource(R.color.blue_normal_A12);
+        copyImageView.setImageBitmap(textBmp);
+
+        LayoutParams copyLayoutParams = new LayoutParams(copyWidth, copyHeight);
+        copyLayoutParams.gravity = Gravity.CENTER;
+
+        layoutGroup.addView(copyImageView, copyLayoutParams);
+      }
+    });
 
 
-    final View canvasView = new CanvasDemoView(getContext());
-    layoutGroup.addView(canvasView,
-        new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight >> 1));
+  }
 
-    final View drawableView = new InterpolatorExplainView(getContext());
-    layoutGroup.addView(drawableView,
-        new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight >> 1));
+  private void addShaderView(final LinearLayout layoutGroup, int maxWidth) {
+    ShaderDemoView shaderDemoView = new ShaderDemoView(getContext());
 
-    drawableView.setOnClickListener(new OnClickListener() {
+    shaderDemoView.setBackgroundResource(R.color.black_normal_A87);
+
+    layoutGroup.addView(shaderDemoView,
+        new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, maxWidth));
+  }
+
+  private void addInterpolatorView(LinearLayout layoutGroup, int maxWidth) {
+    final InterpolatorExplainView interpolatorExplainView = new InterpolatorExplainView(
+        getContext());
+
+    interpolatorExplainView.setBackgroundResource(R.color.black_normal_A32);
+
+    interpolatorExplainView.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
         if (v instanceof InterpolatorExplainView) {
@@ -108,35 +166,41 @@ public class ViewFragment extends BaseFragment {
       }
     });
 
-    View paintView = new PaintDemoView(getContext());
-    layoutGroup.addView(paintView,
-        new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenHeight >> 1));
+    layoutGroup.addView(interpolatorExplainView,
+        new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, maxWidth));
 
-    paintView.setOnLongClickListener(new OnLongClickListener() {
-      @Override
-      public boolean onLongClick(View v) {
-        //长按复制出 ScrollView的内容 并显示
-        ImageView imageView = new ImageView(getContext());
-        imageView.setBackgroundColor(Color.GRAY);
-        imageView.setImageBitmap(getScrollViewBitmap((NestedScrollView) rootView));
-        layoutGroup.addView(imageView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT));
-        return true;
-      }
-    });
-
-
-
-
-    return rootView;
   }
 
-  private void handleTouch(ViewGroup touch) {
+  private void addCanvasView(LinearLayout layoutGroup, int maxWidth) {
+    final View canvasView = new CanvasDemoView(getContext());
+
+    canvasView.setBackgroundResource(R.color.black_normal_A54);
+
+    layoutGroup.addView(canvasView,
+        new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, maxWidth));
+  }
+
+  private void handleTouch(final NestedScrollView rootView, ViewGroup touch) {
     touch.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
         LLogger.d("响应了 点击事件");
 
+      }
+    });
+
+    touch.setOnLongClickListener(new OnLongClickListener() {
+      @Override
+      public boolean onLongClick(View v) {
+        //长按复制出 ScrollView的内容 并显示
+        ImageView imageView = new ImageView(getContext());
+        imageView.setBackgroundColor(Color.GRAY);
+        Bitmap screenShotBitmap = getScrollViewBitmap(rootView);
+        imageView.setImageBitmap(screenShotBitmap);
+
+        rootView.addView(imageView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT));
+        return true;
       }
     });
 
@@ -168,7 +232,7 @@ public class ViewFragment extends BaseFragment {
     return bitmap;
   }
 
-  private static class MyTextView extends android.support.v7.widget.AppCompatTextView{
+  private static class MyTextView extends android.support.v7.widget.AppCompatTextView {
 
     public MyTextView(Context context) {
       super(context);
