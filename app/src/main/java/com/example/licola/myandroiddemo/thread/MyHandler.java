@@ -2,12 +2,12 @@ package com.example.licola.myandroiddemo.thread;
 
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.os.MessageQueue.IdleHandler;
 import android.os.SystemClock;
 import com.licola.llogger.LLogger;
+import java.lang.Thread.UncaughtExceptionHandler;
 
 /**
  * Created by LiCola on 2018/5/7.
@@ -39,6 +39,8 @@ public class MyHandler {
         return false;
       }
     });
+
+
 
   }
 
@@ -130,14 +132,13 @@ public class MyHandler {
       }
     }, 100);
 
-
     final long start = SystemClock.uptimeMillis();//系统开启到现在的时间
     LLogger.d(start);
     handler.post(new Runnable() {
       @Override
       public void run() {
         long end = SystemClock.uptimeMillis();//系统开启到现在的时间
-        LLogger.d(end-start);
+        LLogger.d(end - start);
       }
     });
   }

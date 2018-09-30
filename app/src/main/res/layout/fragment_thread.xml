@@ -6,10 +6,16 @@
   tools:context="com.example.licola.myandroiddemo.ThreadFragment">
 
   <Button
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="new thread"
-    android:id="@+id/btn_new"
+    android:text="new_handler_thread"
+    android:id="@+id/btn_new_thread"
+    />
+  <Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="thread_uncaught_exception"
+    android:id="@+id/btn_uncaught_exception"
     />
 
 
