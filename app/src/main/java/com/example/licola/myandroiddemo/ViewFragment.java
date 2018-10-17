@@ -99,7 +99,7 @@ public class ViewFragment extends BaseFragment {
 
     textCaptionView.setTextSize(TypedValue.COMPLEX_UNIT_PX, 80);
     textCaptionView.setMaxWidth(80);
-    textCaptionView.setText("Caption字幕1");
+    textCaptionView.setText("Caption字幕123");
     textCaptionView.setGravity(Gravity.CENTER);
 //    textCaptionView.setVisibility(View.INVISIBLE);
     textCaptionView.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "font.ttf"));

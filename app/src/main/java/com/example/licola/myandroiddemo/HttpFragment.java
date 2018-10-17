@@ -125,8 +125,8 @@ public class HttpFragment extends BaseFragment {
   @OnClick(R.id.btn_okhttp)
   public void onOkHttpClick(final View view) {
 
-    Request request =
-        new Request.Builder().url("http://publicobject.com/helloworld.txt").build();
+//    Request request = new Request.Builder().url("http://publicobject.com/helloworld.txt").build();
+    Request request = new Request.Builder().url("https://me.d0575.net:4433/api/category").build();
 
     client.newCall(request).enqueue(new Callback() {
       @Override
@@ -152,7 +152,7 @@ public class HttpFragment extends BaseFragment {
     });
   }
 
-  Retrofit retrofit=new Retrofit.Builder().build();
+//  Retrofit retrofit=new Retrofit.Builder().build();
 
 
   @OnClick(R.id.btn_retrofit)

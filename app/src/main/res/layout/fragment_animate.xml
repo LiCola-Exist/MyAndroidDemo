@@ -9,15 +9,14 @@
     android:id="@+id/btn_start"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Start" />
+    android:text="Item-Start" />
 
   <LinearLayout
-    android:id="@+id/layout_group"
+    android:id="@+id/layout_item_group"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/blue_normal"
+    android:background="@color/blue_normal_A32"
     android:orientation="vertical">
-
 
     <ImageView
       android:id="@+id/img_target"
@@ -36,5 +35,23 @@
       android:background="@color/blue_normal" />
 
   </LinearLayout>
+
+
+  <Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/btn_start_group"
+    android:text="Group-Start"
+    />
+
+  <FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="@color/red_normal_A54"
+    android:id="@+id/layout_group"
+    >
+
+
+  </FrameLayout>
 
 </LinearLayout>

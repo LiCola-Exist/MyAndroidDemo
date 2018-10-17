@@ -92,14 +92,13 @@ public class MainActivity extends BaseActivity implements
   SuperUserModel superUserModel;
 
 
-
   static Boolean value1 = true;
   static Boolean value2 = false;
   static Boolean value3 = new Boolean(true);
 
   static final String[] titles = {"BottomSheetFragment", "Test", "View", "Download", "Xml",
       "Constraint", "MyRecyclerView", "Animate", "ProgressView", "Module", "ImageView", "IO",
-      "Socket", "Thread", "Recycler", "Dao", "layout"};
+      "Socket", "Thread", "Recycler", "Dao", "layout", "WebView","Text","Http"};
 
   MainLocalBroadcastReceiver receiver;
 
@@ -130,7 +129,7 @@ public class MainActivity extends BaseActivity implements
       @Override
       public void run() {
 //        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-        mViewPager.setCurrentItem(findTitlePosition("View"));
+        mViewPager.setCurrentItem(findTitlePosition("Animate"));
 //        mViewPager.setCurrentItem(10);
       }
 
@@ -254,14 +253,14 @@ public class MainActivity extends BaseActivity implements
         .build();
   }
 
-  private void testThirdLib(){
+  private void testThirdLib() {
     String rootDir = MMKV.initialize(this);
     LLogger.d(rootDir);
 
     MMKV mmkv = MMKV.defaultMMKV();
-    mmkv.encode("input","input_value" );
+    mmkv.encode("input", "input_value");
     String dValue = mmkv.decodeString("input");
-    LLogger.d(Arrays.toString(mmkv.allKeys()),dValue);
+    LLogger.d(Arrays.toString(mmkv.allKeys()), dValue);
 
     mmkv.removeValueForKey("input");
     LLogger.d(Arrays.toString(mmkv.allKeys()));
@@ -442,57 +441,67 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected BaseFragment createFragment(int position) {
       BaseFragment fragment = null;
+      String title = titles[position];
       switch (position) {
         case 0:
-          fragment = BottomSheetFragment.newInstance(titles[position]);
+          fragment = BottomSheetFragment.newInstance(title);
           break;
         case 1:
-          fragment = TestFragment.newInstance(titles[position]);
+          fragment = TestFragment.newInstance(title);
           break;
         case 2:
-          fragment = ViewFragment.newInstance(titles[position]);
+          fragment = ViewFragment.newInstance(title);
           break;
         case 3:
-          fragment = DownLoadFragment.newInstance(titles[position]);
+          fragment = DownLoadFragment.newInstance(title);
           break;
         case 4:
-          fragment = XmlFragment.newInstance(titles[position]);
+          fragment = XmlFragment.newInstance(title);
           break;
         case 5:
-          fragment = ConstraintLayoutFragment.newInstance(titles[position], null);
+          fragment = ConstraintLayoutFragment.newInstance(title);
           break;
         case 6:
           fragment = ListFragment.newInstance(1);
           break;
         case 7:
-          fragment = AnimateFragment.newInstance(titles[position]);
+          fragment = AnimateFragment.newInstance(title);
           break;
         case 8:
-          fragment = ProcessViewFragment.newInstance(titles[position]);
+          fragment = ProcessViewFragment.newInstance(title);
           break;
         case 9:
-          fragment = ModuleFragment.newInstance(titles[position]);
+          fragment = ModuleFragment.newInstance(title);
           break;
         case 10:
-          fragment = ImageViewFragment.newInstance(titles[position]);
+          fragment = ImageViewFragment.newInstance(title);
           break;
         case 11:
-          fragment = IOFragment.newInstance(titles[position]);
+          fragment = IOFragment.newInstance(title);
           break;
         case 12:
-          fragment = SocketFragment.newInstance(titles[position]);
+          fragment = SocketFragment.newInstance(title);
           break;
         case 13:
-          fragment = ThreadFragment.newInstance(titles[position]);
+          fragment = ThreadFragment.newInstance(title);
           break;
         case 14:
-          fragment = RecyclerFragment.newInstance(titles[position], 1);
+          fragment = RecyclerFragment.newInstance(title, 1);
           break;
         case 15:
-          fragment = DaoFragment.newInstance(titles[position]);
+          fragment = DaoFragment.newInstance(title);
           break;
         case 16:
-          fragment = LayoutFragment.newInstance(titles[position]);
+          fragment = LayoutFragment.newInstance(title);
+          break;
+        case 17:
+          fragment = WebViewFragment.newInstance(title);
+          break;
+        case 18:
+          fragment=TextFragment.newInstance(title);
+          break;
+        case 19:
+          fragment=HttpFragment.newInstance(title);
           break;
       }
 
