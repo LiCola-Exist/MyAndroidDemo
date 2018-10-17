@@ -4,8 +4,13 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -53,14 +58,31 @@ public class AnimateFragment extends BaseFragment {
     View rootView = inflater.inflate(R.layout.fragment_animate, container, false);
 
     final ImageView ivTarget = rootView.findViewById(R.id.img_target);
-    final Button btnTarget = rootView.findViewById(R.id.btn_target);
-    final ImageView ivTargetColor = rootView.findViewById(R.id.img_target_color);
-
-    Button btnStart = rootView.findViewById(R.id.btn_start);
-    btnStart.setOnClickListener(new OnClickListener() {
+    ivTarget.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        startAnimatorByTimes(times++, ivTarget, btnTarget, ivTargetColor);
+        viewAnimateTranslation(ivTarget);
+      }
+    });
+    final Button btnTarget = rootView.findViewById(R.id.btn_target);
+    btnTarget.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        viewAnimateSpecific(btnTarget);
+      }
+    });
+    final ImageView ivTargetColor = rootView.findViewById(R.id.img_target_color);
+    ivTargetColor.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        viewAnimateArgb(ivTargetColor);
+      }
+    });
+    final ImageView ivTargetDrawable = rootView.findViewById(R.id.iv_target_drawable);
+    ivTargetDrawable.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        animateDrawable(ivTargetDrawable);
       }
     });
 
@@ -81,25 +103,44 @@ public class AnimateFragment extends BaseFragment {
     return rootView;
   }
 
-  private int times = 0;
-
-  private void startAnimatorByTimes(int times, ImageView ivTarget, Button btnTarget,
-      ImageView ivTargetColor) {
-
-    switch (times) {
-      case 0:
-        viewAnimateTranslation(ivTarget);
-        break;
-      case 1:
-        viewAnimateSpecific(btnTarget);
-        break;
-      case 2:
-        viewAnimateArgb(ivTargetColor);
-        break;
-      default:
-        this.times = 0;
-        break;
+  private void animateDrawable(ImageView imageView) {
+    AnimationDrawable viewDrawable = (AnimationDrawable) imageView.getDrawable();
+    if (viewDrawable == null) {
+      viewDrawable = makeAnimationDrawable();
+      imageView.setImageDrawable(viewDrawable);
+      viewDrawable.start();
+    } else {
+      if (viewDrawable.isRunning()) {
+        viewDrawable.stop();
+      } else {
+        viewDrawable.start();
+      }
     }
+
+  }
+
+  @NonNull
+  private AnimationDrawable makeAnimationDrawable() {
+    AnimationDrawable animationDrawable = new AnimationDrawable();
+    int[] resIds = new int[]{
+        R.drawable.a01,
+        R.drawable.a05,
+        R.drawable.a10,
+        R.drawable.a15,
+        R.drawable.a20,
+        R.drawable.a25,
+        R.drawable.a30,
+        R.drawable.a35,
+        R.drawable.a40,
+        R.drawable.a45,
+        R.drawable.a50,
+    };
+    for (int resId : resIds) {
+      Drawable frame = ContextCompat.getDrawable(getContext(), resId);
+      animationDrawable.addFrame(frame, 200);
+    }
+    animationDrawable.setOneShot(true);
+    return animationDrawable;
   }
 
   private void viewAnimateScaleTranslation(boolean isShrink, final ViewGroup viewGroup) {
