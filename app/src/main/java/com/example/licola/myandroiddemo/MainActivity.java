@@ -85,6 +85,7 @@ public class MainActivity extends BaseActivity implements
    */
   private CoordinatorLayout coordinatorLayout;
   private ViewPager mViewPager;
+  private TabLayout tabLayout;
   Toolbar toolbar;
   @Inject
   UserModel userModel;
@@ -111,7 +112,7 @@ public class MainActivity extends BaseActivity implements
     setContentView(R.layout.activity_main);
     WindowsController.addStatusBarBackground(this, R.color.gray_normal_A32);
     coordinatorLayout = findViewById(R.id.main_content);
-    toolbar = (Toolbar) findViewById(R.id.toolbar);
+    toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     // Create the adapter that will return a fragment for each of the three
     // primary sections of the activity.
@@ -119,10 +120,10 @@ public class MainActivity extends BaseActivity implements
     FragmentManager fragmentManager = getSupportFragmentManager();
     mSectionsPagerAdapter = new SectionsPagerAdapter(fragmentManager, titles.length);
     // Set up the ViewPager with the sections adapter.
-    mViewPager = (ViewPager) findViewById(R.id.container);
+    mViewPager = findViewById(R.id.container);
     mViewPager.setAdapter(mSectionsPagerAdapter);
 
-    final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+    tabLayout = findViewById(R.id.tabs);
     tabLayout.setupWithViewPager(mViewPager);
     tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
     mViewPager.post(new Runnable() {
@@ -165,6 +166,7 @@ public class MainActivity extends BaseActivity implements
 
     JavaMain.main();
     AndroidMain.main(MainActivity.this);
+    mainActivity();
     ThreadWork.main();
     MyHandler.main();
 
@@ -183,6 +185,19 @@ public class MainActivity extends BaseActivity implements
     });
 
 //    initLocation();
+  }
+
+  private void mainActivity() {
+
+    tabLayout.post(new Runnable() {
+      @Override
+      public void run() {
+        int statusBarHeight = WindowsController.getStatusBarHeight(MainActivity.this);
+        int fixDp = PixelUtils.dp2px(MainActivity.this, 48);
+        int tabLayoutHeight = tabLayout.getHeight();
+        LLogger.d(statusBarHeight,fixDp, tabLayoutHeight);
+      }
+    });
   }
 
   private void testClass() {

@@ -69,25 +69,25 @@ public class InterpolatorExplainView extends View {
   public TimeInterpolator getInterpolatorByFlag(int flag) {
     switch (flag) {
       case 0:
-        return new AccelerateInterpolator();
-      case 1:
-        return new DecelerateInterpolator();
-      case 2:
-        return new AccelerateDecelerateInterpolator();
-      case 3:
-        return new AnticipateInterpolator();
-      case 4:
-        return new OvershootInterpolator();
-      case 5:
-        return new AnticipateOvershootInterpolator();
-      case 6:
-        return new BounceInterpolator();
-      case 7:
-        return new FastOutLinearInInterpolator();
-      case 8:
-        return new FastOutSlowInInterpolator();
-      case 9:
         return new LinearInterpolator();
+      case 1:
+        return new AccelerateInterpolator();
+      case 2:
+        return new DecelerateInterpolator();
+      case 3:
+        return new AccelerateDecelerateInterpolator();
+      case 4:
+        return new AnticipateInterpolator();
+      case 5:
+        return new OvershootInterpolator();
+      case 6:
+        return new AnticipateOvershootInterpolator();
+      case 7:
+        return new BounceInterpolator();
+      case 8:
+        return new FastOutLinearInInterpolator();
+      case 9:
+        return new FastOutSlowInInterpolator();
       case 10:
         return new LinearOutSlowInInterpolator();
     }

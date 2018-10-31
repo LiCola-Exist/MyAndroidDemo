@@ -1,11 +1,12 @@
 package com.example.licola.myandroiddemo;
 
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -91,12 +92,11 @@ public class AnimateFragment extends BaseFragment {
     Button btnStartGroup = rootView.findViewById(R.id.btn_start_group);
     btnStartGroup.setOnClickListener(new OnClickListener() {
 
-      int groupTime = 0;
-
       @Override
       public void onClick(View v) {
-        viewAnimateScaleTranslation(groupTime % 2 == 0, viewGroupTarget);
-        groupTime++;
+        boolean enabled = viewGroupTarget.isEnabled();
+        viewGroupTarget.setEnabled(!enabled);
+        viewAnimateScaleTranslation(enabled, viewGroupTarget);
       }
     });
 
@@ -153,13 +153,36 @@ public class AnimateFragment extends BaseFragment {
     final float minValue = 0.3f;
     final float process = 1 - minValue;
 
+    animator.setRepeatCount(1);
+    animator.setRepeatMode(ValueAnimator.RESTART);
+    animator.addListener(new AnimatorListener() {
+      @Override
+      public void onAnimationStart(Animator animation) {
+        LLogger.d();
+      }
+
+      @Override
+      public void onAnimationEnd(Animator animation) {
+        LLogger.d();
+      }
+
+      @Override
+      public void onAnimationCancel(Animator animation) {
+        LLogger.d();
+      }
+
+      @Override
+      public void onAnimationRepeat(Animator animation) {
+        LLogger.d();
+      }
+    });
     animator.addUpdateListener(new AnimatorUpdateListener() {
       @Override
       public void onAnimationUpdate(ValueAnimator animation) {
         float value = (float) animation.getAnimatedValue();
         float processValue = value * process;
         float resultScale = 1 - processValue;
-        LLogger.d("value:" + value + " resultScale:" + resultScale);
+//        LLogger.d("value:" + value + " resultScale:" + resultScale);
         viewGroup.setScaleX(resultScale);
         viewGroup.setScaleY(resultScale);
 
@@ -173,10 +196,17 @@ public class AnimateFragment extends BaseFragment {
     animator.start();
   }
 
-  private void viewAnimateTranslation(View view) {
+  private void viewAnimateTranslation(final View view) {
+
+    view.setAlpha(0.3f);
+
     view.animate()
+        .alpha(1f)
+        .scaleXBy(2)
+        .scaleYBy(2)
         .translationXBy(200)
 //        .translationYBy(200)
+        .setDuration(2000L)
         .withLayer();
   }
 
