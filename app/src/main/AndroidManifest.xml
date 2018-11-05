@@ -149,6 +149,7 @@
       android:theme="@style/AppTheme"
       android:windowSoftInputMode="adjustResize"></activity>
     <activity android:name=".LayoutActivity"></activity>
+    <activity android:name=".WebViewAty" />
   </application>
 
 </manifest>

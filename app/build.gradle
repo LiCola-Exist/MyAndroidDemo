@@ -143,8 +143,8 @@ dependencies {
     }
 
     //内存检测工具
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.2'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.2'
 
     //基于 mmap 的高性能通用 key-value 组件
     implementation 'com.tencent:mmkv:1.0.10'

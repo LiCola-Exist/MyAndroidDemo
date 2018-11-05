@@ -16,7 +16,7 @@ import com.licola.llogger.LLogger;
 public class BaseFragment extends Fragment {
 
   protected boolean isLife() {
-    return false;
+    return true;
   }
 
   public BaseFragment() {
@@ -105,6 +105,7 @@ public class BaseFragment extends Fragment {
     if (isLife()) {
       LLogger.d(this);
     }
+    MyApplication.getRefWatcher(getActivity()).watch(this);
   }
 
   @Override

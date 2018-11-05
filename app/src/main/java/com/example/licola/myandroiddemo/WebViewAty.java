@@ -1,17 +1,12 @@
 package com.example.licola.myandroiddemo;
 
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
+import android.view.KeyEvent;
+import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -20,71 +15,31 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import com.licola.llogger.LLogger;
 
-
 /**
- * A simple {@link Fragment} subclass. Use the {@link WebViewFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * @author LiCola
+ * @date 2018/11/5
  */
-public class WebViewFragment extends BaseFragment {
+public class WebViewAty extends BaseActivity {
 
-  // TODO: Rename parameter arguments, choose names that match
-  // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-  private static final String ARG_PARAM1 = "param1";
-
-  // TODO: Rename and change types of parameters
-  private String mParam1;
-
-
-  public WebViewFragment() {
-    // Required empty public constructor
-  }
-
-  /**
-   * Use this factory method to create a new instance of this fragment using the provided
-   * parameters.
-   *
-   * @param param1 Parameter 1.
-   * @return A new instance of fragment WebViewFragment.
-   */
-  // TODO: Rename and change types and number of parameters
-  public static WebViewFragment newInstance(String param1) {
-    WebViewFragment fragment = new WebViewFragment();
-    Bundle args = new Bundle();
-    args.putString(ARG_PARAM1, param1);
-    fragment.setArguments(args);
-    return fragment;
-  }
+  private WebView mWebView;
 
   @Override
-  public void onCreate(Bundle savedInstanceState) {
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (getArguments() != null) {
-      mParam1 = getArguments().getString(ARG_PARAM1);
-    }
-  }
+    setContentView(R.layout.activity_web);
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
-    View viewRoot = inflater.inflate(R.layout.fragment_web_view, container, false);
-
-    WebView webView = viewRoot.findViewById(R.id.web_view);
-    View fabAction = viewRoot.findViewById(R.id.fab_action);
-    fabAction.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        startActivity(new Intent(getContext(), WebViewAty.class));
-      }
-    });
+    LinearLayout layoutGroup = findViewById(R.id.layout_group);
+    WebView webView = findViewById(R.id.web_view);
+    mWebView = webView;
     initSettings(webView);
     initClient(webView);
-    webView.loadUrl("https://github.com/LiCola");
-
-    return viewRoot;
+//    webView.loadUrl("https://github.com/LiCola");
+    webView.loadUrl("http://www.baidu.com");
   }
+
 
   private void initClient(final WebView webView) {
     WebViewClient client = new WebViewClient() {
@@ -102,14 +57,12 @@ public class WebViewFragment extends BaseFragment {
 
       @Override
       public void onPageStarted(WebView view, String url, Bitmap favicon) {
-        super.onPageStarted(view, url, favicon);
-        LLogger.d();
+        LLogger.d(url);
       }
 
       @Override
       public void onPageFinished(WebView view, String url) {
-        super.onPageFinished(view, url);
-        LLogger.d();
+        LLogger.d(url);
       }
 
       @Override
@@ -138,9 +91,17 @@ public class WebViewFragment extends BaseFragment {
         LLogger.d(newProgress);
       }
 
+      /**
+       * 支持javascript的警告框
+       * @param view
+       * @param url
+       * @param message
+       * @param result
+       * @return
+       */
       @Override
       public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
-        new AlertDialog.Builder(getContext())
+        new AlertDialog.Builder(WebViewAty.this)
             .setTitle("JsAlert")
             .setMessage(message)
             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -154,11 +115,51 @@ public class WebViewFragment extends BaseFragment {
         return true;
 
       }
+
+      /**
+       * 支持javascript的确认框
+       * @param view
+       * @param url
+       * @param message
+       * @param result
+       * @return
+       */
+      @Override
+      public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
+        return super.onJsConfirm(view, url, message, result);
+      }
+
+      /**
+       * 支持javascript输入框
+       * @param view
+       * @param url
+       * @param message
+       * @param defaultValue
+       * @param result
+       * @return
+       */
+      @Override
+      public boolean onJsPrompt(WebView view, String url, String message, String defaultValue,
+          JsPromptResult result) {
+
+        return super.onJsPrompt(view, url, message, defaultValue, result);
+      }
     };
 
     webView.setWebChromeClient(chromeClient);
 
     webView.setWebViewClient(client);
+  }
+
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+    if (keyCode == KeyEvent.KEYCODE_BACK && mWebView.canGoBack()) {
+      mWebView.goBack();
+      return true;
+    }
+
+    return super.onKeyDown(keyCode, event);
   }
 
   private void initSettings(WebView webView) {

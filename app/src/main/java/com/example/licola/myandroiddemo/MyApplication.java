@@ -23,6 +23,11 @@ public class MyApplication extends Application {
   private RefWatcher refWatcher;
 
   @Override
+  protected void attachBaseContext(Context base) {
+    super.attachBaseContext(base);
+  }
+
+  @Override
   public void onCreate() {
     super.onCreate();
     //初始化推送

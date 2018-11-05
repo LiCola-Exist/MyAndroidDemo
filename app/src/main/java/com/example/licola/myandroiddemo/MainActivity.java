@@ -63,6 +63,7 @@ import com.licola.route.api.RouterApi.Builder;
 import com.tencent.mmkv.MMKV;
 import java.io.File;
 import java.util.Arrays;
+import java.util.UUID;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -130,7 +131,7 @@ public class MainActivity extends BaseActivity implements
       @Override
       public void run() {
 //        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-        mViewPager.setCurrentItem(findTitlePosition("Animate"));
+        mViewPager.setCurrentItem(findTitlePosition("WebView"));
 //        mViewPager.setCurrentItem(10);
       }
 
@@ -185,6 +186,7 @@ public class MainActivity extends BaseActivity implements
     });
 
 //    initLocation();
+
   }
 
   private void mainActivity() {
@@ -231,6 +233,11 @@ public class MainActivity extends BaseActivity implements
       public void updateGpsStatus(GpsStatus gpsStatus) {
       }
     });
+  }
+
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
   }
 
   @Override
@@ -328,6 +335,9 @@ public class MainActivity extends BaseActivity implements
   }
 
   private void testSystemInfo() {
+    String uuId = UUID.randomUUID().toString();
+    LLogger.d("UUID:"+uuId);
+
     LLogger.d("Build:" + Build.MANUFACTURER);
 
     ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);

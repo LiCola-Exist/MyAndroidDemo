@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -67,6 +68,7 @@ public class ViewFragment extends BaseFragment {
 //
 //          }
 //        });
+
 
     final View rootView = inflater.inflate(R.layout.fragment_view, container, false);
     final LinearLayout layoutGroup = rootView.findViewById(R.id.layout_group);
