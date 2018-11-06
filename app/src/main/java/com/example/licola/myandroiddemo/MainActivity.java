@@ -100,7 +100,7 @@ public class MainActivity extends BaseActivity implements
 
   static final String[] titles = {"BottomSheetFragment", "Test", "View", "Download", "Xml",
       "Constraint", "MyRecyclerView", "Animate", "ProgressView", "Module", "ImageView", "IO",
-      "Socket", "Thread", "Recycler", "Dao", "layout", "WebView","Text","Http"};
+      "Socket", "Thread", "Recycler", "Dao", "layout", "WebView", "Text", "Http", "Toast"};
 
   MainLocalBroadcastReceiver receiver;
 
@@ -130,9 +130,8 @@ public class MainActivity extends BaseActivity implements
     mViewPager.post(new Runnable() {
       @Override
       public void run() {
-//        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-        mViewPager.setCurrentItem(findTitlePosition("WebView"));
-//        mViewPager.setCurrentItem(10);
+        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
+//        mViewPager.setCurrentItem(findTitlePosition("WebView"));
       }
 
       private int findTitlePosition(String target) {
@@ -197,7 +196,7 @@ public class MainActivity extends BaseActivity implements
         int statusBarHeight = WindowsController.getStatusBarHeight(MainActivity.this);
         int fixDp = PixelUtils.dp2px(MainActivity.this, 48);
         int tabLayoutHeight = tabLayout.getHeight();
-        LLogger.d(statusBarHeight,fixDp, tabLayoutHeight);
+        LLogger.d(statusBarHeight, fixDp, tabLayoutHeight);
       }
     });
   }
@@ -314,13 +313,16 @@ public class MainActivity extends BaseActivity implements
     int screenHeight = PixelUtils.getScreenHeight(this);
     int screenWidth = PixelUtils.getScreenWidth(this);
     LLogger.d("screenHeight:" + screenHeight + " screenWidth:" + screenWidth);
-
-    int color = ContextCompat.getColor(this, R.color.orange_normal);
+    int parse6Color = Color.parseColor("#FFFFFF");
+    int parse8Color = Color.parseColor("#FFFFFFFF");
+    int color = ContextCompat.getColor(this, R.color.white_normal);
+    LLogger.d(parse6Color, parse8Color, color);
     int alpha = (int) (1 * 255.0f + 0.5f);
 //      FF9800
     int argb = Color.argb(alpha, 255, 152, 0);
 
     int px = PixelUtils.dp2px(this, 10);
+
 
   }
 
@@ -336,7 +338,7 @@ public class MainActivity extends BaseActivity implements
 
   private void testSystemInfo() {
     String uuId = UUID.randomUUID().toString();
-    LLogger.d("UUID:"+uuId);
+    LLogger.d("UUID:" + uuId);
 
     LLogger.d("Build:" + Build.MANUFACTURER);
 
@@ -523,10 +525,13 @@ public class MainActivity extends BaseActivity implements
           fragment = WebViewFragment.newInstance(title);
           break;
         case 18:
-          fragment=TextFragment.newInstance(title);
+          fragment = TextFragment.newInstance(title);
           break;
         case 19:
-          fragment=HttpFragment.newInstance(title);
+          fragment = HttpFragment.newInstance(title);
+          break;
+        case 20:
+          fragment = ToastFragment.newInstance(title);
           break;
       }
 

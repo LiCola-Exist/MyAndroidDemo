@@ -20,7 +20,7 @@
   <color name="orange_normal_A12">#1EFF9800</color><!--12%透明-->
   <color name="orange_normal_A0">#00FF9800</color><!--0%透明-->
 
-  <color name="white_normal">#FFFFFF</color>
+  <color name="white_normal">#FFFFFFFF</color>
   <color name="white_normal_A87">#DEFFFFFF</color>
   <color name="white_normal_A54">#8AFFFFFF</color>
   <color name="white_normal_A32">#42FFFFFF</color>
