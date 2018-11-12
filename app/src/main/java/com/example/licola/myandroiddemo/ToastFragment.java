@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,7 +64,35 @@ public class ToastFragment extends BaseFragment {
     onBindNormalToast(rootView.findViewById(R.id.btn_toast_normal));
     onBindGravityToast(rootView.findViewById(R.id.btn_toast_gravity));
     onBindViewToast(rootView.findViewById(R.id.btn_toast_view));
+    onBindViewPopup(rootView.findViewById(R.id.btn_popup_view));
     return rootView;
+  }
+
+  private void onBindViewPopup(final View view) {
+
+    LayoutInflater inflate = (LayoutInflater)
+        getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    View toastView = inflate.inflate(R.layout.toast_view, null);
+    TextView tvContent = toastView.findViewById(R.id.tv_content);
+    tvContent.setText("自定义View的Popup");
+
+    final PopupWindow popupWindow = new PopupWindow(toastView, LayoutParams.WRAP_CONTENT,
+        LayoutParams.WRAP_CONTENT);
+
+    popupWindow.setOutsideTouchable(true);
+
+    view.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+
+        if (popupWindow.isShowing()) {
+          popupWindow.dismiss();
+        } else {
+          popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+        }
+      }
+    });
+
   }
 
   private void onBindViewToast(View btnView) {
@@ -80,7 +110,9 @@ public class ToastFragment extends BaseFragment {
         toast.show();
       }
     });
+
   }
+
 
   private void onBindGravityToast(View btnView) {
     btnView.setOnClickListener(new OnClickListener() {

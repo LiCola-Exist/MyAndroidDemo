@@ -26,6 +26,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.util.LruCache;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -186,6 +187,11 @@ public class MainActivity extends BaseActivity implements
 
 //    initLocation();
 
+  }
+
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent event) {
+    return super.onKeyDown(keyCode, event);
   }
 
   private void mainActivity() {

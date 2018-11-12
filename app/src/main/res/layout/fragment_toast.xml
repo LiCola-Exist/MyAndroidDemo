@@ -22,6 +22,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="toast定义" />
+  <Button
+    android:layout_margin="16dp"
+    android:id="@+id/btn_popup_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Popup显示" />
 
 
 </LinearLayout>
