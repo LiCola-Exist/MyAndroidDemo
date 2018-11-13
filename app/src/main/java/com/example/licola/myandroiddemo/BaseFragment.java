@@ -16,7 +16,7 @@ import com.licola.llogger.LLogger;
 public class BaseFragment extends Fragment {
 
   protected boolean isLife() {
-    return true;
+    return false;
   }
 
   public BaseFragment() {
