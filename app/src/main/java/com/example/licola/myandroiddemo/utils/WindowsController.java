@@ -2,23 +2,17 @@ package com.example.licola.myandroiddemo.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.Window;
 import android.view.WindowManager;
-import android.view.WindowManager.LayoutParams;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import com.licola.llogger.LLogger;
-import java.lang.reflect.Field;
 
 /**
  * Created by xiao on 2015/8/7.
@@ -31,17 +25,39 @@ public class WindowsController {
   static public void setTranslucentWindows(@NonNull Activity activity) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
       //透明状态栏
-      Window window = activity.getWindow();
+      activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
       //透明导航栏
-      activity.requestWindowFeature(Window.FEATURE_NO_TITLE);
-      window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//      window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-      window.addFlags(LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//      View decorView = window.getDecorView();
-//      int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-//          | View.SYSTEM_UI_FLAG_FULLSCREEN;
-//      decorView.setSystemUiVisibility(uiOptions);
+//      activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
     }
+  }
+
+  public static void hideBottomNavigationBar(Activity activity) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+      View decorView = activity.getWindow().getDecorView();
+      int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+      decorView.setSystemUiVisibility(uiOptions);
+    }
+  }
+
+  public static int fitsSystemWindows(View layoutToolbarGroup) {
+    int toolbarHeight = layoutToolbarGroup.getHeight();
+    if (toolbarHeight == 0) {
+      throw new RuntimeException("请在view.post中运行该方法");
+    }
+    int statusBarHeight = WindowsController.getStatusBarHeight(layoutToolbarGroup.getContext());
+    int toolbarGroupHeight = toolbarHeight + statusBarHeight;
+    //使用MinimumHeight 避免使用paddingTop方式带来的软键盘拉长视图问题
+    layoutToolbarGroup.setMinimumHeight(toolbarGroupHeight);
+    return toolbarGroupHeight;
+  }
+
+  public static void postFitsSystemWindows(final View layoutToolbarGroup) {
+    layoutToolbarGroup.post(new Runnable() {
+      @Override
+      public void run() {
+        fitsSystemWindows(layoutToolbarGroup);
+      }
+    });
   }
 
   /**
@@ -77,74 +93,30 @@ public class WindowsController {
     }
   }
 
+  private static DisplayMetrics metrics = new DisplayMetrics();
+
   /**
    * 底部虚拟按键栏的高度
    */
-  public static int getSoftButtonsBarHeight(@NonNull Activity mActivity) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-      DisplayMetrics metrics = new DisplayMetrics();
-      //这个方法获取可能不是真实屏幕的高度
-      mActivity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-      int usableHeight = metrics.heightPixels;
-      //获取当前屏幕的真实高度
-      mActivity.getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
-      int realHeight = metrics.heightPixels;
-      if (realHeight > usableHeight) {
-        return realHeight - usableHeight;
-      } else {
-        return 0;
-      }
+  public static int getNavigationBarHeightMetrics(@NonNull Activity activity) {
+    //这个方法获取可能不是真实屏幕的高度
+    activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+    int usableHeight = metrics.heightPixels;//2030
+    //获取当前屏幕的真实高度
+    activity.getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
+    int realHeight = metrics.heightPixels;
+
+    if (realHeight > usableHeight) {
+      return realHeight - usableHeight;
+    } else {
+      return 0;
     }
-    return 0;
   }
 
-  static public void hideSoftKeyboard(@NonNull Context mContext, @NonNull View view) {
-    InputMethodManager inputMethodManager =
-        (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-    inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-  }
-
-  public static void openSoftKeyboard(@NonNull Context mContext, View view) {
-    InputMethodManager inManager =
-        (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-    inManager.showSoftInput(view, 0);
-  }
-
-  /**
-   * 获取软键盘得高度
-   * 依靠监听视图变化 得到软键盘高度
-   */
-  public static void getSoftKeyboardHeight(@NonNull final View view) {
-    view.getViewTreeObserver()
-        .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-
-          @Override
-          public void onGlobalLayout() {
-            Rect r = new Rect();
-            // r will be populated with the coordinates of your view that area still visible.
-            view.getWindowVisibleDisplayFrame(r);
-            int screenHeight = view.getRootView().getHeight();
-            int heightDiff = screenHeight - (r.bottom - r.top);
-            int statusBarHeight = 0;
-            if (heightDiff > 100)
-            // if more than 100 pixels, its probably a keyboard
-            // get status bar height
-
-            {
-              try {
-                Class<?> c = Class.forName("com.android.internal.R$dimen");
-                Object obj = c.newInstance();
-                Field field = c.getField("status_bar_height");
-                int x = Integer.parseInt(field.get(obj).toString());
-                statusBarHeight = view.getContext().getResources().getDimensionPixelSize(x);
-              } catch (Exception e) {
-                e.printStackTrace();
-              }
-            }
-            int realKeyboardHeight = Math.abs(heightDiff - statusBarHeight);
-            LLogger.d("keyboard height = " + realKeyboardHeight);
-          }
-        });
+  public static int getNavigationBarHeightResource(Activity activity) {
+    Resources resources = activity.getResources();
+    return resources.getDimensionPixelSize(
+        resources.getIdentifier("navigation_bar_height", "dimen", "android"));
   }
 
   static public void setTransparentStatusBar(@NonNull Activity activity) {

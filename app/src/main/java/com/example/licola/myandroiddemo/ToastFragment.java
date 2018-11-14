@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.BaseTransientBottomBar.BaseCallback;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -79,7 +81,41 @@ public class ToastFragment extends BaseFragment {
         rootView.findViewById(R.id.btn_popup_view_center),
         rootView.findViewById(R.id.btn_popup_view_right)
     );
+
+
+    onBindSnackBar(rootView,rootView.findViewById(R.id.btn_snack_bar));
+
     return rootView;
+  }
+
+  private void onBindSnackBar(final View rootView,View viewBtn) {
+
+    viewBtn.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+
+        Snackbar snackbar = Snackbar.make(rootView, "SnackBar显示", Snackbar.LENGTH_SHORT)
+            .setAction("action", new OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                LLogger.d();
+              }
+            })
+            .addCallback(new BaseCallback<Snackbar>() {
+              @Override
+              public void onDismissed(Snackbar transientBottomBar, int event) {
+                LLogger.d(transientBottomBar,event);
+              }
+
+              @Override
+              public void onShown(Snackbar transientBottomBar) {
+                LLogger.d(transientBottomBar);
+              }
+            });
+
+        snackbar.show();
+      }
+    });
   }
 
   private void onBindViewPopup(final View viewLeft, final View viewCenter, final View viewRight) {

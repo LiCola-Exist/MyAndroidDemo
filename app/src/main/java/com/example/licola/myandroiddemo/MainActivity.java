@@ -70,7 +70,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 @RuntimeHandle()
-@Route(name = "main")
+@Route(path = "main")
 public class MainActivity extends BaseActivity implements
     OnListFragmentListener, OnRecyclerFragmentListener {
 
@@ -113,6 +113,8 @@ public class MainActivity extends BaseActivity implements
     WindowsController.setTranslucentWindows(this);
     setContentView(R.layout.activity_main);
     WindowsController.addStatusBarBackground(this, R.color.gray_normal_A32);
+
+
     coordinatorLayout = findViewById(R.id.main_content);
     toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);

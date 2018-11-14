@@ -26,29 +26,33 @@
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:orientation="horizontal"
     android:layout_margin="16dp"
-    >
+    android:orientation="horizontal">
 
     <Button
       android:id="@+id/btn_popup_view_left"
       android:layout_width="0dp"
-      android:layout_weight="1"
       android:layout_height="48dp"
+      android:layout_weight="1"
       android:text="Popup显示Left" />
     <Button
       android:id="@+id/btn_popup_view_center"
       android:layout_width="0dp"
-      android:layout_weight="1"
       android:layout_height="48dp"
+      android:layout_weight="1"
       android:text="Popup显示Center" />
     <Button
       android:id="@+id/btn_popup_view_right"
       android:layout_width="0dp"
-      android:layout_weight="1"
       android:layout_height="48dp"
+      android:layout_weight="1"
       android:text="Popup显示Right" />
   </LinearLayout>
 
+  <Button
+    android:id="@+id/btn_snack_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Snackbar显示" />
 
 </LinearLayout>

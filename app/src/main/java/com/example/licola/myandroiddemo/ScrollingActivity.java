@@ -14,7 +14,7 @@ import com.licola.llogger.LLogger;
 import com.licola.route.annotation.Route;
 import java.util.List;
 
-@Route(name = "scrolling")
+@Route(path = "scrolling")
 public class ScrollingActivity extends BaseActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
