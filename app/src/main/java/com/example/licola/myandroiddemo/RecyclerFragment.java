@@ -6,6 +6,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.LayoutManager;
+import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.support.v7.widget.RecyclerView.RecyclerListener;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -18,10 +20,8 @@ import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
 import com.licola.llogger.LLogger;
 
 /**
- * A fragment representing a list of Items.
- * <p />
- * Activities containing this fragment MUST implement the {@link OnRecyclerFragmentListener}
- * interface.
+ * A fragment representing a list of Items. <p /> Activities containing this fragment MUST implement
+ * the {@link OnRecyclerFragmentListener} interface.
  */
 public class RecyclerFragment extends BaseFragment {
 
@@ -31,8 +31,8 @@ public class RecyclerFragment extends BaseFragment {
   private OnRecyclerFragmentListener mListener;
 
   /**
-   * Mandatory empty constructor for the fragment manager to instantiate the
-   * fragment (e.g. upon screen orientation changes).
+   * Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon
+   * screen orientation changes).
    */
   public RecyclerFragment() {
   }
@@ -80,7 +80,7 @@ public class RecyclerFragment extends BaseFragment {
       }
     });
 
-    FloatingActionButton button= view.findViewById(R.id.bt_action);
+    FloatingActionButton button = view.findViewById(R.id.bt_action);
     button.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -88,10 +88,41 @@ public class RecyclerFragment extends BaseFragment {
       }
     });
 
+    recyclerView.addOnScrollListener(new OnScrollListener() {
+      @Override
+      public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
 
+      }
 
+      @Override
+      public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 
+        checkScrollEndByScroll(recyclerView);
+        checkScrollEndByPosition(recyclerView);
+      }
+    });
     return view;
+  }
+
+  private void checkScrollEndByPosition(RecyclerView recyclerView) {
+    LayoutManager layoutManager = recyclerView.getLayoutManager();
+    if ( layoutManager instanceof LinearLayoutManager){
+      int lastVisibleItemPosition = ((LinearLayoutManager) layoutManager)
+          .findLastVisibleItemPosition();
+      LLogger.d("目前可见的last位置："+lastVisibleItemPosition);
+    }
+  }
+
+  private void checkScrollEndByScroll(RecyclerView recyclerView) {
+    int scrollExtent = recyclerView.computeVerticalScrollExtent();//View的占据的高度
+    int scrollOffset = recyclerView.computeVerticalScrollOffset();//滑动偏移量
+    int scrollRange = recyclerView.computeVerticalScrollRange();//View的实际内容范围
+
+    if (scrollExtent + scrollOffset >= scrollRange) {
+      LLogger.d("已经滑动到底");
+    }
+
+    LLogger.d(scrollExtent, scrollOffset, scrollRange);
   }
 
 
@@ -113,13 +144,11 @@ public class RecyclerFragment extends BaseFragment {
   }
 
   /**
-   * This interface must be implemented by activities that contain this
-   * fragment to allow an interaction in this fragment to be communicated
-   * to the activity and potentially other fragments contained in that
-   * activity.
+   * This interface must be implemented by activities that contain this fragment to allow an
+   * interaction in this fragment to be communicated to the activity and potentially other fragments
+   * contained in that activity.
    * <p/>
-   * See the Android Training lesson <a href=
-   * "http://developer.android.com/training/basics/fragments/communicating.html"
+   * See the Android Training lesson <a href= "http://developer.android.com/training/basics/fragments/communicating.html"
    * >Communicating with Other Fragments</a> for more information.
    */
   public interface OnRecyclerFragmentListener {

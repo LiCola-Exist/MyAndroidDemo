@@ -1,16 +1,13 @@
 package com.example.licola.myandroiddemo.adapter;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.RecyclerFragment.OnRecyclerFragmentListener;
 import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
-
 import com.licola.llogger.LLogger;
 import java.util.List;
 
