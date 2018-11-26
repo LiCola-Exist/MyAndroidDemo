@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.licola.myandroiddemo.ListFragment.OnListFragmentListener;
+import com.example.licola.myandroiddemo.frag.ListFragment.OnListFragmentListener;
 import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
 

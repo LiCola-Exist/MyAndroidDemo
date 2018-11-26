@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.ViewGroup;
-import com.example.licola.myandroiddemo.BaseFragment;
+import com.example.licola.myandroiddemo.frag.BaseFragment;
 import java.util.ArrayList;
 import java.util.List;
 

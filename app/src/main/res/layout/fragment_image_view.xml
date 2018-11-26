@@ -3,7 +3,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context="com.example.licola.myandroiddemo.ImageViewFragment">
+  tools:context="com.example.licola.myandroiddemo.frag.ImageViewFragment">
 
   <LinearLayout
     android:layout_width="match_parent"
@@ -125,6 +125,14 @@
       android:layout_height="300dp"
       android:background="@color/blue_normal"
       tools:src="@drawable/a01" />
+
+    <ImageView
+      android:id="@+id/img_bitmap_compress"
+      android:layout_width="match_parent"
+      android:layout_height="300dp"
+      android:layout_marginTop="20dp"
+      android:layout_gravity="center" />
+
 
     <com.example.licola.myandroiddemo.view.TouchImageView
       android:id="@+id/img_load_touch"

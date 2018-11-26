@@ -1,36 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
-  android:orientation="vertical"
-  android:weightSum="2"
-  android:background="@color/red_normal_A87"
-  android:gravity="bottom"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+
+  <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:gravity="center"
+    android:text="固定view" />
 
   <android.support.v4.widget.NestedScrollView
     android:id="@+id/layout_scroll"
-    android:background="@color/blue_normal_A87"
     android:layout_width="match_parent"
-    android:layout_weight="1"
-    android:layout_height="0dp">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
     <LinearLayout
-      android:layout_gravity="bottom"
-      android:orientation="vertical"
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
+      android:layout_height="match_parent"
+      android:background="@color/red_normal_A32"
+      android:orientation="vertical">
 
-      <FrameLayout
-        android:layout_gravity="bottom"
+      <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/blue_normal_A87" />
+
+      <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
-          android:id="@+id/et_input"
+        <FrameLayout
+          android:layout_marginTop="80dp"
+          android:gravity="bottom"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_gravity="bottom" />
-      </FrameLayout>
+          android:layout_gravity="bottom">
+
+          <EditText
+            android:imeOptions="actionDone"
+            android:id="@+id/et_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" />
+        </FrameLayout>
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:padding="12dp"
+          android:gravity="center"
+          android:text="底部内容"
+          android:textColor="@color/black_normal" />
+
+      </LinearLayout>
 
     </LinearLayout>
 

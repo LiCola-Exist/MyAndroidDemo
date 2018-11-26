@@ -1,85 +1,75 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+  android:layout_height="match_parent">
 
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.licola.myandroiddemo.ProcessViewFragment">
+    tools:context="com.example.licola.myandroiddemo.frag.ProcessViewFragment">
 
 
     <SeekBar
       android:layout_width="match_parent"
       android:layout_height="35dp"
-      android:thumb="@drawable/ic_action_album"
+      android:thumb="@drawable/ic_action_album" />
+    <io.apptik.widget.MultiSlider
+      android:id="@+id/range_slider"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:drawThumbsApart="true"
+      app:rangeColor="@color/red_normal"
+      app:stepsThumbsApart="5"
+      app:thumbNumber="2"
       />
 
 
-    <ImageView
-      android:id="@+id/img_target"
-      android:layout_width="match_parent"
-      android:layout_height="300dp"
-      android:layout_gravity="center"
-      tools:src="@drawable/a01" />
-
-    <TextView
-      android:id="@+id/txt_result"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:text="index" />
-    <FrameLayout
-      android:layout_width="match_parent"
-      android:layout_height="50dp"
-      android:layout_marginTop="31dp"
-      android:layout_below="@+id/txt_result"
-      android:layout_centerHorizontal="true"
-      android:paddingLeft="30dp"
-      android:paddingRight="30dp">
-
-      <com.example.licola.myandroiddemo.view.ConditionSeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="50dp" />
-      <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/blue_normal"
-        android:enabled="false"
-        android:gravity="center"
-        android:text="左右滑动"
-        android:textColor="@color/white_normal"
-        android:textSize="20sp" />
-
-    </FrameLayout>
-
     <LinearLayout
-      android:background="@color/green_normal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="30dp"
       android:orientation="vertical">
-
       <ImageView
-        android:id="@+id/img_load_bitmap"
-        android:layout_width="300dp"
+        android:id="@+id/img_target"
+        android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        tools:src="@drawable/a01" />
 
-      <ImageView
-        android:id="@+id/img_bitmap_compress"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center" />
+      <TextView
+        android:id="@+id/txt_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="index" />
+      <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="31dp"
+        android:layout_below="@+id/txt_result"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+
+        <com.example.licola.myandroiddemo.view.ConditionSeekBar
+          android:id="@+id/seekBar"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:minHeight="50dp" />
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:background="@color/blue_normal"
+          android:enabled="false"
+          android:gravity="center"
+          android:text="左右滑动"
+          android:textColor="@color/white_normal"
+          android:textSize="20sp" />
+
+      </FrameLayout>
 
     </LinearLayout>
-
-
 
 
   </LinearLayout>

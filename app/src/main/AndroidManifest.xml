@@ -53,7 +53,7 @@
 
     <activity
       android:label="@string/app_name"
-      android:name=".MainActivity"
+      android:name=".aty.MainActivity"
       android:theme="@style/AppTheme.NoActionBar">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -131,25 +131,30 @@
 
     <activity
       android:label="@string/title_activity_ali"
-      android:name=".AliActivity"
+      android:name=".aty.AliActivity"
       android:theme="@style/AppTheme.NoActionBar" />
     <activity
       android:label="@string/title_activity_scrolling"
-      android:name=".ScrollingActivity"
+      android:name=".aty.ScrollingActivity"
       android:theme="@style/AppTheme.NoActionBar" />
-    <activity android:name=".BottomSheetActivity" />
+    <activity android:name=".aty.BottomSheetActivity" />
 
     <service
       android:name=".messenger.MessengerService"
       android:process=":remote" />
 
     <activity
-      android:name=".SoftKeyActivity"
+      android:name=".aty.SoftKeyActivity"
       android:screenOrientation="portrait"
       android:theme="@style/AppTheme"
-      android:windowSoftInputMode="adjustResize"></activity>
-    <activity android:name=".LayoutActivity"></activity>
-    <activity android:name=".WebViewAty" />
+      android:windowSoftInputMode="adjustResize|stateHidden"
+      >
+
+    </activity>
+
+    <activity android:name=".aty.LayoutActivity"></activity>
+
+    <activity android:name=".aty.WebViewAty" />
   </application>
 
 </manifest>

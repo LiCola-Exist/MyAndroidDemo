@@ -125,6 +125,10 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    //权限适配工具
+    implementation 'com.yanzhenjie:permission:2.0.0-rc4'
+
+    implementation 'io.apptik.widget:multislider-holo:1.3'
 
     implementation 'com.aliyun.ams:alicloud-android-push:2.3.7'
     implementation 'com.aliyun.ams:alicloud-android-third-push:3.0.2@aar'
