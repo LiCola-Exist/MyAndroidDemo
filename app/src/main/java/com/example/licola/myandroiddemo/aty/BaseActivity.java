@@ -1,5 +1,6 @@
 package com.example.licola.myandroiddemo.aty;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import com.licola.llogger.LLogger;
@@ -11,10 +12,12 @@ import com.tencent.mmkv.MMKV;
 
 public class BaseActivity extends AppCompatActivity {
 
+  protected Context mContext;
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     LLogger.d(this);
-
+    this.mContext=this;
   }
 
   @Override

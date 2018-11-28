@@ -1,17 +1,32 @@
 package com.example.licola.myandroiddemo.aty;
 
 import android.app.AlertDialog;
+import android.app.DownloadManager;
+import android.app.DownloadManager.Query;
+import android.app.DownloadManager.Request;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.net.http.SslError;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnChildScrollUpCallback;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.DownloadListener;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
@@ -23,7 +38,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import com.example.licola.myandroiddemo.R;
+import com.example.licola.myandroiddemo.utils.StringUtils;
 import com.licola.llogger.LLogger;
+import java.io.File;
 
 /**
  * @author LiCola
@@ -31,14 +48,19 @@ import com.licola.llogger.LLogger;
  */
 public class WebViewAty extends BaseActivity {
 
-  private static final String BASE_ULR = "http://www.baidu.com";
+  private static final String BASE_ULR = "https://fir.im/dm2p";
 
   private WebView mWebView;
   private SwipeRefreshLayout mSwipeRefresh;
 
+  private DownBroadcastReceiver downBroadcastReceiver;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    checkInstallPermission(mContext);
+
     setContentView(R.layout.activity_web);
     mSwipeRefresh = findViewById(R.id.swipe_refresh);
     mSwipeRefresh.setOnRefreshListener(new OnRefreshListener() {
@@ -64,8 +86,143 @@ public class WebViewAty extends BaseActivity {
     mWebView = webView;
     initSettings(webView);
     initClient(webView);
+    initDownLoad(webView);
 //    webView.loadUrl("https://github.com/LiCola");
     webView.loadUrl(BASE_ULR);
+  }
+
+  private static final int REQUEST_INSTALL_PERMISSION = 102;
+
+  private void checkInstallPermission(Context mContext) {
+    //不仅代码版本需要 O 还需要在targetSdkVersion中指定大于等于O的版本 否则canRequestPackageInstalls用于返回false
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+      boolean installPermission = mContext.getPackageManager().canRequestPackageInstalls();
+      if (installPermission) {
+        LLogger.d("已经有安装未知应用权限");
+      } else {
+        LLogger.d("没有安装未知应用权限");
+        Uri packageUri = Uri.parse("package:" + mContext.getPackageName());
+        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageUri);
+        startActivityForResult(intent, REQUEST_INSTALL_PERMISSION);
+      }
+    }
+
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (RESULT_OK == resultCode && REQUEST_INSTALL_PERMISSION == requestCode) {
+      LLogger.d("安装授权");
+    }
+  }
+
+  private void initDownLoad(WebView webView) {
+    webView.setDownloadListener(new DownloadListener() {
+      @Override
+      public void onDownloadStart(String url, String userAgent, String contentDisposition,
+          String mimetype, long contentLength) {
+        LLogger.d(url, userAgent, contentDisposition, mimetype, contentLength);
+        startDownLoadByManager(url);
+      }
+    });
+  }
+
+  private void startDownLoadByManager(String url) {
+    final DownloadManager downloadManager =
+        (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+    String nameApk = StringUtils.md5hex(url) + ".apk";
+    DownloadManager.Request request =
+        new DownloadManager.Request(Uri.parse(url));
+    File downDirs = mContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+    File fileApk = new File(downDirs, nameApk);
+    String filePathApk = fileApk.getAbsolutePath();
+    LLogger.d(nameApk, filePathApk);
+    request
+        .setDestinationInExternalFilesDir(getApplicationContext(), Environment.DIRECTORY_DOWNLOADS,
+            nameApk);
+    request.setAllowedNetworkTypes(Request.NETWORK_MOBILE | Request.NETWORK_WIFI);
+    request.allowScanningByMediaScanner();
+    request.setAllowedOverMetered(false);
+    request.setTitle(nameApk);
+    request.setDescription("下载描述");
+    request.setNotificationVisibility(Request.VISIBILITY_VISIBLE);
+    request.setMimeType("application/vnd.android.package-archive");
+    long downloadId = downloadManager.enqueue(request);
+    if (downBroadcastReceiver != null) {
+      mContext.unregisterReceiver(downBroadcastReceiver);
+      downBroadcastReceiver = null;
+    }
+
+    downBroadcastReceiver = new DownBroadcastReceiver(downloadId, filePathApk);
+    mContext.registerReceiver(downBroadcastReceiver,
+        new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    if (downBroadcastReceiver != null) {
+      mContext.unregisterReceiver(downBroadcastReceiver);
+      downBroadcastReceiver = null;
+    }
+  }
+
+  private class DownBroadcastReceiver extends BroadcastReceiver {
+
+    private long downloadId;
+    private String filePathApk;
+
+    public DownBroadcastReceiver(long downloadId, String filePathApk) {
+      this.downloadId = downloadId;
+      this.filePathApk = filePathApk;
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+      Query query = new Query();
+      query.setFilterById(downloadId);
+
+      final DownloadManager downloadManager =
+          (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+      Cursor cursor = downloadManager.query(query);
+      if (cursor != null && cursor.moveToFirst()) {
+        //下载文件名称
+        int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+        if (DownloadManager.STATUS_SUCCESSFUL == status) {
+          LLogger.d("下载成功");
+          String localUri = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+          LLogger.d(localUri);
+          installApk(filePathApk);
+        }
+
+      }
+    }
+  }
+
+
+  private void installApk(String filePathApk) {
+    Intent intent = new Intent();
+
+    Uri data;
+
+    //先设置
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    File fileApk = new File(filePathApk);
+    if (VERSION.SDK_INT >= VERSION_CODES.N) {
+      //再添加
+//      intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+      data = FileProvider
+          .getUriForFile(mContext, "com.example.licola.myandroiddemo.fileprovider",
+              fileApk);
+    } else {
+      data = Uri.fromFile(fileApk);
+    }
+    intent.setAction(Intent.ACTION_VIEW);
+
+    LLogger.d(filePathApk, data);
+    intent.setDataAndType(data, "application/vnd.android.package-archive");
+    startActivity(intent);
   }
 
   private void onBaseUrl() {

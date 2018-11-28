@@ -157,8 +157,8 @@ public class MainActivity extends BaseActivity implements
       @Override
       public void run() {
 //        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-//        mViewPager.setCurrentItem(findTitlePosition("Progress"));
-        mViewPager.setCurrentItem(1);
+        mViewPager.setCurrentItem(findTitlePosition("WebView"));
+//        mViewPager.setCurrentItem(1);
       }
 
       private int findTitlePosition(String target) {
