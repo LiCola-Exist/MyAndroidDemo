@@ -10,14 +10,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import com.example.licola.myandroiddemo.R;
+import com.example.licola.myandroiddemo.http.HttpDownLoaderService;
 import com.licola.llogger.LLogger;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,11 +25,6 @@ import java.util.TimerTask;
 public class DownLoadFragment extends BaseFragment {
 
   private static final String ARG_SECTION_KEY = "section_key";
-  @BindView(R.id.button)
-  Button button;
-  @BindView(R.id.textView)
-  TextView textView;
-  Unbinder unbinder;
 
   public DownLoadFragment() {
   }
@@ -54,60 +45,34 @@ public class DownLoadFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     final View rootView = inflater.inflate(R.layout.fragment_down, container, false);
-
-    unbinder = ButterKnife.bind(this, rootView);
+    rootView.findViewById(R.id.btn_down_manager).setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        downLoadByManager();
+      }
+    });
+    rootView.findViewById(R.id.btn_down_service).setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        downLoadByService();
+      }
+    });
 
     return rootView;
   }
 
-  @Override
-  public void onDestroyView() {
-    super.onDestroyView();
-    unbinder.unbind();
+  private void downLoadByService() {
+
+
   }
 
-
-
-
-  @OnClick(R.id.button)
-  public void onViewClicked() {
-    workDownLoad();
-  }
-
-
-
-  private ThreadLocal<Boolean> mBooleanThreadLocal = new ThreadLocal<>();
-
-  @OnClick(R.id.btn_thread)
-  public void onViewThread() {
-    mBooleanThreadLocal.set(true);
-    LLogger.d(Thread.currentThread().toString() + " value = " + mBooleanThreadLocal.get());
-
-    new Thread("Thread#1") {
-      @Override
-      public void run() {
-        super.run();
-        mBooleanThreadLocal.set(false);
-        LLogger.d(Thread.currentThread().toString() + " value = " + mBooleanThreadLocal.get());
-      }
-    }.start();
-
-    new Thread("Thread#2") {
-      @Override
-      public void run() {
-        super.run();
-        LLogger.d(Thread.currentThread().toString() + " value = " + mBooleanThreadLocal.get());
-      }
-    }.start();
-  }
-
-  private void workDownLoad() {
+  private void downLoadByManager() {
 
     final DownloadManager downloadManager =
         (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
     DownloadManager.Request request =
         new DownloadManager.Request(Uri.parse("http://api.youji.pro/youji.apk"));
-    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "download.apk");
+    request.setDestinationInExternalFilesDir(getContext(),Environment.DIRECTORY_DOWNLOADS, "download.apk");
     request.setAllowedNetworkTypes(Request.NETWORK_MOBILE | Request.NETWORK_WIFI);
     request.allowScanningByMediaScanner();
     request.setAllowedOverMetered(false);

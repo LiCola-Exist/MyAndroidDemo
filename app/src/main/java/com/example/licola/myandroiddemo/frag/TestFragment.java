@@ -60,10 +60,16 @@ public class TestFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable final Bundle savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragment_test, container, false);
-    ButterKnife.bind(this, rootView);
     btnStart = (Button) rootView.findViewById(R.id.btn_start);
     btnTest = (Button) rootView.findViewById(R.id.btn_test);
     txtResult = (TextView) rootView.findViewById(R.id.txt_result);
+
+    rootView.findViewById(R.id.btn_value).setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        onClickValue();
+      }
+    });
 
     rootView.findViewById(R.id.btn_entry_scroll).setOnClickListener(new OnClickListener() {
       @Override
@@ -190,7 +196,6 @@ public class TestFragment extends BaseFragment {
 
   boolean isWrap;
 
-  @OnClick(R.id.btn_value)
   public void onClickValue() {
     long time = System.currentTimeMillis();
     int sum = 0;

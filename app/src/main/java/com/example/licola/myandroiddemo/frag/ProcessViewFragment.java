@@ -148,9 +148,9 @@ public class ProcessViewFragment extends BaseFragment {
   }
 
   private void bindDrawableProcess(View viewRoot) {
-    imageView = ButterKnife.findById(viewRoot, R.id.img_target);
-    textView = ButterKnife.findById(viewRoot, R.id.txt_result);
-    seekBar = ButterKnife.findById(viewRoot, R.id.seekBar);
+    imageView = viewRoot.findViewById( R.id.img_target);
+    textView = viewRoot.findViewById( R.id.txt_result);
+    seekBar = viewRoot.findViewById( R.id.seekBar);
 
     int size = drawableRedIds.length;
     Drawable[] drawables = new Drawable[size];

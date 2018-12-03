@@ -1,6 +1,6 @@
 package com.example.licola.myandroiddemo.dagger;
 
-import com.example.licola.myandroiddemo.aty.MainActivity;
+import com.example.licola.myandroiddemo.MainActivity;
 
 import dagger.Component;
 

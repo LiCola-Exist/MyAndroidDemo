@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import butterknife.BindView;
@@ -36,11 +37,11 @@ public class HttpFragment extends BaseFragment {
   // TODO: Rename parameter arguments, choose names that match
   // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
   private static final String ARG_PARAM1 = "param1";
+
   @BindView(R.id.btn_okhttp)
   Button btnOkhttp;
   @BindView(R.id.btn_retrofit)
   Button btnRetrofit;
-  Unbinder unbinder;
 
   // TODO: Rename and change types of parameters
   private String mParam1;
@@ -78,9 +79,21 @@ public class HttpFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    View view = inflater.inflate(R.layout.fragment_http, container, false);
-    unbinder = ButterKnife.bind(this, view);
-    return view;
+    View rootView = inflater.inflate(R.layout.fragment_http, container, false);
+    rootView.findViewById(R.id.btn_okhttp).setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        onOkHttpClick(v);
+      }
+    });
+    rootView.findViewById(R.id.btn_retrofit).setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        onRetrofitClick(v);
+      }
+    });
+
+    return rootView;
   }
 
   final static OkHttpClient client = new Builder()
@@ -121,7 +134,6 @@ public class HttpFragment extends BaseFragment {
       })
       .build();
 
-  @OnClick(R.id.btn_okhttp)
   public void onOkHttpClick(final View view) {
 
 //    Request request = new Request.Builder().url("http://publicobject.com/helloworld.txt").build();
@@ -154,7 +166,6 @@ public class HttpFragment extends BaseFragment {
 //  Retrofit retrofit=new Retrofit.Builder().build();
 
 
-  @OnClick(R.id.btn_retrofit)
   public void onRetrofitClick(View view){
 
   }
@@ -162,7 +173,6 @@ public class HttpFragment extends BaseFragment {
   @Override
   public void onDestroyView() {
     super.onDestroyView();
-    unbinder.unbind();
   }
 
 

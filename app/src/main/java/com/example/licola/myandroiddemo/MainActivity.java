@@ -1,4 +1,4 @@
-package com.example.licola.myandroiddemo.aty;
+package com.example.licola.myandroiddemo;
 
 import android.app.ActivityManager;
 import android.content.ComponentName;
@@ -32,6 +32,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import com.example.RuntimeHandle;
 import com.example.licola.myandroiddemo.AndroidRuntimeCode.RuntimeCode;
+import com.example.licola.myandroiddemo.aty.BaseActivity;
 import com.example.licola.myandroiddemo.frag.AnimateFragment;
 import com.example.licola.myandroiddemo.frag.BaseFragment;
 import com.example.licola.myandroiddemo.frag.BottomSheetFragment;
@@ -46,7 +47,6 @@ import com.example.licola.myandroiddemo.frag.ListFragment;
 import com.example.licola.myandroiddemo.frag.ListFragment.OnListFragmentListener;
 import com.example.licola.myandroiddemo.frag.ModuleFragment;
 import com.example.licola.myandroiddemo.frag.ProcessViewFragment;
-import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.frag.RecyclerFragment;
 import com.example.licola.myandroiddemo.frag.RecyclerFragment.OnRecyclerFragmentListener;
 import com.example.licola.myandroiddemo.frag.SocketFragment;
@@ -158,7 +158,7 @@ public class MainActivity extends BaseActivity implements
       public void run() {
 //        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
         mViewPager.setCurrentItem(findTitlePosition("WebView"));
-//        mViewPager.setCurrentItem(1);
+//        mViewPager.setCurrentItem(3);
       }
 
       private int findTitlePosition(String target) {

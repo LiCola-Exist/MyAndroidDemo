@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -21,6 +22,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnChildScrollUpCallback;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -31,16 +33,20 @@ import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import com.example.licola.myandroiddemo.R;
+import com.example.licola.myandroiddemo.http.HttpDownLoaderService;
 import com.example.licola.myandroiddemo.utils.StringUtils;
 import com.licola.llogger.LLogger;
 import java.io.File;
+import java.net.URI;
 
 /**
  * @author LiCola
@@ -54,12 +60,14 @@ public class WebViewAty extends BaseActivity {
   private SwipeRefreshLayout mSwipeRefresh;
 
   private DownBroadcastReceiver downBroadcastReceiver;
+  private DownLocalBroadcastReceiver downLocalBroadcastReceiver;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    checkInstallPermission(mContext);
+    checkPermission(mContext);
 
     setContentView(R.layout.activity_web);
     mSwipeRefresh = findViewById(R.id.swipe_refresh);
@@ -93,7 +101,7 @@ public class WebViewAty extends BaseActivity {
 
   private static final int REQUEST_INSTALL_PERMISSION = 102;
 
-  private void checkInstallPermission(Context mContext) {
+  private void checkPermission(Context mContext) {
     //不仅代码版本需要 O 还需要在targetSdkVersion中指定大于等于O的版本 否则canRequestPackageInstalls用于返回false
     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
       boolean installPermission = mContext.getPackageManager().canRequestPackageInstalls();
@@ -106,7 +114,37 @@ public class WebViewAty extends BaseActivity {
         startActivityForResult(intent, REQUEST_INSTALL_PERMISSION);
       }
     }
+  }
 
+  private static boolean checkDownManagerAble(Context context) {
+
+    final DownloadManager downloadManager =
+        (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+    if (downloadManager == null) {
+      return false;
+    }
+
+    int downloadsStatus = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+    try {
+      downloadsStatus = context.getPackageManager()
+          .getApplicationEnabledSetting("com.android.providers.downloads");
+    } catch (IllegalArgumentException e) {
+      //if the named package does not exist
+    }
+
+    if (PackageManager.COMPONENT_ENABLED_STATE_DISABLED == downloadsStatus) {
+      return false;
+    }
+
+    if (PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER == downloadsStatus) {
+      return false;
+    }
+
+    if (PackageManager.COMPONENT_ENABLED_STATE_DISABLED_UNTIL_USED == downloadsStatus) {
+      return false;
+    }
+
+    return true;
   }
 
   @Override
@@ -123,14 +161,41 @@ public class WebViewAty extends BaseActivity {
       public void onDownloadStart(String url, String userAgent, String contentDisposition,
           String mimetype, long contentLength) {
         LLogger.d(url, userAgent, contentDisposition, mimetype, contentLength);
-        startDownLoadByManager(url);
+//        startDownLoadByManager(url);
+        startDownLoadByService(url);
       }
     });
+
+  }
+
+  private void startDownLoadByService(String url) {
+    Toast.makeText(mContext,"开始下载" ,Toast.LENGTH_SHORT ).show();
+    String nameApk = StringUtils.md5hex(url) + ".apk";
+
+    File downDirs = mContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+    File fileApk = new File(downDirs, nameApk);
+    String filePathApk = fileApk.getAbsolutePath();
+    LLogger.d(nameApk, filePathApk);
+
+    HttpDownLoaderService.startAction(this, url, filePathApk);
+
+    LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(mContext);
+    if (downLocalBroadcastReceiver!=null){
+      broadcastManager.unregisterReceiver(downLocalBroadcastReceiver);
+    }
+    downLocalBroadcastReceiver=new DownLocalBroadcastReceiver();
+    broadcastManager.registerReceiver(downLocalBroadcastReceiver, new IntentFilter(HttpDownLoaderService.ACTION));
   }
 
   private void startDownLoadByManager(String url) {
     final DownloadManager downloadManager =
         (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+
+    if (!checkDownManagerAble(mContext)) {
+      downLoadByOtherApp(url);
+      return;
+    }
+
     String nameApk = StringUtils.md5hex(url) + ".apk";
     DownloadManager.Request request =
         new DownloadManager.Request(Uri.parse(url));
@@ -159,12 +224,27 @@ public class WebViewAty extends BaseActivity {
         new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
   }
 
+  private void downLoadByOtherApp(String url) {
+    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+    startActivity(intent);
+  }
+
   @Override
   protected void onDestroy() {
     super.onDestroy();
     if (downBroadcastReceiver != null) {
       mContext.unregisterReceiver(downBroadcastReceiver);
       downBroadcastReceiver = null;
+    }
+  }
+
+  private class DownLocalBroadcastReceiver extends BroadcastReceiver{
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+      Bundle extras = intent.getExtras();
+      String path = extras.getString(HttpDownLoaderService.ACTION_LOAD_PATH);
+      installApk(path);
     }
   }
 
@@ -191,7 +271,8 @@ public class WebViewAty extends BaseActivity {
         int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
         if (DownloadManager.STATUS_SUCCESSFUL == status) {
           LLogger.d("下载成功");
-          String localUri = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+          String localUri = cursor
+              .getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
           LLogger.d(localUri);
           installApk(filePathApk);
         }
@@ -207,11 +288,11 @@ public class WebViewAty extends BaseActivity {
     Uri data;
 
     //先设置
-    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     File fileApk = new File(filePathApk);
     if (VERSION.SDK_INT >= VERSION_CODES.N) {
       //再添加
-//      intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+      intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
       data = FileProvider
           .getUriForFile(mContext, "com.example.licola.myandroiddemo.fileprovider",
               fileApk);
@@ -233,8 +314,9 @@ public class WebViewAty extends BaseActivity {
     WebViewClient client = new WebViewClient() {
       @Override
       public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-        LLogger.d(request.getUrl().toString());
-        webView.loadUrl(request.getUrl().toString());
+        String url = request.getUrl().toString();
+        LLogger.d(url);
+        webView.loadUrl(url);
         return true;
       }
 
@@ -253,6 +335,14 @@ public class WebViewAty extends BaseActivity {
         LLogger.d(url);
         mSwipeRefresh.setRefreshing(false);
       }
+
+      @Override
+      public void onReceivedError(WebView view, WebResourceRequest request,
+          WebResourceError error) {
+        super.onReceivedError(view, request, error);
+        LLogger.d(request, error);
+      }
+
 
       @Override
       public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
@@ -370,8 +460,8 @@ public class WebViewAty extends BaseActivity {
     webSettings.setAppCacheMaxSize(10 * 1024 * 1024);
 
     //允许缓存，设置缓存位置
-    webSettings.setAppCacheEnabled(true);
-    webSettings.setAppCachePath(webView.getContext().getDir("appcache", 0).getPath());
+//    webSettings.setAppCacheEnabled(true);
+//    webSettings.setAppCachePath(webView.getContext().getDir("appcache", 0).getPath());
 
     //允许WebView使用File协议
     webSettings.setAllowFileAccess(true);
