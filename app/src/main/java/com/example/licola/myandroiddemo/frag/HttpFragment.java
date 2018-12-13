@@ -10,14 +10,15 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import com.example.licola.myandroiddemo.R;
 import com.licola.llogger.LLogger;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
 import java.net.Proxy;
+import java.net.URL;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.EventListener;
@@ -26,10 +27,12 @@ import okhttp3.OkHttpClient.Builder;
 import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
+import okio.Buffer;
+import okio.Okio;
+import retrofit2.Retrofit;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link HttpFragment#newInstance} factory method to
+ * A simple {@link Fragment} subclass. Use the {@link HttpFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class HttpFragment extends BaseFragment {
@@ -37,6 +40,8 @@ public class HttpFragment extends BaseFragment {
   // TODO: Rename parameter arguments, choose names that match
   // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
   private static final String ARG_PARAM1 = "param1";
+
+  private String SIMPLE_URL = "http://publicobject.com/helloworld.txt";
 
   @BindView(R.id.btn_okhttp)
   Button btnOkhttp;
@@ -52,8 +57,8 @@ public class HttpFragment extends BaseFragment {
   }
 
   /**
-   * Use this factory method to create a new instance of
-   * this fragment using the provided parameters.
+   * Use this factory method to create a new instance of this fragment using the provided
+   * parameters.
    *
    * @param param1 Parameter 1.
    * @return A new instance of fragment HttpFragment.
@@ -92,8 +97,69 @@ public class HttpFragment extends BaseFragment {
         onRetrofitClick(v);
       }
     });
+    rootView.findViewById(R.id.btn_http).setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        runWorkThread(SIMPLE_URL);
+      }
+    });
 
     return rootView;
+  }
+
+  private void runWorkThread(String url){
+    Thread thread=new Thread(makeUrlRunnable(url),"workThread");
+    thread.start();
+  }
+
+  private Runnable makeUrlRunnable(final String urlStr) {
+
+    return new Runnable() {
+      @Override
+      public void run() {
+        URL url = null;
+        try {
+          url = new URL(urlStr);
+        } catch (MalformedURLException e) {
+          e.printStackTrace();
+        }
+
+        LLogger.d(url);
+
+        HttpURLConnection urlConnection = null;
+        try {
+          urlConnection = (HttpURLConnection) url.openConnection();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+
+
+        try {
+          urlConnection.setRequestMethod("GET");
+          urlConnection.connect();
+
+          int code = urlConnection.getResponseCode();
+          LLogger.d(code);
+
+          if (code==200){
+            InputStream inputStream = urlConnection.getInputStream();
+            Buffer buffer = new Buffer();
+            buffer.writeAll(Okio.source(inputStream));
+            String result = buffer.toString();
+            LLogger.d(result);
+          }else {
+            if (301==code){
+              String location = urlConnection.getHeaderField("Location");
+              runWorkThread(location);
+            }
+          }
+
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    };
+
   }
 
   final static OkHttpClient client = new Builder()
@@ -136,8 +202,8 @@ public class HttpFragment extends BaseFragment {
 
   public void onOkHttpClick(final View view) {
 
-//    Request request = new Request.Builder().url("http://publicobject.com/helloworld.txt").build();
-    Request request = new Request.Builder().url("https://me.d0575.net:4433/api/category").build();
+    Request request = new Request.Builder().url(SIMPLE_URL).build();
+//    Request request = new Request.Builder().url("https://me.d0575.net:4433/api/category").build();
 
     client.newCall(request).enqueue(new Callback() {
       @Override
@@ -163,10 +229,9 @@ public class HttpFragment extends BaseFragment {
     });
   }
 
-//  Retrofit retrofit=new Retrofit.Builder().build();
 
-
-  public void onRetrofitClick(View view){
+  public void onRetrofitClick(View view) {
+    Retrofit retrofit = new Retrofit.Builder().build();
 
   }
 

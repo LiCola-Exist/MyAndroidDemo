@@ -1,8 +1,8 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:fresco="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   tools:context="com.example.licola.myandroiddemo.frag.ImageViewFragment">
 
   <LinearLayout
@@ -10,56 +10,53 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.airbnb.lottie.LottieAnimationView
+      android:id="@+id/animation_view"
+      android:layout_width="match_parent"
+      android:layout_height="200dp" />
 
     <FrameLayout
+      android:id="@+id/layout_patch_left"
       android:layout_width="wrap_content"
       android:layout_height="40dp"
       android:layout_margin="12dp"
-      android:id="@+id/layout_patch_left"
-      android:background="@drawable/bg_small_shape_left"
-      >
+      android:background="@drawable/bg_small_shape_left">
 
       <LinearLayout
-        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
+        android:layout_gravity="center"
         android:gravity="center|left"
-        >
+        android:orientation="horizontal">
         <TextView
           android:id="@+id/tv_patch_content_left"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:textColor="@color/black_normal"
-          android:textSize="12dp"
           android:text="左"
-          />
+          android:textColor="@color/black_normal"
+          android:textSize="12dp" />
 
       </LinearLayout>
 
     </FrameLayout>
-
     <FrameLayout
       android:layout_width="wrap_content"
       android:layout_height="35dp"
       android:layout_margin="12dp"
-      android:background="@drawable/bg_small_shape_right"
-      >
+      android:background="@drawable/bg_small_shape_right">
 
       <LinearLayout
-        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
+        android:layout_gravity="center"
         android:gravity="center|left"
-        >
+        android:orientation="horizontal">
         <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:textColor="@color/black_normal"
-          android:textSize="12dp"
           android:text="...箭头在右"
-          />
+          android:textColor="@color/black_normal"
+          android:textSize="12dp" />
 
       </LinearLayout>
 
@@ -68,23 +65,20 @@
       android:layout_width="wrap_content"
       android:layout_height="35dp"
       android:layout_margin="12dp"
-      android:background="@drawable/bg_small_shape_center"
-      >
+      android:background="@drawable/bg_small_shape_center">
 
       <LinearLayout
-        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
+        android:layout_gravity="center"
         android:gravity="center|left"
-        >
+        android:orientation="horizontal">
         <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:textColor="@color/black_normal"
-          android:textSize="12dp"
           android:text="..箭头在中.."
-          />
+          android:textColor="@color/black_normal"
+          android:textSize="12dp" />
 
       </LinearLayout>
 
@@ -94,8 +88,8 @@
       android:id="@+id/img_load_fresco"
       android:layout_width="match_parent"
       android:layout_height="180dp"
-      fresco:actualImageScaleType="center"
-      fresco:placeholderImage="@color/colorPrimary" />
+      app:actualImageScaleType="center"
+      app:placeholderImage="@color/colorPrimary" />
 
     <ImageView
       android:id="@+id/img_load_glide"

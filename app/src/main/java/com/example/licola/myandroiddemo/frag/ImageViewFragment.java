@@ -14,6 +14,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.LottieDrawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.licola.myandroiddemo.R;
@@ -21,6 +23,7 @@ import com.example.licola.myandroiddemo.view.TouchImageView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.licola.llogger.LLogger;
 import java.io.ByteArrayOutputStream;
+import java.util.function.Function;
 
 
 /**
@@ -60,6 +63,7 @@ public class ImageViewFragment extends BaseFragment {
     // Inflate the layout for this fragment
     View childView = inflater.inflate(R.layout.fragment_image_view, container, false);
 
+    loadByLottie(childView);
     loadNinePath(childView);
 
     loadByFresco(childView);
@@ -69,6 +73,14 @@ public class ImageViewFragment extends BaseFragment {
     loadByOriginal(childView);
 
     return childView;
+  }
+
+  private void loadByLottie(View childView) {
+    LottieAnimationView lottieView = childView.findViewById(R.id.animation_view);
+    lottieView.setImageAssetsFolder("images");
+    lottieView.setAnimation("WavesAnimation.json");
+    lottieView.setRepeatCount(LottieDrawable.INFINITE);
+    lottieView.playAnimation();
   }
 
   private void loadNinePath(final View childView) {
@@ -86,6 +98,7 @@ public class ImageViewFragment extends BaseFragment {
         content.setActivated(!activated);
       }
     });
+
   }
 
   private void loadByDrawable(View childView) {
@@ -99,16 +112,12 @@ public class ImageViewFragment extends BaseFragment {
     imgFirst.setImageDrawable(drawable.mutate());
     imgSecond.setImageDrawable(drawable);
 
-    imgFirst.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        v.setActivated(!v.isActivated());
-      }
-    });
+    imgFirst.setOnClickListener(v -> v.setActivated(!v.isActivated()));
 
     imgThird.setImageURI(
         Uri.parse("android.resource://" + getActivity().getPackageName() + "//"
             + R.drawable.ic_action_app_white));
+
 
 
   }

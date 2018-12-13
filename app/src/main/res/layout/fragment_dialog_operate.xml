@@ -3,22 +3,18 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical"
-  tools:context="com.example.licola.myandroiddemo.frag.HttpFragment">
+  tools:context="com.example.licola.myandroiddemo.frag.DialogOperateFragment">
 
   <Button
-    android:id="@+id/btn_okhttp"
+    android:id="@+id/btn_dialog_alert"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="okhttp-post" />
+    android:text="dialog-alert" />
+
   <Button
-    android:id="@+id/btn_retrofit"
+    android:id="@+id/btn_dialog_fragment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="retrofit-post" />
-  <Button
-    android:id="@+id/btn_http"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Http-Service" />
+    android:text="dialog-fragment" />
 
 </LinearLayout>

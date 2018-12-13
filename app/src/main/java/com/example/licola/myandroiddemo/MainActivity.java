@@ -32,12 +32,24 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import com.example.RuntimeHandle;
 import com.example.licola.myandroiddemo.AndroidRuntimeCode.RuntimeCode;
+import com.example.licola.myandroiddemo.android.AndroidMain;
 import com.example.licola.myandroiddemo.aty.BaseActivity;
+import com.example.licola.myandroiddemo.componet.MyLifeCycleObserver;
+import com.example.licola.myandroiddemo.dagger.ActivityComponent;
+import com.example.licola.myandroiddemo.dagger.ActivitySuperComponent;
+import com.example.licola.myandroiddemo.dagger.ActivitySuperUserModel;
+import com.example.licola.myandroiddemo.dagger.ActivityUserModel;
+import com.example.licola.myandroiddemo.dagger.DaggerActivityComponent;
+import com.example.licola.myandroiddemo.dagger.DaggerActivitySuperComponent;
+import com.example.licola.myandroiddemo.dagger.SuperUserModel;
+import com.example.licola.myandroiddemo.dagger.UserModel;
+import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
 import com.example.licola.myandroiddemo.frag.AnimateFragment;
 import com.example.licola.myandroiddemo.frag.BaseFragment;
 import com.example.licola.myandroiddemo.frag.BottomSheetFragment;
 import com.example.licola.myandroiddemo.frag.ConstraintLayoutFragment;
 import com.example.licola.myandroiddemo.frag.DaoFragment;
+import com.example.licola.myandroiddemo.frag.DialogOperateFragment;
 import com.example.licola.myandroiddemo.frag.DownLoadFragment;
 import com.example.licola.myandroiddemo.frag.HttpFragment;
 import com.example.licola.myandroiddemo.frag.IOFragment;
@@ -57,17 +69,6 @@ import com.example.licola.myandroiddemo.frag.ToastFragment;
 import com.example.licola.myandroiddemo.frag.ViewFragment;
 import com.example.licola.myandroiddemo.frag.WebViewFragment;
 import com.example.licola.myandroiddemo.frag.XmlFragment;
-import com.example.licola.myandroiddemo.android.AndroidMain;
-import com.example.licola.myandroiddemo.componet.MyLifeCycleObserver;
-import com.example.licola.myandroiddemo.dagger.ActivityComponent;
-import com.example.licola.myandroiddemo.dagger.ActivitySuperComponent;
-import com.example.licola.myandroiddemo.dagger.ActivitySuperUserModel;
-import com.example.licola.myandroiddemo.dagger.ActivityUserModel;
-import com.example.licola.myandroiddemo.dagger.DaggerActivityComponent;
-import com.example.licola.myandroiddemo.dagger.DaggerActivitySuperComponent;
-import com.example.licola.myandroiddemo.dagger.SuperUserModel;
-import com.example.licola.myandroiddemo.dagger.UserModel;
-import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
 import com.example.licola.myandroiddemo.java.JavaMain;
 import com.example.licola.myandroiddemo.location.LocationHelper;
 import com.example.licola.myandroiddemo.location.MyLocationListener;
@@ -124,7 +125,8 @@ public class MainActivity extends BaseActivity implements
 
   static final String[] titles = {"BottomSheetFragment", "Test", "View", "Download", "Xml",
       "Constraint", "MyRecyclerView", "Animate", "ProgressView", "Module", "ImageView", "IO",
-      "Socket", "Thread", "Recycler", "Dao", "layout", "WebView", "Text", "Http", "Toast"};
+      "Socket", "Thread", "Recycler", "Dao", "layout", "WebView", "Text", "Http", "Toast",
+      "Dialog"};
 
   MainLocalBroadcastReceiver receiver;
 
@@ -136,7 +138,6 @@ public class MainActivity extends BaseActivity implements
     WindowsController.setTranslucentWindows(this);
     setContentView(R.layout.activity_main);
     WindowsController.addStatusBarBackground(this, R.color.gray_normal_A32);
-
 
     coordinatorLayout = findViewById(R.id.main_content);
     toolbar = findViewById(R.id.toolbar);
@@ -156,9 +157,9 @@ public class MainActivity extends BaseActivity implements
     mViewPager.post(new Runnable() {
       @Override
       public void run() {
-//        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-        mViewPager.setCurrentItem(findTitlePosition("WebView"));
-//        mViewPager.setCurrentItem(3);
+        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
+//        mViewPager.setCurrentItem(findTitlePosition("WebView"));
+//        mViewPager.setCurrentItem(10);
       }
 
       private int findTitlePosition(String target) {
@@ -213,7 +214,6 @@ public class MainActivity extends BaseActivity implements
     });
 
 //    initLocation();
-
 
   }
 
@@ -566,6 +566,9 @@ public class MainActivity extends BaseActivity implements
           break;
         case 20:
           fragment = ToastFragment.newInstance(title);
+          break;
+        case 21:
+          fragment = DialogOperateFragment.newInstance(title);
           break;
       }
 
