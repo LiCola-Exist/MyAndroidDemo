@@ -37,9 +37,10 @@
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-  <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+  <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
   <application
+
     android:allowBackup="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
@@ -54,6 +55,7 @@
       android:value="399dba2c397adf66f5e70c26960f58c4" /> <!-- 请填写你自己的appSecret -->
 
     <activity
+      android:exported="true"
       android:label="@string/app_name"
       android:name=".MainActivity"
       android:theme="@style/AppTheme.NoActionBar">
@@ -132,14 +134,26 @@
     </receiver>
 
     <activity
+      android:exported="true"
       android:label="@string/title_activity_ali"
       android:name=".aty.AliActivity"
       android:theme="@style/AppTheme.NoActionBar" />
     <activity
+      android:exported="true"
       android:label="@string/title_activity_scrolling"
       android:name=".aty.ScrollingActivity"
-      android:theme="@style/AppTheme.NoActionBar" />
-    <activity android:name=".aty.BottomSheetActivity" />
+      android:theme="@style/AppTheme.NoActionBar">
+      <intent-filter>
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+    <activity
+      android:exported="true"
+      android:name=".aty.BottomSheetActivity">
+      <intent-filter>
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
 
     <service
       android:name=".messenger.MessengerService"
@@ -147,28 +161,45 @@
     <service android:name=".http.HttpDownLoaderService" />
 
     <activity
+      android:exported="true"
       android:name=".aty.SoftKeyActivity"
       android:screenOrientation="portrait"
       android:theme="@style/AppTheme"
-      android:windowSoftInputMode="adjustResize|stateHidden"
-      >
+      android:windowSoftInputMode="adjustResize|stateHidden">
+      <intent-filter>
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+
+    <activity
+      android:exported="true"
+      android:name=".aty.LayoutActivity">
+
+      <intent-filter>
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
 
     </activity>
 
-    <activity android:name=".aty.LayoutActivity"></activity>
+    <activity
+      android:exported="true"
+      android:name=".aty.WebViewAty">
+      <intent-filter>
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
 
-    <activity android:name=".aty.WebViewAty" />
+    </activity>
 
     <provider
-      android:name="android.support.v4.content.FileProvider"
       android:authorities="com.example.licola.myandroiddemo.fileprovider"
+      android:exported="false"
       android:grantUriPermissions="true"
-      android:exported="false">
+      android:name="android.support.v4.content.FileProvider">
       <meta-data
         android:name="android.support.FILE_PROVIDER_PATHS"
         android:resource="@xml/filepaths" />
     </provider>
-    
+
   </application>
 
 </manifest>

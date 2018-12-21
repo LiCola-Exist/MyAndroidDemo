@@ -64,7 +64,11 @@ public class BottomSheetActivity extends BaseActivity {
 
       @Override
       public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
+        if (slideOffset>0){
+          int topOffset= (int) (200*slideOffset);
+          bottomSheet.setPadding(0,topOffset,0 ,0 );
+        }
+          LLogger.d(slideOffset);
       }
     });
 

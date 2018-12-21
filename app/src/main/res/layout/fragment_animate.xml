@@ -5,16 +5,10 @@
   android:orientation="vertical"
   tools:context="com.example.licola.myandroiddemo.frag.AnimateFragment">
 
-  <Button
-    android:id="@+id/btn_start_group"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Group-Start" />
-
   <FrameLayout
-    android:id="@+id/layout_group"
+    android:id="@+id/layout_group_shrink"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="200dp"
     android:background="@color/red_normal_A54">
 
   </FrameLayout>
@@ -27,10 +21,10 @@
     android:orientation="vertical">
 
     <ImageView
-      android:padding="12dp"
       android:id="@+id/img_target"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:padding="12dp"
       android:src="@drawable/ic_action_album" />
     <Button
       android:id="@+id/btn_target"
@@ -47,6 +41,19 @@
       android:layout_width="match_parent"
       android:layout_height="100dp"
       android:background="@color/blue_normal_A32" />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+      android:id="@+id/iv_step_target"
+      android:layout_width="100dp"
+      android:layout_height="120dp"
+      android:background="@color/blue_normal" />
+
 
   </LinearLayout>
 

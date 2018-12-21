@@ -21,6 +21,9 @@ import android.widget.ImageView;
 import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.utils.PixelUtils;
 import com.licola.llogger.LLogger;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass. Use the {@link AnimateFragment#newInstance} factory method to
@@ -60,51 +63,59 @@ public class AnimateFragment extends BaseFragment {
     // Inflate the layout for this fragment
     View rootView = inflater.inflate(R.layout.fragment_animate, container, false);
 
-    final ImageView ivTarget = rootView.findViewById(R.id.img_target);
-    ivTarget.setOnClickListener(new OnClickListener() {
+    final ViewGroup viewGroupTarget = rootView.findViewById(R.id.layout_group_shrink);
+
+    viewGroupTarget.setOnClickListener(new OnClickListener() {
+
       @Override
       public void onClick(View v) {
-        viewAnimateTranslation(ivTarget);
+        boolean newState = !v.isSelected();
+        viewGroupTarget.setSelected(newState);
+        viewAnimateScaleTranslation(newState, v);
       }
     });
 
-
-    final Button btnTarget = rootView.findViewById(R.id.btn_target);
-    btnTarget.setOnClickListener(new OnClickListener() {
+    rootView.findViewById(R.id.img_target).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        viewAnimateSpecific(btnTarget);
-      }
-    });
-    final ImageView ivTargetColor = rootView.findViewById(R.id.img_target_color);
-    ivTargetColor.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        viewAnimateArgb(ivTargetColor);
-      }
-    });
-    final ImageView ivTargetDrawable = rootView.findViewById(R.id.iv_target_drawable);
-    ivTargetDrawable.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        animateDrawable(ivTargetDrawable);
+        viewAnimateTranslation(v);
       }
     });
 
-    final ViewGroup viewGroupTarget = rootView.findViewById(R.id.layout_group);
-
-    Button btnStartGroup = rootView.findViewById(R.id.btn_start_group);
-    btnStartGroup.setOnClickListener(new OnClickListener() {
-
+    rootView.findViewById(R.id.btn_target).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        boolean enabled = viewGroupTarget.isEnabled();
-        viewGroupTarget.setEnabled(!enabled);
-        viewAnimateScaleTranslation(enabled, viewGroupTarget);
+        viewAnimateSpecific((Button) v);
+      }
+    });
+    rootView.findViewById(R.id.img_target_color).setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        viewAnimateArgb(v);
+      }
+    });
+    rootView.findViewById(R.id.iv_target_drawable).setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        animateDrawable((ImageView) v);
+      }
+    });
+
+    rootView.findViewById(R.id.iv_step_target).setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        animateStep(v);
       }
     });
 
     return rootView;
+  }
+
+  private void animateStep(View targetView) {
+    int height = targetView.getHeight()/4;
+    targetView.animate()
+        .translationYBy(height)
+        .withLayer();
   }
 
   private void animateDrawable(ImageView imageView) {
@@ -147,7 +158,7 @@ public class AnimateFragment extends BaseFragment {
     return animationDrawable;
   }
 
-  private void viewAnimateScaleTranslation(boolean isShrink, final ViewGroup viewGroup) {
+  private void viewAnimateScaleTranslation(boolean isShrink, final View targetView) {
     ValueAnimator animator;
     if (isShrink) {
       animator = ValueAnimator.ofFloat(0f, 1f);
@@ -187,23 +198,27 @@ public class AnimateFragment extends BaseFragment {
         float processValue = value * process;
         float resultScale = 1 - processValue;
 //        LLogger.d("value:" + value + " resultScale:" + resultScale);
-        viewGroup.setScaleX(resultScale);
-        viewGroup.setScaleY(resultScale);
+        targetView.setScaleX(resultScale);
+        targetView.setScaleY(resultScale);
 
         int screenWidth = PixelUtils.getScreenWidth(getContext());
         int screenHeight = PixelUtils.getScreenHeight(getContext());
         float width = (screenWidth >> 1) * minValue;
-        viewGroup.setPivotX((screenWidth - 24) * value);
-        viewGroup.setPivotY((screenHeight - 24) * value);
+        targetView.setPivotX((screenWidth - 24) * value);
+        targetView.setPivotY((screenHeight - 24) * value);
       }
     });
     animator.start();
   }
 
   private void viewAnimateTranslation(final View view) {
-
+    try {
+      List<File> files = LLogger.fetchLogList(0);
+      LLogger.d(files);
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
     view.setAlpha(0.3f);
-
     view.animate()
         .alpha(1f)
         .scaleXBy(2)
@@ -225,7 +240,7 @@ public class AnimateFragment extends BaseFragment {
   private void viewAnimateSpecific(Button btnTarget) {
     int oldWidth = btnTarget.getWidth();
     ObjectAnimator animator = ObjectAnimator.ofInt(btnTarget, "width", oldWidth + 200)
-        .setDuration(500);
+        .setDuration(1500);
     animator.start();
   }
 }

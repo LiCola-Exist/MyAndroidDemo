@@ -17,6 +17,7 @@
         android:textSize="30sp" />
 
     <android.support.v4.widget.NestedScrollView
+      android:background="@color/black_normal"
         android:id="@+id/nested_view"
         android:layout_width="match_parent"
         android:layout_height="500dp"
