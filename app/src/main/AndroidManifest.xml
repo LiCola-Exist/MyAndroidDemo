@@ -164,8 +164,8 @@
       android:exported="true"
       android:name=".aty.SoftKeyActivity"
       android:screenOrientation="portrait"
-      android:theme="@style/AppTheme"
-      android:windowSoftInputMode="adjustResize|stateHidden">
+      android:theme="@style/AppTheme.NoActionBar"
+      android:windowSoftInputMode="adjustResize">
       <intent-filter>
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>

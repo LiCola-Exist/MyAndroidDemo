@@ -9,6 +9,7 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -104,7 +105,26 @@ public class AnimateFragment extends BaseFragment {
     rootView.findViewById(R.id.iv_step_target).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        animateStep(v);
+        v.post(new Runnable() {
+          @Override
+          public void run() {
+            animateStep(v);
+          }
+        });
+        v.post(new Runnable() {
+          @Override
+          public void run() {
+            animateStep(v);
+          }
+        });
+//        v.postOnAnimation(new Runnable() {
+//          @Override
+//          public void run() {
+//            LLogger.d();
+//          }
+//        });
+//
+//        v.post()
       }
     });
 
@@ -112,10 +132,12 @@ public class AnimateFragment extends BaseFragment {
   }
 
   private void animateStep(View targetView) {
-    int height = targetView.getHeight()/4;
+
+    int height = targetView.getHeight() / 4;
     targetView.animate()
-        .translationYBy(height)
-        .withLayer();
+        .setDuration(400)
+        .translationYBy(-height)
+        .start();
   }
 
   private void animateDrawable(ImageView imageView) {
