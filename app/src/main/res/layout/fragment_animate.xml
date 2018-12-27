@@ -5,10 +5,36 @@
   android:orientation="vertical"
   tools:context="com.example.licola.myandroiddemo.frag.AnimateFragment">
 
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <Button
+      android:id="@+id/btn_seek_run"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="seek动画" />
+
+    <SeekBar
+      android:id="@+id/seekBar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/red_normal_A54"
+      android:thumb="@drawable/ic_action_app_white" />
+
+  </LinearLayout>
+
+  <com.airbnb.lottie.LottieAnimationView
+    android:id="@+id/animation_view"
+    android:layout_width="match_parent"
+    android:layout_height="200dp" />
+
   <FrameLayout
     android:id="@+id/layout_group_shrink"
     android:layout_width="match_parent"
     android:layout_height="200dp"
+    android:animateLayoutChanges="true"
     android:background="@color/red_normal_A54">
 
   </FrameLayout>

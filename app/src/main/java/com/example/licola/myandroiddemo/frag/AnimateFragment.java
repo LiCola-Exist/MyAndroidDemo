@@ -9,16 +9,19 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.LottieDrawable;
 import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.utils.PixelUtils;
 import com.licola.llogger.LLogger;
@@ -63,6 +66,28 @@ public class AnimateFragment extends BaseFragment {
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
     View rootView = inflater.inflate(R.layout.fragment_animate, container, false);
+
+    SeekBar seekBar = rootView.findViewById(R.id.seekBar);
+    Button btnSeek = rootView.findViewById(R.id.btn_seek_run);
+    btnSeek.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+//        runSeek(seekBar);
+        animatorSeek(seekBar);
+      }
+    });
+
+    LottieAnimationView lottieView = rootView.findViewById(R.id.animation_view);
+    lottieView.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+
+        lottieView.setImageAssetsFolder("images");
+        lottieView.setAnimation("WavesAnimation.json");
+
+        animatorLottie(lottieView);
+      }
+    });
 
     final ViewGroup viewGroupTarget = rootView.findViewById(R.id.layout_group_shrink);
 
@@ -130,6 +155,65 @@ public class AnimateFragment extends BaseFragment {
 
     return rootView;
   }
+
+
+  private void runSeek(SeekBar seekBar) {
+
+    long gap=20;
+
+    final Runnable runnable = new Runnable() {
+      @Override
+      public void run() {
+        if (seekBar.getProgress() == 100) {
+          seekBar.setProgress(0);
+        }
+        seekBar.incrementProgressBy(1);
+        seekBar.postDelayed(this, gap);
+      }
+    };
+
+    seekBar.postDelayed(runnable, gap);
+  }
+
+  private void animatorSeek(SeekBar seekBar){
+
+    ValueAnimator animator=ValueAnimator.ofInt(0,20)
+        .setDuration(1000);
+    animator.addUpdateListener(new AnimatorUpdateListener() {
+      @Override
+      public void onAnimationUpdate(ValueAnimator animation) {
+        int value= (int) animation.getAnimatedValue();
+        LLogger.d(value);
+        seekBar.setProgress(value);
+      }
+    });
+
+    animator.start();
+  }
+
+
+  private void playLottie(LottieAnimationView lottieView) {
+    lottieView.setRepeatCount(LottieDrawable.INFINITE);
+    lottieView.playAnimation();
+  }
+
+  private void animatorLottie(LottieAnimationView lottieView) {
+    ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1)
+        .setDuration(3000);
+
+    valueAnimator.setInterpolator(new FastOutSlowInInterpolator());
+
+    valueAnimator.addUpdateListener(new AnimatorUpdateListener() {
+      @Override
+      public void onAnimationUpdate(ValueAnimator animation) {
+        float value = (float) animation.getAnimatedValue();
+        lottieView.setProgress(value);
+      }
+    });
+
+    valueAnimator.start();
+  }
+
 
   private void animateStep(View targetView) {
 

@@ -63,7 +63,6 @@ public class ImageViewFragment extends BaseFragment {
     // Inflate the layout for this fragment
     View childView = inflater.inflate(R.layout.fragment_image_view, container, false);
 
-    loadByLottie(childView);
     loadNinePath(childView);
 
     loadByFresco(childView);
@@ -75,13 +74,7 @@ public class ImageViewFragment extends BaseFragment {
     return childView;
   }
 
-  private void loadByLottie(View childView) {
-    LottieAnimationView lottieView = childView.findViewById(R.id.animation_view);
-    lottieView.setImageAssetsFolder("images");
-    lottieView.setAnimation("WavesAnimation.json");
-    lottieView.setRepeatCount(LottieDrawable.INFINITE);
-    lottieView.playAnimation();
-  }
+
 
   private void loadNinePath(final View childView) {
     View layoutLeft = childView.findViewById(R.id.layout_patch_left);

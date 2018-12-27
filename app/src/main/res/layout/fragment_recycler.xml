@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="wrap_content"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
   android:layout_height="300dp"
-  android:orientation="horizontal">
+  android:layout_marginBottom="20dp"
+  android:background="@color/blue_normal_A32"
+  android:orientation="vertical">
 
   <TextView
     android:id="@+id/item_number"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/text_margin"
-    android:textAppearance="?attr/textAppearanceListItem" />
+    android:textAppearance="?attr/textAppearanceListItem"
+    tools:text="index" />
 
   <TextView
     android:id="@+id/content"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/text_margin"
-    android:textAppearance="?attr/textAppearanceListItem" />
+    android:textAppearance="?attr/textAppearanceListItem"
+    tools:text="content" />
 </LinearLayout>

@@ -60,7 +60,6 @@ import com.example.licola.myandroiddemo.frag.ListFragment.OnListFragmentListener
 import com.example.licola.myandroiddemo.frag.ModuleFragment;
 import com.example.licola.myandroiddemo.frag.ProcessViewFragment;
 import com.example.licola.myandroiddemo.frag.RecyclerFragment;
-import com.example.licola.myandroiddemo.frag.RecyclerFragment.OnRecyclerFragmentListener;
 import com.example.licola.myandroiddemo.frag.SocketFragment;
 import com.example.licola.myandroiddemo.frag.TestFragment;
 import com.example.licola.myandroiddemo.frag.TextFragment;
@@ -96,7 +95,7 @@ import org.greenrobot.eventbus.Subscribe;
 @RuntimeHandle()
 @Route(path = "main")
 public class MainActivity extends BaseActivity implements
-    OnListFragmentListener, OnRecyclerFragmentListener {
+    OnListFragmentListener {
 
   /**
    * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
