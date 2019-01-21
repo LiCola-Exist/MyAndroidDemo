@@ -19,4 +19,19 @@
     />
 
 
+  <Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="空闲handler"
+    android:id="@+id/btn_idle"
+    />
+  <EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textColor="@color/black_normal"
+    />
+
+
+
+
 </LinearLayout>

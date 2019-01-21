@@ -318,12 +318,7 @@ public class AnimateFragment extends BaseFragment {
   }
 
   private void viewAnimateTranslation(final View view) {
-    try {
-      List<File> files = LLogger.fetchLogList(0);
-      LLogger.d(files);
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    }
+
     view.setAlpha(0.3f);
     view.animate()
         .alpha(1f)

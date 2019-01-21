@@ -1,8 +1,10 @@
 package com.example.licola.myandroiddemo.java;
 
-import android.text.format.DateUtils;
-import com.licola.llogger.LLogger;
 import com.google.common.collect.Maps;
+import com.licola.llogger.LLogger;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.HashMap;
 
 /**
@@ -21,7 +23,8 @@ public class JavaMain {
 
     HashMap<Object, Object> hashMap = Maps.newHashMapWithExpectedSize(10);
 
-
+    LocalDate date=LocalDate.now();
+    Instant instant=Instant.now();
 
   }
 

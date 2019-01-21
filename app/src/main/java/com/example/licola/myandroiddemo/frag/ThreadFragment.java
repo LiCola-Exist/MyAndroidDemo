@@ -1,8 +1,12 @@
 package com.example.licola.myandroiddemo.frag;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.MessageQueue.IdleHandler;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,8 +14,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 import com.example.licola.myandroiddemo.R;
+import com.example.licola.myandroiddemo.aty.ScrollingActivity;
 import com.licola.llogger.LLogger;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  *
@@ -64,6 +71,7 @@ public class ThreadFragment extends BaseFragment {
       @Override
       public void onClick(View v) {
         newThreadPostUi();
+//        newThreadJump();
       }
     });
 
@@ -72,6 +80,14 @@ public class ThreadFragment extends BaseFragment {
       @Override
       public void onClick(View v) {
         uncaughtException();
+      }
+    });
+
+    Button btnIdle = viewRoot.findViewById(R.id.btn_idle);
+    btnIdle.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        postDelayed(v);
       }
     });
 
@@ -86,14 +102,25 @@ public class ThreadFragment extends BaseFragment {
     Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
       @Override
       public void uncaughtException(Thread t, Throwable e) {
-        LLogger.d("捕获当前线程异常 然后转发给默认的异常处理器，可以作为crash捕获入口");
+        LLogger.e(t, e);
 
         defaultUncaughtExceptionHandler.uncaughtException(t, e);
       }
     });
 
-    throw new UnsupportedOperationException("故意抛出的非受检异常");
+//    throw new UnsupportedOperationException("故意抛出的非受检异常");
 
+  }
+
+  private void newThreadJump() {
+    ExecutorService executorService = Executors.newFixedThreadPool(1);
+    executorService.submit(new Runnable() {
+      @Override
+      public void run() {
+        LLogger.d(Thread.currentThread().toString());
+        getActivity().startActivity(new Intent(getContext(), ScrollingActivity.class));
+      }
+    });
   }
 
   private void newThreadPostUi() {
@@ -110,9 +137,49 @@ public class ThreadFragment extends BaseFragment {
       public void run() {
         boolean isMain = getActivity().getMainLooper() == workHandler.getLooper();
         LLogger.d(Thread.currentThread(), getActivity().getMainLooper(), isMain);
-        Toast.makeText(getContext(), "子线程发出", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "子线程有Looper就能显示Toast", Toast.LENGTH_SHORT).show();
+
+        throw new UnsupportedOperationException("其他线程抛出的非受检异常");
       }
     });
+  }
 
+  private void postDelayed(View view) {
+
+    view.postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        postIdleWork();
+      }
+    }, 200);
+
+    view.postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        long id = SystemClock.uptimeMillis();
+        LLogger.d("添加跳转任务:" + id);
+        startActivity(new Intent(getContext(), ScrollingActivity.class));
+      }
+    }, 200);
+
+    view.postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        postIdleWork();
+      }
+    }, 300);
+  }
+
+  private void postIdleWork() {
+
+    long id = SystemClock.uptimeMillis();
+    LLogger.d("添加空闲任务:" + id);
+    Looper.myQueue().addIdleHandler(new IdleHandler() {
+      @Override
+      public boolean queueIdle() {
+        LLogger.d(Thread.currentThread().toString() + "空闲handler工作:" + id);
+        return false;
+      }
+    });
   }
 }

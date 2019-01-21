@@ -1,7 +1,11 @@
 package com.example.licola.myandroiddemo.frag;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.MessageQueue.IdleHandler;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +13,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.aty.ScrollingActivity;
 import com.example.licola.myandroiddemo.aty.SoftKeyActivity;
@@ -60,9 +62,13 @@ public class TestFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable final Bundle savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragment_test, container, false);
-    btnStart = (Button) rootView.findViewById(R.id.btn_start);
-    btnTest = (Button) rootView.findViewById(R.id.btn_test);
-    txtResult = (TextView) rootView.findViewById(R.id.txt_result);
+    btnStart = rootView.findViewById(R.id.btn_start);
+    btnTest = rootView.findViewById(R.id.btn_test);
+    txtResult = rootView.findViewById(R.id.txt_result);
+
+    TextView tvShadow = rootView.findViewById(R.id.tv_shadow);
+    tvShadow.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+//    tvShadow.setShadowLayer(10, 1, 1, Color.BLACK);
 
     rootView.findViewById(R.id.btn_value).setOnClickListener(new OnClickListener() {
       @Override
@@ -97,6 +103,9 @@ public class TestFragment extends BaseFragment {
         }
       }
     });
+
+
+
 
     btnStart.setOnClickListener(new View.OnClickListener() {
 

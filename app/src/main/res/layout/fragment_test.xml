@@ -52,6 +52,17 @@
     android:layout_height="wrap_content"
     android:text="entry-soft-key-aty" />
 
+  <TextView
+    android:id="@+id/tv_shadow"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:shadowColor="@color/black_normal"
+    android:shadowDx="9"
+    android:shadowDy="9"
+    android:shadowRadius="0.2"
+    android:textColor="@color/black_normal"
+    android:text="文字内容"
+    android:textSize="163px" />
 
 
 </LinearLayout>

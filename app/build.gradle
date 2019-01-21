@@ -71,7 +71,7 @@ dependencies {
     implementation project(':aspectj')
 
     //log工具
-    implementation "com.licola:llogger:1.4.3"
+    implementation "com.licola:llogger:1.4.6"
 
     //代码工具
     implementation 'com.licola:reversesuper-annotation:1.2.5'//注解库
