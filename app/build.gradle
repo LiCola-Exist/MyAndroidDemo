@@ -51,18 +51,25 @@ android {
         sourceCompatibility rootProject.ext.sourceCompatibilityVersion
         targetCompatibility rootProject.ext.targetCompatibilityVersion
     }
+
+    testOptions{
+        unitTests.includeAndroidResources true
+        unitTests.returnDefaultValues true
+
+    }
 }
 
 greendao {
     schemaVersion 1
+//    generateTests true
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.licola:route-annotation:1.1.7'
-    implementation 'com.licola:route-api:1.1.7'
-    annotationProcessor 'com.licola:route-compiler:1.1.7'
+    implementation 'com.licola:route-annotation:1.2.1'
+    implementation 'com.licola:route-api:1.2.1'
+    annotationProcessor 'com.licola:route-compiler:1.2.1'
 
     implementation 'com.android.support:support-v4:27.1.1'
 

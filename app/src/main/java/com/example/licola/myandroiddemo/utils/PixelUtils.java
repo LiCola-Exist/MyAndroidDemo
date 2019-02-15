@@ -3,6 +3,7 @@ package com.example.licola.myandroiddemo.utils;
 import android.content.Context;
 import android.graphics.Point;
 import android.support.annotation.NonNull;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
 
