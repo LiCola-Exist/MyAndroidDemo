@@ -11,7 +11,7 @@ import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.utils.SoftKeyboardHelper;
 import com.example.licola.myandroiddemo.utils.SoftKeyboardHelper.OnSoftKeyboardListener;
 import com.example.licola.myandroiddemo.utils.WindowsController;
-import com.example.licola.myandroiddemo.view.TouchLinearLayout;
+import com.example.licola.myandroiddemo.view.widget.TouchLinearLayout;
 import com.licola.llogger.LLogger;
 
 public class SoftKeyActivity extends BaseActivity {

@@ -1,4 +1,4 @@
-package com.example.licola.myandroiddemo.view;
+package com.example.licola.myandroiddemo.view.widget;
 
 /**
  * Created by LiCola on 2017/10/25.

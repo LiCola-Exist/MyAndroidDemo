@@ -14,16 +14,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.airbnb.lottie.LottieAnimationView;
-import com.airbnb.lottie.LottieDrawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.licola.myandroiddemo.R;
-import com.example.licola.myandroiddemo.view.TouchImageView;
+import com.example.licola.myandroiddemo.view.widget.TouchImageView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.licola.llogger.LLogger;
 import java.io.ByteArrayOutputStream;
-import java.util.function.Function;
 
 
 /**

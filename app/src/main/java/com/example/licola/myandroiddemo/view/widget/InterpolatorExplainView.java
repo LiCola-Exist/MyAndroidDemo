@@ -1,4 +1,4 @@
-package com.example.licola.myandroiddemo.view;
+package com.example.licola.myandroiddemo.view.widget;
 
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;

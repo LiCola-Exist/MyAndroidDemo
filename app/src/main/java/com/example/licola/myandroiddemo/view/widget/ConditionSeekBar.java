@@ -1,4 +1,4 @@
-package com.example.licola.myandroiddemo.view;
+package com.example.licola.myandroiddemo.view.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

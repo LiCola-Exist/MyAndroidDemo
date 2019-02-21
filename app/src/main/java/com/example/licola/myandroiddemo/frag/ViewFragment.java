@@ -25,10 +25,10 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.utils.PixelUtils;
-import com.example.licola.myandroiddemo.view.CanvasDemoView;
-import com.example.licola.myandroiddemo.view.InterpolatorExplainView;
-import com.example.licola.myandroiddemo.view.ShaderDemoView;
-import com.example.licola.myandroiddemo.view.TextCaptionView;
+import com.example.licola.myandroiddemo.view.widget.CanvasDemoView;
+import com.example.licola.myandroiddemo.view.widget.InterpolatorExplainView;
+import com.example.licola.myandroiddemo.view.widget.ShaderDemoView;
+import com.example.licola.myandroiddemo.view.widget.TextCaptionView;
 import com.licola.llogger.LLogger;
 
 /**

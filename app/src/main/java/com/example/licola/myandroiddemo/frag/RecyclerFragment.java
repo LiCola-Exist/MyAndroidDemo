@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.dummy.DummyContent;
 import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
+import com.example.licola.myandroiddemo.view.CustomLayoutManager;
 import com.licola.llogger.LLogger;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,15 +68,26 @@ public class RecyclerFragment extends BaseFragment {
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_recycler_list, container, false);
 
+    SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+
     Context context = view.getContext();
     RecyclerView recyclerView = view.findViewById(R.id.list);
     if (mColumnCount <= 1) {
-      recyclerView.setLayoutManager(new LinearLayoutManager(context));
+//      recyclerView.setLayoutManager(new LinearLayoutManager(context));
+      recyclerView.setLayoutManager(new CustomLayoutManager());
     } else {
       recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
     }
     final RecyclerRecyclerViewAdapter adapter = new RecyclerRecyclerViewAdapter(DummyContent.ITEMS);
     recyclerView.setAdapter(adapter);
+
+    swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+      @Override
+      public void onRefresh() {
+        //刷新数据 先清除 当前adapter数据集合已经为空  如果不及时加入新数据 后续的滑动尝试获取旧内容就会越界溢出错误
+//        adapter.clear();
+      }
+    });
 
     recyclerView.setRecyclerListener(new RecyclerListener() {
       @Override
@@ -146,6 +160,10 @@ public class RecyclerFragment extends BaseFragment {
       mValues.clear();
       mValues.addAll(data);
       notifyDataSetChanged();
+    }
+
+    public void clear() {
+      mValues.clear();
     }
 
     public void notifyByPosition(int position) {

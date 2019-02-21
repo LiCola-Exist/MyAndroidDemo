@@ -125,7 +125,7 @@
       android:layout_gravity="center" />
 
 
-    <com.example.licola.myandroiddemo.view.TouchImageView
+    <com.example.licola.myandroiddemo.view.widget.TouchImageView
       android:id="@+id/img_load_touch"
       android:layout_width="match_parent"
       android:layout_height="300dp"

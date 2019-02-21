@@ -1,14 +1,14 @@
 package com.example.licola.myandroiddemo;
 
 import android.app.Application;
-import android.content.ComponentCallbacks;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.support.multidex.MultiDex;
 import com.demo.licola.myandroiddemo.EventBusIndex;
 import com.example.licola.myandroiddemo.utils.RomChecker;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.stetho.Stetho;
+import com.github.moduth.blockcanary.BlockCanary;
+import com.github.moduth.blockcanary.BlockCanaryContext;
 import com.licola.llogger.LLogger;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -56,12 +56,12 @@ public class MyApplication extends Application {
         .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
         .build());
 
-
     //内存检测工具
     if (!LeakCanary.isInAnalyzerProcess(this)) {
       refWatcher = LeakCanary.install(this);
     }
 
+    BlockCanary.install(this, new AppBlockCanaryContext()).start();
 
   }
 
@@ -85,5 +85,18 @@ public class MyApplication extends Application {
 //    });
 
     LLogger.d("rom:" + RomChecker.getName());
+  }
+
+  private class AppBlockCanaryContext extends BlockCanaryContext {
+
+    @Override
+    public String provideQualifier() {
+      return "block";
+    }
+
+    @Override
+    public String provideUid() {
+      return "uid";
+    }
   }
 }

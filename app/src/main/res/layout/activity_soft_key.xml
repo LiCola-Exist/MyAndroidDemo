@@ -29,7 +29,7 @@
       android:background="@color/red_normal_A32"
       android:fillViewport="true">
 
-      <com.example.licola.myandroiddemo.view.TouchLinearLayout
+      <com.example.licola.myandroiddemo.view.widget.TouchLinearLayout
         android:id="@+id/layout_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -154,7 +154,7 @@
             android:hint="bottom-bottom" />
         </FrameLayout>
 
-      </com.example.licola.myandroiddemo.view.TouchLinearLayout>
+      </com.example.licola.myandroiddemo.view.widget.TouchLinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 

@@ -1,4 +1,4 @@
-package com.example.licola.myandroiddemo.view;
+package com.example.licola.myandroiddemo.view.widget;
 
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IntRange;

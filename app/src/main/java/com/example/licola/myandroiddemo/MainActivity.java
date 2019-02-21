@@ -158,7 +158,7 @@ public class MainActivity extends BaseActivity implements
       public void run() {
 //        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
 //        mViewPager.setCurrentItem(findTitlePosition("WebView"));
-        mViewPager.setCurrentItem(13);
+        mViewPager.setCurrentItem(14);
       }
 
       private int findTitlePosition(String target) {
@@ -396,6 +396,7 @@ public class MainActivity extends BaseActivity implements
   private void activityBindService() {
     Intent intent = new Intent(this, MessengerService.class);
     bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
   }
 
   private void asepctJRun() {
