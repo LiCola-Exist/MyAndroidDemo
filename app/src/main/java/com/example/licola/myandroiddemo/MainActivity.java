@@ -158,7 +158,7 @@ public class MainActivity extends BaseActivity implements
       public void run() {
 //        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
 //        mViewPager.setCurrentItem(findTitlePosition("WebView"));
-        mViewPager.setCurrentItem(14);
+        mViewPager.setCurrentItem(7);
       }
 
       private int findTitlePosition(String target) {

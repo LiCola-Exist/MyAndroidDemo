@@ -1,10 +1,12 @@
 package com.example.licola.myandroiddemo.android;
 
 import android.content.Context;
+import android.net.Uri;
 import android.text.format.DateUtils;
 import com.example.licola.myandroiddemo.utils.PixelUtils;
 import com.example.licola.myandroiddemo.utils.WindowsController;
 import com.licola.llogger.LLogger;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -27,8 +29,10 @@ public class AndroidMain {
 
     testDateUtils(context);
 
-//    BlockDetectByPrinter.checkLooper();
-
+    File cacheDir = context.getCacheDir();
+    Uri uriFile = Uri.fromFile(cacheDir);
+    Uri uriHttp = Uri.parse("http://www.github.com");
+    LLogger.d(uriFile,uriHttp);
   }
 
   private static void testClassLoad(Context context) {

@@ -1,87 +1,99 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:orientation="vertical"
   tools:context="com.example.licola.myandroiddemo.frag.AnimateFragment">
-
   <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-      android:id="@+id/btn_seek_run"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="seek动画" />
-
-    <SeekBar
-      android:id="@+id/seekBar"
+    <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="@color/red_normal_A54"
-      android:thumb="@drawable/ic_action_app_white" />
+      android:orientation="vertical">
 
-  </LinearLayout>
+      <Button
+        android:id="@+id/btn_seek_run"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="seek动画" />
 
-  <com.airbnb.lottie.LottieAnimationView
-    android:id="@+id/animation_view"
-    android:layout_width="match_parent"
-    android:layout_height="200dp" />
+      <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/red_normal_A54"
+        android:thumb="@drawable/ic_action_app_white" />
 
-  <FrameLayout
-    android:id="@+id/layout_group_shrink"
-    android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:animateLayoutChanges="true"
-    android:background="@color/red_normal_A54">
+    </LinearLayout>
 
-  </FrameLayout>
-
-  <LinearLayout
-    android:id="@+id/layout_item_group"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/blue_normal_A32"
-    android:orientation="vertical">
-
-    <ImageView
-      android:id="@+id/img_target"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:padding="12dp"
-      android:src="@drawable/ic_action_album" />
-    <Button
-      android:id="@+id/btn_target"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Content" />
-    <ImageView
-      android:id="@+id/img_target_color"
-      android:layout_width="90dp"
-      android:layout_height="90dp"
-      android:background="@color/blue_normal" />
-    <ImageView
-      android:id="@+id/iv_target_drawable"
+    <com.airbnb.lottie.LottieAnimationView
+      android:id="@+id/animation_view"
       android:layout_width="match_parent"
-      android:layout_height="100dp"
-      android:background="@color/blue_normal_A32" />
+      android:layout_height="200dp" />
+
+    <FrameLayout
+      android:id="@+id/layout_group_shrink"
+      android:layout_width="match_parent"
+      android:layout_height="200dp"
+      android:animateLayoutChanges="true"
+      android:background="@color/red_normal_A54">
+
+    </FrameLayout>
+
+    <LinearLayout
+      android:id="@+id/layout_item_group"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/blue_normal_A32"
+      android:orientation="vertical">
+
+      <ImageView
+        android:id="@+id/img_target"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:src="@drawable/ic_action_album" />
+      <Button
+        android:id="@+id/btn_target"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Content" />
+      <ImageView
+        android:id="@+id/img_target_color"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="@color/blue_normal" />
+      <ImageView
+        android:id="@+id/iv_target_drawable"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/blue_normal_A32" />
+      <TextView
+        android:padding="12dp"
+        android:id="@+id/tv_target_alpha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/red_normal_A32"
+        android:text="动画文字" />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <ImageView
+        android:id="@+id/iv_step_target"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:background="@color/blue_normal" />
+
+
+    </LinearLayout>
 
   </LinearLayout>
 
-  <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <ImageView
-      android:id="@+id/iv_step_target"
-      android:layout_width="100dp"
-      android:layout_height="120dp"
-      android:background="@color/blue_normal" />
-
-
-  </LinearLayout>
-
-
-</LinearLayout>
+</android.support.v4.widget.NestedScrollView>

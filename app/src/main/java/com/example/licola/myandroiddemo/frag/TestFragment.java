@@ -1,11 +1,7 @@
 package com.example.licola.myandroiddemo.frag;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.MessageQueue.IdleHandler;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,6 +77,9 @@ public class TestFragment extends BaseFragment {
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(getContext(), ScrollingActivity.class);
+        //传输数据 限制在1MB以下
+//        byte[] value = new byte[1024 * 1024];
+//        intent.putExtra("big", value);
         startActivity(intent);
       }
     });
@@ -103,9 +102,6 @@ public class TestFragment extends BaseFragment {
         }
       }
     });
-
-
-
 
     btnStart.setOnClickListener(new View.OnClickListener() {
 

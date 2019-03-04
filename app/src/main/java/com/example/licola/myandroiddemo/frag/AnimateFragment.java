@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.airbnb.lottie.LottieDrawable;
 import com.example.licola.myandroiddemo.R;
@@ -126,6 +128,12 @@ public class AnimateFragment extends BaseFragment {
         animateDrawable((ImageView) v);
       }
     });
+    rootView.findViewById(R.id.tv_target_alpha).setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        animateAlpha((TextView)v);
+      }
+    });
 
     rootView.findViewById(R.id.iv_step_target).setOnClickListener(new OnClickListener() {
       @Override
@@ -154,6 +162,15 @@ public class AnimateFragment extends BaseFragment {
     });
 
     return rootView;
+  }
+
+  private void animateAlpha(TextView textView) {
+    ObjectAnimator animator = ObjectAnimator.ofFloat(textView, "alpha", 0f, 3f, 0f);
+    animator.setRepeatMode(ValueAnimator.RESTART);
+    animator.setRepeatCount(5);
+    animator.setDuration(4000L);
+    animator.setInterpolator(new FastOutLinearInInterpolator());
+    animator.start();
   }
 
 
