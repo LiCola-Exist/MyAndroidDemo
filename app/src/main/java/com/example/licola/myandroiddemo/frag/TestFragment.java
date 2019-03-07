@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import com.example.licola.myandroiddemo.R;
+import com.example.licola.myandroiddemo.aty.NoDisplayAty;
 import com.example.licola.myandroiddemo.aty.ScrollingActivity;
 import com.example.licola.myandroiddemo.aty.SoftKeyActivity;
 import com.licola.llogger.LLogger;
@@ -88,6 +89,14 @@ public class TestFragment extends BaseFragment {
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(getContext(), SoftKeyActivity.class);
+        startActivity(intent);
+      }
+    });
+
+    rootView.findViewById(R.id.btn_entry_empty).setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(getContext(), NoDisplayAty.class);
         startActivity(intent);
       }
     });

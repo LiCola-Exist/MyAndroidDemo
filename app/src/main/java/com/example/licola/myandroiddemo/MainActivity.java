@@ -85,8 +85,12 @@ import com.licola.route.annotation.Route;
 import com.licola.route.api.Api;
 import com.licola.route.api.RouterApi.Builder;
 import com.tencent.mmkv.MMKV;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.runtime.Permission;
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
@@ -202,6 +206,7 @@ public class MainActivity extends BaseActivity implements
     testMyLib();
     testThirdLib();
 
+    checkPermissionByThird();
     LruCache<String, String> lruCache = new LruCache<>(100);
 
     runOnUiThread(new Runnable() {
@@ -214,6 +219,24 @@ public class MainActivity extends BaseActivity implements
 
 //    initLocation();
 
+  }
+
+  private void checkPermissionByThird() {
+    AndPermission.with(mContext)
+        .runtime()
+        .permission(Permission.WRITE_EXTERNAL_STORAGE)
+        .onGranted(new Action<List<String>>() {
+          @Override
+          public void onAction(List<String> permissions) {
+            LLogger.d(permissions);
+          }
+        })
+        .onDenied(new Action<List<String>>() {
+          @Override
+          public void onAction(List<String> permissions) {
+            LLogger.d(permissions);
+          }
+        }).start();
   }
 
   @Override

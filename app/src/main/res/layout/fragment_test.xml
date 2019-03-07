@@ -51,6 +51,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="entry-soft-key-aty" />
+  <Button
+    android:id="@+id/btn_entry_empty"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="entry-empty-aty" />
 
   <TextView
     android:id="@+id/tv_shadow"

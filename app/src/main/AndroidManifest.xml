@@ -193,6 +193,9 @@
       </intent-filter>
 
     </activity>
+    <activity
+      android:theme="@style/AppTheme.OverLay"
+      android:name=".aty.NoDisplayAty" />
 
     <provider
       android:authorities="com.example.licola.myandroiddemo.fileprovider"

@@ -132,7 +132,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     //权限适配工具
-    implementation 'com.yanzhenjie:permission:2.0.0-rc4'
+    implementation 'com.yanzhenjie.permission:support:2.0.1'
 
     implementation 'io.apptik.widget:multislider-holo:1.3'
 
