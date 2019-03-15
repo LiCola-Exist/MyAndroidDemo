@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.graphics.drawable.AnimationDrawable;
@@ -20,16 +21,17 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.airbnb.lottie.LottieDrawable;
 import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.utils.PixelUtils;
+import com.example.licola.myandroiddemo.view.widget.InterpolatorExplainView;
 import com.licola.llogger.LLogger;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass. Use the {@link AnimateFragment#newInstance} factory method to
@@ -68,6 +70,8 @@ public class AnimateFragment extends BaseFragment {
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
     View rootView = inflater.inflate(R.layout.fragment_animate, container, false);
+
+    LinearLayout layoutLinearGroup = rootView.findViewById(R.id.layout_linear_group);
 
     SeekBar seekBar = rootView.findViewById(R.id.seekBar);
     Button btnSeek = rootView.findViewById(R.id.btn_seek_run);
@@ -131,7 +135,7 @@ public class AnimateFragment extends BaseFragment {
     rootView.findViewById(R.id.tv_target_alpha).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        animateAlpha((TextView)v);
+        animateAlpha((TextView) v);
       }
     });
 
@@ -161,7 +165,39 @@ public class AnimateFragment extends BaseFragment {
       }
     });
 
+    addInterpolatorView(layoutLinearGroup, PixelUtils.getScreenWidth(getContext()));
+
     return rootView;
+  }
+
+  private void addInterpolatorView(LinearLayout layoutGroup, int maxWidth) {
+    final InterpolatorExplainView interpolatorExplainView = new InterpolatorExplainView(
+        getContext());
+
+    interpolatorExplainView.setBackgroundResource(R.color.black_normal_A32);
+
+    interpolatorExplainView.setOnClickListener(new OnClickListener() {
+
+      int flag = 0;
+
+      @Override
+      public void onClick(View v) {
+        if (v instanceof InterpolatorExplainView) {
+          TimeInterpolator interpolator = ((InterpolatorExplainView) v).getInterpolatorByFlag(flag);
+          if (interpolator == null) {
+            flag = 0;
+            Toast.makeText(getContext(), "已经遍历到底", Toast.LENGTH_SHORT).show();
+          } else {
+            flag++;
+            ((InterpolatorExplainView) v).startPathAnimator(interpolator);
+          }
+        }
+      }
+    });
+
+    layoutGroup.addView(interpolatorExplainView,
+        new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, maxWidth));
+
   }
 
   private void animateAlpha(TextView textView) {
@@ -176,7 +212,7 @@ public class AnimateFragment extends BaseFragment {
 
   private void runSeek(SeekBar seekBar) {
 
-    long gap=20;
+    long gap = 20;
 
     final Runnable runnable = new Runnable() {
       @Override
@@ -192,14 +228,14 @@ public class AnimateFragment extends BaseFragment {
     seekBar.postDelayed(runnable, gap);
   }
 
-  private void animatorSeek(SeekBar seekBar){
+  private void animatorSeek(SeekBar seekBar) {
 
-    ValueAnimator animator=ValueAnimator.ofInt(0,20)
+    ValueAnimator animator = ValueAnimator.ofInt(0, 20)
         .setDuration(1000);
     animator.addUpdateListener(new AnimatorUpdateListener() {
       @Override
       public void onAnimationUpdate(ValueAnimator animation) {
-        int value= (int) animation.getAnimatedValue();
+        int value = (int) animation.getAnimatedValue();
         LLogger.d(value);
         seekBar.setProgress(value);
       }

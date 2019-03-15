@@ -17,10 +17,10 @@ import com.licola.llogger.LLogger;
 
 
 /**
- * A simple {@link Fragment} subclass. Use the {@link DialogOperateFragment#newInstance} factory
+ * A simple {@link Fragment} subclass. Use the {@link DialogShowFragment#newInstance} factory
  * method to create an instance of this fragment.
  */
-public class DialogOperateFragment extends BaseFragment {
+public class DialogShowFragment extends BaseFragment {
 
   // TODO: Rename parameter arguments, choose names that match
   // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,7 +29,7 @@ public class DialogOperateFragment extends BaseFragment {
   // TODO: Rename and change types of parameters
   private String mParam1;
 
-  public DialogOperateFragment() {
+  public DialogShowFragment() {
     // Required empty public constructor
   }
 
@@ -41,8 +41,8 @@ public class DialogOperateFragment extends BaseFragment {
    * @return A new instance of fragment DialogOperateFragment.
    */
   // TODO: Rename and change types and number of parameters
-  public static DialogOperateFragment newInstance(String param1) {
-    DialogOperateFragment fragment = new DialogOperateFragment();
+  public static DialogShowFragment newInstance(String param1) {
+    DialogShowFragment fragment = new DialogShowFragment();
     Bundle args = new Bundle();
     args.putString(ARG_PARAM1, param1);
     fragment.setArguments(args);

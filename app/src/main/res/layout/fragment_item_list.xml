@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/swipe_refresh"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
-  <view
-    android:id="@+id/list"
-    class="com.example.licola.myandroiddemo.frag.ListFragment$MyRecyclerView"
+
+  <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:name="com.example.licola.myandroiddemo.ItemFragment"
-    app:layoutManager="LinearLayoutManager"
-    tools:context="com.example.licola.myandroiddemo.frag.ListFragment"
-    tools:listitem="@layout/fragment_item" />
+    android:background="@color/red_normal_A32">
 
+    <com.example.licola.myandroiddemo.view.widget.FixFlingRecyclerView
+      android:id="@+id/list"
+      android:layout_width="match_parent"
+      android:layout_height="200dp"
+      android:background="@color/red_normal_A32"
+      android:name="com.example.licola.myandroiddemo.ItemFragment"
+      tools:context="com.example.licola.myandroiddemo.frag.RecyclerViewFragment"
+      tools:listitem="@layout/fragment_item" />
+
+
+  </FrameLayout>
 </android.support.v4.widget.SwipeRefreshLayout>
 

@@ -5,6 +5,7 @@
   android:layout_height="match_parent"
   tools:context="com.example.licola.myandroiddemo.frag.AnimateFragment">
   <LinearLayout
+    android:id="@+id/layout_linear_group"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -90,7 +91,6 @@
         android:layout_width="100dp"
         android:layout_height="120dp"
         android:background="@color/blue_normal" />
-
 
     </LinearLayout>
 

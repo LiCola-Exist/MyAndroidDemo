@@ -1,6 +1,5 @@
 package com.example.licola.myandroiddemo.frag;
 
-import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -22,11 +21,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.Toast;
+import android.widget.TextView;
 import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.utils.PixelUtils;
 import com.example.licola.myandroiddemo.view.widget.CanvasDemoView;
-import com.example.licola.myandroiddemo.view.widget.InterpolatorExplainView;
 import com.example.licola.myandroiddemo.view.widget.ShaderDemoView;
 import com.example.licola.myandroiddemo.view.widget.TextCaptionView;
 import com.licola.llogger.LLogger;
@@ -35,25 +33,23 @@ import com.licola.llogger.LLogger;
  * Created by 李可乐 on 2016/12/9 0009.
  */
 
-public class ViewFragment extends BaseFragment {
+public class ViewDrawFragment extends BaseFragment {
 
   private static final String ARG_SECTION_KEY = "section_key";
 
-  public ViewFragment() {
+  public ViewDrawFragment() {
   }
 
   /**
    * Returns a new instance of this fragment for the given section number.
    */
-  public static ViewFragment newInstance(String key) {
-    ViewFragment fragment = new ViewFragment();
+  public static ViewDrawFragment newInstance(String key) {
+    ViewDrawFragment fragment = new ViewDrawFragment();
     Bundle args = new Bundle();
     args.putString(ARG_SECTION_KEY, key);
     fragment.setArguments(args);
     return fragment;
   }
-
-  int flag = 0;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,21 +63,34 @@ public class ViewFragment extends BaseFragment {
 //          }
 //        });
 
-
     final View rootView = inflater.inflate(R.layout.fragment_view, container, false);
+
     final LinearLayout layoutGroup = rootView.findViewById(R.id.layout_group);
 
     final int screenWidth = PixelUtils.getScreenWidth(getContext());
 
-    handleTouch((NestedScrollView) rootView, (ViewGroup) rootView.findViewById(R.id.layout_touche));
+    handleTouch((NestedScrollView) rootView, rootView.findViewById(R.id.layout_touche));
 
-    addTextCaptionView((ViewGroup) rootView.findViewById(R.id.layout_draw_group), screenWidth);
+    addTextCaptionView(rootView.findViewById(R.id.layout_draw_group), screenWidth);
 
-    addInterpolatorView(layoutGroup, screenWidth);
     addCanvasView(layoutGroup, screenWidth);
     addShaderView(layoutGroup, screenWidth);
 
+    bindAutoSize(rootView.findViewById(R.id.tv_auto_size));
+
     return rootView;
+  }
+
+  private void bindAutoSize(TextView tvAutoSize) {
+    tvAutoSize.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        ViewGroup.LayoutParams layoutParams = tvAutoSize.getLayoutParams();
+        layoutParams.height -= 50;
+        layoutParams.width -= 50;
+        tvAutoSize.setLayoutParams(layoutParams);
+      }
+    });
   }
 
   private void addTextCaptionView(final ViewGroup layoutGroup, final int maxWidth) {
@@ -105,7 +114,8 @@ public class ViewFragment extends BaseFragment {
     textCaptionView.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "font.ttf"));
     textCaptionView.setBackgroundResource(R.color.black_normal_A12);
 
-    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+        ViewGroup.LayoutParams.WRAP_CONTENT,
         ViewGroup.LayoutParams.WRAP_CONTENT);
     layoutParams.gravity = Gravity.CENTER;
 
@@ -144,33 +154,6 @@ public class ViewFragment extends BaseFragment {
         new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, maxWidth));
   }
 
-  private void addInterpolatorView(LinearLayout layoutGroup, int maxWidth) {
-    final InterpolatorExplainView interpolatorExplainView = new InterpolatorExplainView(
-        getContext());
-
-    interpolatorExplainView.setBackgroundResource(R.color.black_normal_A32);
-
-    interpolatorExplainView.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        if (v instanceof InterpolatorExplainView) {
-          TimeInterpolator interpolator = ((InterpolatorExplainView) v).getInterpolatorByFlag(flag);
-          if (interpolator == null) {
-            flag = 0;
-            Toast.makeText(getContext(), "已经遍历到底", Toast.LENGTH_SHORT).show();
-          } else {
-            flag++;
-            ((InterpolatorExplainView) v).startPathAnimator(interpolator);
-          }
-        }
-      }
-    });
-
-    layoutGroup.addView(interpolatorExplainView,
-        new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, maxWidth));
-
-  }
-
   private void addCanvasView(LinearLayout layoutGroup, int maxWidth) {
     final View canvasView = new CanvasDemoView(getContext());
 
@@ -185,7 +168,6 @@ public class ViewFragment extends BaseFragment {
       @Override
       public void onClick(View v) {
         LLogger.d("响应了 点击事件");
-
       }
     });
 
@@ -198,7 +180,7 @@ public class ViewFragment extends BaseFragment {
         Bitmap screenShotBitmap = getScrollViewBitmap(rootView);
         imageView.setImageBitmap(screenShotBitmap);
 
-        rootView.addView(imageView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        touch.addView(imageView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT));
         return true;
       }
@@ -228,7 +210,9 @@ public class ViewFragment extends BaseFragment {
     }
     bitmap = Bitmap.createBitmap(scrollView.getWidth(), height, Config.ARGB_8888);
     final Canvas canvas = new Canvas(bitmap);
+    //用view绘制到canvas画布上
     scrollView.draw(canvas);
+    //返回有内容的bitmap
     return bitmap;
   }
 

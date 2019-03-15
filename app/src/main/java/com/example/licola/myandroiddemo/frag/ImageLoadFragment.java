@@ -26,20 +26,20 @@ import java.io.ByteArrayOutputStream;
 /**
  *
  */
-public class ImageViewFragment extends BaseFragment {
+public class ImageLoadFragment extends BaseFragment {
 
   private static final String ARG_PARAM1 = "param1";
 
   // TODO: Rename and change types of parameters
   private String mParam1;
 
-  public ImageViewFragment() {
+  public ImageLoadFragment() {
     // Required empty public constructor
   }
 
 
-  public static ImageViewFragment newInstance(String param1) {
-    ImageViewFragment fragment = new ImageViewFragment();
+  public static ImageLoadFragment newInstance(String param1) {
+    ImageLoadFragment fragment = new ImageLoadFragment();
     Bundle args = new Bundle();
     args.putString(ARG_PARAM1, param1);
     fragment.setArguments(args);

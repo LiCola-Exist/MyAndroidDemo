@@ -11,7 +11,6 @@ import com.licola.llogger.LLogger;
 
 public class MainLocalBroadcastReceiver extends BroadcastReceiver {
 
-
   @Override
   public void onReceive(Context context, Intent intent) {
     LLogger.d(intent.getAction());

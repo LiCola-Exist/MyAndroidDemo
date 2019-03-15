@@ -9,6 +9,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/tv_auto_size"
+      android:layout_width="100dp"
+      android:layout_height="100dp"
+      android:autoSizeMaxTextSize="40dp"
+      android:autoSizeMinTextSize="12dp"
+      android:autoSizeStepGranularity="1dp"
+      android:autoSizeTextType="uniform"
+      android:background="@color/red_normal_A32"
+      android:text="很长的文字" />
+
     <com.example.licola.myandroiddemo.view.widget.TickView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -29,21 +41,20 @@
     </LinearLayout>
 
     <FrameLayout
-      android:background="@color/blue_normal_A12"
       android:id="@+id/layout_draw_group"
       android:layout_width="match_parent"
-      android:layout_height="400dp"
-      android:minHeight="120dp"
-      >
+      android:layout_height="300dp"
+      android:background="@color/blue_normal_A12"
+      android:minHeight="120dp">
 
       <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_gravity="center_horizontal|top"
         android:background="@color/blue_normal_A12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:gravity="center"
         android:maxWidth="20dp"
         android:text="Caption字幕123"

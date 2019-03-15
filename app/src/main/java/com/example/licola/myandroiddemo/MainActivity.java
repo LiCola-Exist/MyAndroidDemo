@@ -4,7 +4,6 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.location.GpsStatus;
@@ -22,7 +21,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.util.LruCache;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -46,33 +44,30 @@ import com.example.licola.myandroiddemo.dagger.UserModel;
 import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
 import com.example.licola.myandroiddemo.frag.AnimateFragment;
 import com.example.licola.myandroiddemo.frag.BaseFragment;
-import com.example.licola.myandroiddemo.frag.BottomSheetFragment;
+import com.example.licola.myandroiddemo.frag.BroadcastFragment;
 import com.example.licola.myandroiddemo.frag.ConstraintLayoutFragment;
 import com.example.licola.myandroiddemo.frag.DaoFragment;
-import com.example.licola.myandroiddemo.frag.DialogOperateFragment;
+import com.example.licola.myandroiddemo.frag.DialogShowFragment;
 import com.example.licola.myandroiddemo.frag.DownLoadFragment;
 import com.example.licola.myandroiddemo.frag.HttpFragment;
 import com.example.licola.myandroiddemo.frag.IOFragment;
-import com.example.licola.myandroiddemo.frag.ImageViewFragment;
+import com.example.licola.myandroiddemo.frag.ImageLoadFragment;
 import com.example.licola.myandroiddemo.frag.LayoutFragment;
-import com.example.licola.myandroiddemo.frag.ListFragment;
-import com.example.licola.myandroiddemo.frag.ListFragment.OnListFragmentListener;
-import com.example.licola.myandroiddemo.frag.ModuleFragment;
 import com.example.licola.myandroiddemo.frag.ProcessViewFragment;
-import com.example.licola.myandroiddemo.frag.RecyclerFragment;
+import com.example.licola.myandroiddemo.frag.RecyclerAdapterFragment;
+import com.example.licola.myandroiddemo.frag.RecyclerViewFragment;
+import com.example.licola.myandroiddemo.frag.RecyclerViewFragment.OnListFragmentListener;
 import com.example.licola.myandroiddemo.frag.SocketFragment;
 import com.example.licola.myandroiddemo.frag.TestFragment;
-import com.example.licola.myandroiddemo.frag.TextFragment;
 import com.example.licola.myandroiddemo.frag.ThreadFragment;
 import com.example.licola.myandroiddemo.frag.ToastFragment;
-import com.example.licola.myandroiddemo.frag.ViewFragment;
+import com.example.licola.myandroiddemo.frag.ViewDrawFragment;
 import com.example.licola.myandroiddemo.frag.WebViewFragment;
 import com.example.licola.myandroiddemo.frag.XmlFragment;
 import com.example.licola.myandroiddemo.java.JavaMain;
 import com.example.licola.myandroiddemo.location.LocationHelper;
 import com.example.licola.myandroiddemo.location.MyLocationListener;
 import com.example.licola.myandroiddemo.messenger.MessengerService;
-import com.example.licola.myandroiddemo.receiver.MainLocalBroadcastReceiver;
 import com.example.licola.myandroiddemo.rxjava.RxJava;
 import com.example.licola.myandroiddemo.thread.MyHandler;
 import com.example.licola.myandroiddemo.thread.ThreadWork;
@@ -89,8 +84,13 @@ import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
@@ -126,13 +126,31 @@ public class MainActivity extends BaseActivity implements
   static Boolean value2 = false;
   static Boolean value3 = new Boolean(true);
 
-  static final String[] titles = {"BottomSheetFragment", "Test", "View", "Download", "Xml",
-      "Constraint", "MyRecyclerView", "Animate", "ProgressView", "Module", "ImageView", "IO",
-      "Socket", "Thread", "Recycler", "Dao", "layout", "WebView", "Text", "Http", "Toast",
-      "Dialog"};
 
-  MainLocalBroadcastReceiver receiver;
-
+  private static Map<String, Class> loadMap() {
+    Map<String, Class> map = new LinkedHashMap<>();
+    map.put("主测试Test", TestFragment.class);
+    map.put("ViewDraw", ViewDrawFragment.class);
+    map.put("Download组件", DownLoadFragment.class);
+    map.put("Xml解析", XmlFragment.class);
+    map.put("Layout布局", LayoutFragment.class);
+    map.put("Constraint布局", ConstraintLayoutFragment.class);
+    map.put("RecyclerView布局", RecyclerViewFragment.class);
+    map.put("RecyclerAdapter数据", RecyclerAdapterFragment.class);
+    map.put("Animate动画", AnimateFragment.class);
+    map.put("ProgressAnimate动画", ProcessViewFragment.class);
+    map.put("Broadcast广播/本地广播", BroadcastFragment.class);
+    map.put("IO", IOFragment.class);
+    map.put("Socket", SocketFragment.class);
+    map.put("Thread/Handler", ThreadFragment.class);
+    map.put("图片加载", ImageLoadFragment.class);
+    map.put("Dao数据库", DaoFragment.class);
+    map.put("WebView", WebViewFragment.class);
+    map.put("Http", HttpFragment.class);
+    map.put("Toast提示", ToastFragment.class);
+    map.put("Dialog弹框", DialogShowFragment.class);
+    return map;
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +167,7 @@ public class MainActivity extends BaseActivity implements
     // primary sections of the activity.
 
     FragmentManager fragmentManager = getSupportFragmentManager();
-    mSectionsPagerAdapter = new SectionsPagerAdapter(fragmentManager, titles.length);
+    mSectionsPagerAdapter = new SectionsPagerAdapter(fragmentManager, loadMap());
     // Set up the ViewPager with the sections adapter.
     mViewPager = findViewById(R.id.container);
     mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -161,22 +179,8 @@ public class MainActivity extends BaseActivity implements
       @Override
       public void run() {
 //        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-//        mViewPager.setCurrentItem(findTitlePosition("WebView"));
-        mViewPager.setCurrentItem(7);
-      }
-
-      private int findTitlePosition(String target) {
-
-        int index = 0;
-        for (String title : titles) {
-
-          if (title.toLowerCase().contains(target.toLowerCase())) {
-            return index;
-          }
-          index++;
-        }
-
-        return 0;
+        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("RecyclerView"));
+//        mViewPager.setCurrentItem(6);
       }
     });
 
@@ -186,8 +190,6 @@ public class MainActivity extends BaseActivity implements
     activityBindService();
 
     testSystemInfo();
-
-    testLocalBroad();
 
     testLifeCycle();
 
@@ -386,11 +388,6 @@ public class MainActivity extends BaseActivity implements
     MyLifeCycleObserver.addObserver(this);
   }
 
-  private void testLocalBroad() {
-    receiver = new MainLocalBroadcastReceiver();
-    LocalBroadcastManager.getInstance(this)
-        .registerReceiver(receiver, new IntentFilter(Intent.ACTION_PICK_ACTIVITY));
-  }
 
   private void testSystemInfo() {
     String uuId = UUID.randomUUID().toString();
@@ -451,7 +448,6 @@ public class MainActivity extends BaseActivity implements
   protected void onDestroy() {
     unbindService(mConnection);
     super.onDestroy();
-    LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
   }
 
 
@@ -517,85 +513,23 @@ public class MainActivity extends BaseActivity implements
    */
   public static class SectionsPagerAdapter extends FragmentPagerRebuildAdapter<BaseFragment> {
 
+    private Map<String, Class> classMap;
 
-    public SectionsPagerAdapter(FragmentManager fm, int pageSize) {
-      super(fm, pageSize);
+    private List<String> keyTitles;
+
+    public SectionsPagerAdapter(FragmentManager fm, Map<String, Class> classMap) {
+      super(fm, classMap.size());
+      this.classMap = classMap;
+      keyTitles = new ArrayList<>(classMap.keySet());
     }
 
     @Override
     protected BaseFragment createFragment(int position) {
-      BaseFragment fragment = null;
-      String title = titles[position];
-      switch (position) {
-        case 0:
-          fragment = BottomSheetFragment.newInstance(title);
-          break;
-        case 1:
-          fragment = TestFragment.newInstance(title);
-          break;
-        case 2:
-          fragment = ViewFragment.newInstance(title);
-          break;
-        case 3:
-          fragment = DownLoadFragment.newInstance(title);
-          break;
-        case 4:
-          fragment = XmlFragment.newInstance(title);
-          break;
-        case 5:
-          fragment = ConstraintLayoutFragment.newInstance(title);
-          break;
-        case 6:
-          fragment = ListFragment.newInstance(1);
-          break;
-        case 7:
-          fragment = AnimateFragment.newInstance(title);
-          break;
-        case 8:
-          fragment = ProcessViewFragment.newInstance(title);
-          break;
-        case 9:
-          fragment = ModuleFragment.newInstance(title);
-          break;
-        case 10:
-          fragment = ImageViewFragment.newInstance(title);
-          break;
-        case 11:
-          fragment = IOFragment.newInstance(title);
-          break;
-        case 12:
-          fragment = SocketFragment.newInstance(title);
-          break;
-        case 13:
-          fragment = ThreadFragment.newInstance(title);
-          break;
-        case 14:
-          fragment = RecyclerFragment.newInstance(title, 1);
-          break;
-        case 15:
-          fragment = DaoFragment.newInstance(title);
-          break;
-        case 16:
-          fragment = LayoutFragment.newInstance(title);
-          break;
-        case 17:
-          fragment = WebViewFragment.newInstance(title);
-          break;
-        case 18:
-          fragment = TextFragment.newInstance(title);
-          break;
-        case 19:
-          fragment = HttpFragment.newInstance(title);
-          break;
-        case 20:
-          fragment = ToastFragment.newInstance(title);
-          break;
-        case 21:
-          fragment = DialogOperateFragment.newInstance(title);
-          break;
-      }
+      String key = keyTitles.get(position);
 
-      return fragment;
+      Class targetClass = classMap.get(key);
+
+      return invokeFragmentInstance(key, targetClass);
     }
 
     @Override
@@ -605,7 +539,40 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public CharSequence getPageTitle(int position) {
-      return titles[position];
+
+      return keyTitles.get(position);
     }
+
+    public int getPositionByName(String name) {
+      for (int i = 0; i < keyTitles.size(); i++) {
+        String title = keyTitles.get(i);
+        if (title.toLowerCase().contains(name.toLowerCase())) {
+          return i;
+        }
+      }
+      return 0;
+    }
+  }
+
+  private static BaseFragment invokeFragmentInstance(String key, Class targetClass) {
+
+    Method newInstanceMethod = null;
+    try {
+      newInstanceMethod = targetClass.getDeclaredMethod("newInstance", String.class);
+    } catch (NoSuchMethodException e) {
+      e.printStackTrace();
+    }
+    Object fragment = null;
+    try {
+      fragment = newInstanceMethod.invoke(null, key);
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    } catch (InvocationTargetException e) {
+      e.printStackTrace();
+    }
+    if (fragment instanceof BaseFragment) {
+      return (BaseFragment) fragment;
+    }
+    throw new IllegalArgumentException("错误的key-value配置");
   }
 }

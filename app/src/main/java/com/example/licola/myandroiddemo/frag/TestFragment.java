@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import com.example.licola.myandroiddemo.R;
+import com.example.licola.myandroiddemo.aty.BottomSheetActivity;
 import com.example.licola.myandroiddemo.aty.NoDisplayAty;
 import com.example.licola.myandroiddemo.aty.ScrollingActivity;
 import com.example.licola.myandroiddemo.aty.SoftKeyActivity;
@@ -63,10 +64,6 @@ public class TestFragment extends BaseFragment {
     btnTest = rootView.findViewById(R.id.btn_test);
     txtResult = rootView.findViewById(R.id.txt_result);
 
-    TextView tvShadow = rootView.findViewById(R.id.tv_shadow);
-    tvShadow.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-//    tvShadow.setShadowLayer(10, 1, 1, Color.BLACK);
-
     rootView.findViewById(R.id.btn_value).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -81,6 +78,14 @@ public class TestFragment extends BaseFragment {
         //传输数据 限制在1MB以下
 //        byte[] value = new byte[1024 * 1024];
 //        intent.putExtra("big", value);
+        startActivity(intent);
+      }
+    });
+
+    rootView.findViewById(R.id.btn_entry_scroll).setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(getContext(), BottomSheetActivity.class);
         startActivity(intent);
       }
     });

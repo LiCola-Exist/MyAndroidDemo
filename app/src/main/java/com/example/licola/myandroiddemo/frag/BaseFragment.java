@@ -106,7 +106,6 @@ public class BaseFragment extends Fragment {
     if (isLife()) {
       LLogger.d(this);
     }
-    MyApplication.getRefWatcher(getActivity()).watch(this);
   }
 
   @Override

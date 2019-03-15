@@ -2,6 +2,7 @@ package com.example.licola.myandroiddemo.frag;
 
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,14 +12,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import com.example.licola.myandroiddemo.R;
+import com.example.licola.myandroiddemo.receiver.MainLocalBroadcastReceiver;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ModuleFragment#newInstance} factory method to
+ * Use the {@link BroadcastFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ModuleFragment extends BaseFragment {
+public class BroadcastFragment extends BaseFragment {
 
   View viewRoot;
 
@@ -29,8 +31,10 @@ public class ModuleFragment extends BaseFragment {
   // TODO: Rename and change types of parameters
   private String mParam1;
 
+  MainLocalBroadcastReceiver receiver;
 
-  public ModuleFragment() {
+
+  public BroadcastFragment() {
     // Required empty public constructor
   }
 
@@ -42,8 +46,8 @@ public class ModuleFragment extends BaseFragment {
    * @return A new instance of fragment ModuleFragment.
    */
   // TODO: Rename and change types and number of parameters
-  public static ModuleFragment newInstance(String param1) {
-    ModuleFragment fragment = new ModuleFragment();
+  public static BroadcastFragment newInstance(String param1) {
+    BroadcastFragment fragment = new BroadcastFragment();
     Bundle args = new Bundle();
     args.putString(ARG_PARAM1, param1);
     fragment.setArguments(args);
@@ -77,5 +81,15 @@ public class ModuleFragment extends BaseFragment {
             .sendBroadcast(new Intent(Intent.ACTION_PICK_ACTIVITY));
       }
     });
+
+    receiver = new MainLocalBroadcastReceiver();
+    LocalBroadcastManager.getInstance(getContext())
+        .registerReceiver(receiver, new IntentFilter(Intent.ACTION_PICK_ACTIVITY));
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
   }
 }

@@ -1,16 +1,13 @@
 package com.example.licola.myandroiddemo.adapter;
 
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.example.licola.myandroiddemo.frag.ListFragment.OnListFragmentListener;
 import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
-
+import com.example.licola.myandroiddemo.frag.RecyclerViewFragment.OnListFragmentListener;
 import com.licola.llogger.LLogger;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +35,6 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     View view =
         LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_item, parent, false);
 
-
     return new ViewHolder(view);
   }
 
@@ -47,7 +43,6 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     holder.mItem = mValues.get(position);
     holder.mIdView.setText(mValues.get(position).id);
     holder.mContentView.setText(mValues.get(position).content);
-    holder.itemView.setBackgroundColor(Color.argb(255,50*(position%5),0,0));
     holder.mView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         if (null != mListener) {

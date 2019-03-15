@@ -9,8 +9,6 @@ import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnFlingListener;
-import android.support.v7.widget.RecyclerView.OnScrollListener;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,12 +25,10 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentListener}
  * interface.
  */
-public class ListFragment extends BaseFragment {
+public class RecyclerViewFragment extends BaseFragment {
 
-  // TODO: Customize parameter argument names
-  private static final String ARG_COLUMN_COUNT = "column-count";
+  private static final String ARG_KEY = "key:title";
   // TODO: Customize parameters
-  private int mColumnCount = 1;
   private OnListFragmentListener mListener;
   private MyItemRecyclerViewAdapter adapter;
 
@@ -45,15 +41,13 @@ public class ListFragment extends BaseFragment {
    * Mandatory empty constructor for the fragment manager to instantiate the
    * fragment (e.g. upon screen orientation changes).
    */
-  public ListFragment() {
+  public RecyclerViewFragment() {
   }
 
-  // TODO: Customize parameter initialization
-  @SuppressWarnings("unused")
-  public static ListFragment newInstance(int columnCount) {
-    ListFragment fragment = new ListFragment();
+  public static RecyclerViewFragment newInstance(String content) {
+    RecyclerViewFragment fragment = new RecyclerViewFragment();
     Bundle args = new Bundle();
-    args.putInt(ARG_COLUMN_COUNT, columnCount);
+    args.putString(ARG_KEY, content);
     fragment.setArguments(args);
     return fragment;
   }
@@ -61,18 +55,14 @@ public class ListFragment extends BaseFragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-//    if (getArguments() != null) {
-//      mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-//    }
   }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_item_list, container, false);
-    recyclerView = (RecyclerView) view.findViewById(R.id.list);
-    swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+    recyclerView = view.findViewById(R.id.list);
+    swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
 
     swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
       @Override
@@ -86,21 +76,13 @@ public class ListFragment extends BaseFragment {
 
     Context context = view.getContext();
 
-    layoutManager = new LinearLayoutManager(context);
+    layoutManager = new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false);
     recyclerView.setLayoutManager(layoutManager);
 
-//    if (mColumnCount <= 1) {
-//      recyclerView.setLayoutManager(new LinearLayoutManager(context));
-//    } else {
-//      recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-//    }
     adapter = new MyItemRecyclerViewAdapter(mListener);
     recyclerView.setAdapter(adapter);
     adapter.initData(DummyContent.ITEMS);
-
-    recyclerView.addOnScrollListener(new MyScrollListener(layoutManager));
-
-    recyclerView.setOnFlingListener(new MyFlingListener());
+//    recyclerView.setOnFlingListener(new MyFlingListener());
 
     return view;
   }
@@ -144,7 +126,6 @@ public class ListFragment extends BaseFragment {
    */
   public interface OnListFragmentListener {
 
-    // TODO: Update argument type and name
     void onListFragmentInteraction(DummyItem item);
   }
 
@@ -183,100 +164,6 @@ public class ListFragment extends BaseFragment {
     public Object getChangePayload(int oldItemPosition, int newItemPosition) {
 
       return null;
-    }
-  }
-
-  private static class MyScrollListener extends OnScrollListener {
-
-    private int sumDy = 0;
-
-    private boolean canScroll = false;
-
-    private LinearLayoutManager layoutManager;
-
-
-    public MyScrollListener(LinearLayoutManager layoutManager) {
-      this.layoutManager = layoutManager;
-    }
-
-    @Override
-    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-      super.onScrollStateChanged(recyclerView, newState);
-      LLogger.d(newState);
-      if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-        canScroll = false;
-        int position = layoutManager.findFirstVisibleItemPosition();
-        View viewByPosition = layoutManager.findViewByPosition(position);
-        int top = Math.abs(viewByPosition.getTop());
-        if (top == 0) {
-          return;
-        }
-
-        if ((recyclerView.getHeight() / 3) < top) {
-          ++position;
-        }
-        LLogger.d("放手了", layoutManager.findFirstVisibleItemPosition(), viewByPosition.getTop(),
-            position);
-
-        recyclerView.smoothScrollToPosition(position);
-      } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-        canScroll = true;
-      } else if (newState == RecyclerView.SCROLL_STATE_SETTLING) {
-        canScroll = false;
-      }
-    }
-
-    @Override
-    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-      super.onScrolled(recyclerView, dx, dy);
-//      sumDy += dy;
-//      LLogger.d(dy,sumDy);
-//      if (canScroll) {
-//        int position = sumDy / recyclerView.getHeight();
-//        if (dy>0){
-//          position++;
-//        }else {
-//        }
-//        recyclerView.smoothScrollToPosition(position);
-//        LLogger.d(dy, sumDy, position);
-//      }
-    }
-  }
-
-  public static final class MyRecyclerView extends android.support.v7.widget.RecyclerView {
-
-    public MyRecyclerView(Context context) {
-      super(context);
-      init();
-    }
-
-    public MyRecyclerView(Context context, @Nullable AttributeSet attrs) {
-      super(context, attrs);
-      init();
-    }
-
-    public MyRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
-      super(context, attrs, defStyle);
-      init();
-    }
-
-    private void init() {
-//      try {
-//        Field mMaxFlingVelocity = RecyclerView.class.getDeclaredField("mMaxFlingVelocity");
-//        mMaxFlingVelocity.setAccessible(true);
-//        mMaxFlingVelocity.setInt(this, (int) (getMaxFlingVelocity() / 2));
-//        LLogger.d("修改滑动速度", getMaxFlingVelocity());
-//      } catch (NoSuchFieldException | IllegalAccessException e) {
-//        e.printStackTrace();
-//      }
-
-    }
-
-
-    @Override
-    public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
-//      return super.onNestedPreFling(target, velocityX, velocityY);
-      return true;
     }
   }
 

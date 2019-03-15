@@ -30,26 +30,24 @@ import java.util.List;
  * A fragment representing a list of Items. <p /> Activities containing this fragment MUST
  * implement
  */
-public class RecyclerFragment extends BaseFragment {
+public class RecyclerAdapterFragment extends BaseFragment {
 
   private static final String ARG_TITLE = "title";
-  private static final String ARG_COLUMN_COUNT = "column-count";
   private int mColumnCount = 1;
 
   /**
    * Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon
    * screen orientation changes).
    */
-  public RecyclerFragment() {
+  public RecyclerAdapterFragment() {
   }
 
   // TODO: Customize parameter initialization
   @SuppressWarnings("unused")
-  public static RecyclerFragment newInstance(String title, int columnCount) {
-    RecyclerFragment fragment = new RecyclerFragment();
+  public static RecyclerAdapterFragment newInstance(String title) {
+    RecyclerAdapterFragment fragment = new RecyclerAdapterFragment();
     Bundle args = new Bundle();
     args.putString(ARG_TITLE, title);
-    args.putInt(ARG_COLUMN_COUNT, columnCount);
     fragment.setArguments(args);
     return fragment;
   }
@@ -58,9 +56,6 @@ public class RecyclerFragment extends BaseFragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    if (getArguments() != null) {
-      mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-    }
   }
 
   @Override

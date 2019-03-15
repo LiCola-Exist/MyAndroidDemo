@@ -20,7 +20,7 @@ import org.greenrobot.eventbus.EventBus;
 
 public class MyApplication extends Application {
 
-  private RefWatcher refWatcher;
+  private static final boolean CHECK_LEAK=false;
 
   @Override
   protected void attachBaseContext(Context base) {
@@ -56,18 +56,15 @@ public class MyApplication extends Application {
         .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
         .build());
 
-    //内存检测工具
-    if (!LeakCanary.isInAnalyzerProcess(this)) {
-      refWatcher = LeakCanary.install(this);
+    if (CHECK_LEAK){
+      //内存检测工具
+      if (!LeakCanary.isInAnalyzerProcess(this)) {
+        LeakCanary.install(this);
+      }
     }
 
     BlockCanary.install(this, new AppBlockCanaryContext()).start();
 
-  }
-
-  public static RefWatcher getRefWatcher(Context context) {
-    MyApplication applicationContext = (MyApplication) context.getApplicationContext();
-    return applicationContext.refWatcher;
   }
 
   private void initCloudChannel(Context applicationContext) {

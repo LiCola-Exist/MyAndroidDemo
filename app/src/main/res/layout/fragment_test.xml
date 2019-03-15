@@ -42,6 +42,12 @@
     android:layout_height="wrap_content"
     android:text="block-ui-click" />
   <Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/btn_entry_sheet"
+    android:text="entry-Bottom-Sheet"
+    />
+  <Button
     android:id="@+id/btn_entry_scroll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -56,18 +62,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="entry-empty-aty" />
-
-  <TextView
-    android:id="@+id/tv_shadow"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:shadowColor="@color/black_normal"
-    android:shadowDx="9"
-    android:shadowDy="9"
-    android:shadowRadius="0.2"
-    android:textColor="@color/black_normal"
-    android:text="文字内容"
-    android:textSize="163px" />
 
 
 </LinearLayout>
