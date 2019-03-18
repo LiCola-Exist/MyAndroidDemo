@@ -68,6 +68,11 @@ public class SocketFragment extends BaseFragment {
     // Required empty public constructor
   }
 
+  @Override
+  protected int getLayoutId() {
+    return R.layout.fragment_socket;
+  }
+
   /**
    * Use this factory method to create a new instance of
    * this fragment using the provided parameters.
@@ -96,7 +101,7 @@ public class SocketFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    View viewRoot = inflater.inflate(R.layout.fragment_socket, container, false);
+    View viewRoot = super.onCreateView(inflater,container ,savedInstanceState );
     editInput = viewRoot.findViewById(R.id.edit_input);
     btnConnect = viewRoot.findViewById(R.id.btn_connect);
     btnSend = viewRoot.findViewById(R.id.btn_send);

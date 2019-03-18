@@ -2,15 +2,20 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:padding="12dp"
   android:orientation="vertical"
-  tools:context="com.example.licola.myandroiddemo.frag.BroadcastFragment">
+  tools:context="com.example.licola.myandroiddemo.frag.ServiceFragment">
 
   <Button
+    android:id="@+id/btn_bind_service"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="发送本地广播"
-    android:id="@+id/btn_send_broad"
-    />
+    android:text="bind-service" />
 
+  <Button
+    android:id="@+id/btn_unbind_service"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="unbind-service" />
 
 </LinearLayout>

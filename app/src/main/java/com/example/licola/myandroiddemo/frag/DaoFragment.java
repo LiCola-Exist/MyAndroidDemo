@@ -21,8 +21,7 @@ import java.util.List;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link DaoFragment#newInstance} factory method to
+ * A simple {@link Fragment} subclass. Use the {@link DaoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class DaoFragment extends BaseFragment {
@@ -35,6 +34,11 @@ public class DaoFragment extends BaseFragment {
 
   public DaoFragment() {
     // Required empty public constructor
+  }
+
+  @Override
+  protected int getLayoutId() {
+    return R.layout.fragment_dao;
   }
 
   public static DaoFragment newInstance(String param1) {
@@ -65,7 +69,7 @@ public class DaoFragment extends BaseFragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View rootView = inflater.inflate(R.layout.fragment_dao, container, false);
+    View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
     rootView.findViewById(R.id.bt_insert).setOnClickListener(new OnClickListener() {
       @Override
@@ -74,7 +78,7 @@ public class DaoFragment extends BaseFragment {
         note.setAuthor("test");
         note.setText("test:" + System.currentTimeMillis());
         long id = daoSession.insertOrReplace(note);
-        LLogger.d("insertOrReplace:"+id);
+        LLogger.d("insertOrReplace:" + id);
       }
     });
 

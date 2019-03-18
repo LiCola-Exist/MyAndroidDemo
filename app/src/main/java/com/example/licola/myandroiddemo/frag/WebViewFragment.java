@@ -43,6 +43,11 @@ public class WebViewFragment extends BaseFragment {
     // Required empty public constructor
   }
 
+  @Override
+  protected int getLayoutId() {
+    return R.layout.fragment_web_view;
+  }
+
   /**
    * Use this factory method to create a new instance of this fragment using the provided
    * parameters.
@@ -71,7 +76,7 @@ public class WebViewFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    View viewRoot = inflater.inflate(R.layout.fragment_web_view, container, false);
+    View viewRoot = super.onCreateView(inflater,container ,savedInstanceState );
 
     WebView webView = viewRoot.findViewById(R.id.web_view);
     View fabAction = viewRoot.findViewById(R.id.fab_action);

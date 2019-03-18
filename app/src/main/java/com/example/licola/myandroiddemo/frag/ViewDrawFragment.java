@@ -40,6 +40,11 @@ public class ViewDrawFragment extends BaseFragment {
   public ViewDrawFragment() {
   }
 
+  @Override
+  protected int getLayoutId() {
+    return R.layout.fragment_view;
+  }
+
   /**
    * Returns a new instance of this fragment for the given section number.
    */
@@ -62,23 +67,22 @@ public class ViewDrawFragment extends BaseFragment {
 //
 //          }
 //        });
+    View viewRoot = super.onCreateView(inflater,container ,savedInstanceState );
 
-    final View rootView = inflater.inflate(R.layout.fragment_view, container, false);
-
-    final LinearLayout layoutGroup = rootView.findViewById(R.id.layout_group);
+    final LinearLayout layoutGroup = viewRoot.findViewById(R.id.layout_group);
 
     final int screenWidth = PixelUtils.getScreenWidth(getContext());
 
-    handleTouch((NestedScrollView) rootView, rootView.findViewById(R.id.layout_touche));
+    handleTouch((NestedScrollView) viewRoot, viewRoot.findViewById(R.id.layout_touche));
 
-    addTextCaptionView(rootView.findViewById(R.id.layout_draw_group), screenWidth);
+    addTextCaptionView(viewRoot.findViewById(R.id.layout_draw_group), screenWidth);
 
     addCanvasView(layoutGroup, screenWidth);
     addShaderView(layoutGroup, screenWidth);
 
-    bindAutoSize(rootView.findViewById(R.id.tv_auto_size));
+    bindAutoSize(viewRoot.findViewById(R.id.tv_auto_size));
 
-    return rootView;
+    return viewRoot;
   }
 
   private void bindAutoSize(TextView tvAutoSize) {

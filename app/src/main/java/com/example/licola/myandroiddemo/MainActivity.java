@@ -1,27 +1,15 @@
 package com.example.licola.myandroiddemo;
 
-import android.app.ActivityManager;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.graphics.Color;
+import android.content.res.Configuration;
 import android.location.GpsStatus;
 import android.location.Location;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.util.LruCache;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -57,17 +45,18 @@ import com.example.licola.myandroiddemo.frag.ProcessViewFragment;
 import com.example.licola.myandroiddemo.frag.RecyclerAdapterFragment;
 import com.example.licola.myandroiddemo.frag.RecyclerViewFragment;
 import com.example.licola.myandroiddemo.frag.RecyclerViewFragment.OnListFragmentListener;
+import com.example.licola.myandroiddemo.frag.ServiceFragment;
 import com.example.licola.myandroiddemo.frag.SocketFragment;
 import com.example.licola.myandroiddemo.frag.TestFragment;
 import com.example.licola.myandroiddemo.frag.ThreadFragment;
 import com.example.licola.myandroiddemo.frag.ToastFragment;
 import com.example.licola.myandroiddemo.frag.ViewDrawFragment;
+import com.example.licola.myandroiddemo.frag.ViewTouchFragment;
 import com.example.licola.myandroiddemo.frag.WebViewFragment;
 import com.example.licola.myandroiddemo.frag.XmlFragment;
 import com.example.licola.myandroiddemo.java.JavaMain;
 import com.example.licola.myandroiddemo.location.LocationHelper;
 import com.example.licola.myandroiddemo.location.MyLocationListener;
-import com.example.licola.myandroiddemo.messenger.MessengerService;
 import com.example.licola.myandroiddemo.rxjava.RxJava;
 import com.example.licola.myandroiddemo.thread.MyHandler;
 import com.example.licola.myandroiddemo.thread.ThreadWork;
@@ -75,15 +64,11 @@ import com.example.licola.myandroiddemo.utils.FragmentPagerRebuildAdapter;
 import com.example.licola.myandroiddemo.utils.PixelUtils;
 import com.example.licola.myandroiddemo.utils.WindowsController;
 import com.licola.llogger.LLogger;
-import com.licola.route.RouteApp;
 import com.licola.route.annotation.Route;
-import com.licola.route.api.Api;
-import com.licola.route.api.RouterApi.Builder;
 import com.tencent.mmkv.MMKV;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -91,7 +76,6 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -131,6 +115,7 @@ public class MainActivity extends BaseActivity implements
     Map<String, Class> map = new LinkedHashMap<>();
     map.put("主测试Test", TestFragment.class);
     map.put("ViewDraw", ViewDrawFragment.class);
+    map.put("ViewTouch", ViewTouchFragment.class);
     map.put("Download组件", DownLoadFragment.class);
     map.put("Xml解析", XmlFragment.class);
     map.put("Layout布局", LayoutFragment.class);
@@ -149,6 +134,7 @@ public class MainActivity extends BaseActivity implements
     map.put("Http", HttpFragment.class);
     map.put("Toast提示", ToastFragment.class);
     map.put("Dialog弹框", DialogShowFragment.class);
+    map.put("Service", ServiceFragment.class);
     return map;
   }
 
@@ -179,7 +165,7 @@ public class MainActivity extends BaseActivity implements
       @Override
       public void run() {
 //        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("RecyclerView"));
+        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("ViewTouch"));
 //        mViewPager.setCurrentItem(6);
       }
     });
@@ -187,14 +173,7 @@ public class MainActivity extends BaseActivity implements
     asepctJRun();
     daggerInject();
 
-    activityBindService();
-
-    testSystemInfo();
-
     testLifeCycle();
-
-    testView();
-    testClass();
 
     testEventBus();
 
@@ -205,19 +184,9 @@ public class MainActivity extends BaseActivity implements
     MyHandler.main();
 
     RxJava.main();
-    testMyLib();
     testThirdLib();
 
     checkPermissionByThird();
-    LruCache<String, String> lruCache = new LruCache<>(100);
-
-    runOnUiThread(new Runnable() {
-      @Override
-      public void run() {
-        int height = mViewPager.getHeight();
-        LLogger.d(height);
-      }
-    });
 
 //    initLocation();
 
@@ -246,6 +215,11 @@ public class MainActivity extends BaseActivity implements
     return super.onKeyDown(keyCode, event);
   }
 
+  @Override
+  public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+  }
+
   private void mainActivity() {
 
     tabLayout.post(new Runnable() {
@@ -259,14 +233,7 @@ public class MainActivity extends BaseActivity implements
     });
   }
 
-  private void testClass() {
-    Uri uri = Uri.parse("http://www.github.com");
-    LLogger.d(uri);
-    LLogger.d(uri.toString());
-  }
-
   private LocationHelper mLocationHelper;
-
 
   private void initLocation() {
     mLocationHelper = new LocationHelper(this);
@@ -318,20 +285,6 @@ public class MainActivity extends BaseActivity implements
     });
   }
 
-  private void testMyLib() {
-
-//    Thread thread=new MyThread();
-//    thread.start();
-//
-//    KLog.file("file-tag",getCacheDir(),"test file write");
-    LLogger.d("test log");
-    LLogger.d(System.currentTimeMillis());
-
-    Api api = new Builder(getApplication())
-        .addRouteRoot(new RouteApp.Route())
-        .build();
-  }
-
   private void testThirdLib() {
     String rootDir = MMKV.initialize(this);
     LLogger.d(rootDir);
@@ -366,57 +319,8 @@ public class MainActivity extends BaseActivity implements
     LLogger.d(event);
   }
 
-  private void testView() {
-
-    int screenHeight = PixelUtils.getScreenHeight(this);
-    int screenWidth = PixelUtils.getScreenWidth(this);
-    LLogger.d("screenHeight:" + screenHeight + " screenWidth:" + screenWidth);
-    int parse6Color = Color.parseColor("#FFFFFF");
-    int parse8Color = Color.parseColor("#FFFFFFFF");
-    int color = ContextCompat.getColor(this, R.color.white_normal);
-    LLogger.d(parse6Color, parse8Color, color);
-    int alpha = (int) (1 * 255.0f + 0.5f);
-//      FF9800
-    int argb = Color.argb(alpha, 255, 152, 0);
-
-    int px = PixelUtils.dp2px(this, 10);
-
-
-  }
-
   private void testLifeCycle() {
     MyLifeCycleObserver.addObserver(this);
-  }
-
-
-  private void testSystemInfo() {
-    String uuId = UUID.randomUUID().toString();
-    LLogger.d("UUID:" + uuId);
-
-    LLogger.d("Build:" + Build.MANUFACTURER);
-
-    ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-    int memoryClass = manager.getMemoryClass();
-    int largeMemoryClass = manager.getLargeMemoryClass();
-    LLogger.d("memoryClass:" + memoryClass + " largeMemoryClass:" + largeMemoryClass);
-
-    String packageCodePath = this.getPackageCodePath();
-    String packageResourcePath = this.getPackageResourcePath();
-    String codeCacheDir = this.getCodeCacheDir().getAbsolutePath();
-    LLogger.d("packageCodePath:" + packageCodePath + " packageResourcePath:" + packageResourcePath
-        + " codeCacheDir:" + codeCacheDir);
-
-    File cacheDir = this.getCacheDir();
-    LLogger.d("cacheDir:" + cacheDir);
-
-    LLogger.d(getResources().getDisplayMetrics().toString());
-
-  }
-
-  private void activityBindService() {
-    Intent intent = new Intent(this, MessengerService.class);
-    bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-
   }
 
   private void asepctJRun() {
@@ -441,13 +345,6 @@ public class MainActivity extends BaseActivity implements
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-  }
-
-
-  @Override
-  protected void onDestroy() {
-    unbindService(mConnection);
-    super.onDestroy();
   }
 
 
@@ -478,29 +375,6 @@ public class MainActivity extends BaseActivity implements
 
     return super.onOptionsItemSelected(item);
   }
-
-  private Messenger mService;
-
-  private ServiceConnection mConnection = new ServiceConnection() {
-    @Override
-    public void onServiceConnected(ComponentName name, IBinder service) {
-      mService = new Messenger(service);
-      Message message = Message.obtain(null, 100);
-      Bundle data = new Bundle();
-      data.putString("msg", "hello this is client");
-      message.setData(data);
-      try {
-        mService.send(message);
-      } catch (RemoteException e) {
-        e.printStackTrace();
-      }
-    }
-
-    @Override
-    public void onServiceDisconnected(ComponentName name) {
-
-    }
-  };
 
   @Override
   public void onListFragmentInteraction(DummyItem item) {
@@ -570,9 +444,14 @@ public class MainActivity extends BaseActivity implements
     } catch (InvocationTargetException e) {
       e.printStackTrace();
     }
+
+    if (fragment == null) {
+      throw new IllegalArgumentException("错误的key-value配置");
+    }
     if (fragment instanceof BaseFragment) {
       return (BaseFragment) fragment;
+    } else {
+      throw new IllegalArgumentException("请检查继承关系：" + fragment.getClass().toString());
     }
-    throw new IllegalArgumentException("错误的key-value配置");
   }
 }

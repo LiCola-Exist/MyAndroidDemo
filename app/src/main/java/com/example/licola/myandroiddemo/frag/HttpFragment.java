@@ -56,6 +56,11 @@ public class HttpFragment extends BaseFragment {
     // Required empty public constructor
   }
 
+  @Override
+  protected int getLayoutId() {
+    return R.layout.fragment_http;
+  }
+
   /**
    * Use this factory method to create a new instance of this fragment using the provided
    * parameters.
@@ -84,7 +89,8 @@ public class HttpFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    View rootView = inflater.inflate(R.layout.fragment_http, container, false);
+    View rootView = super.onCreateView(inflater,container ,savedInstanceState );
+
     rootView.findViewById(R.id.btn_okhttp).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {

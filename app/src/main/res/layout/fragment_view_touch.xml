@@ -1,0 +1,14 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context="com.example.licola.myandroiddemo.frag.ViewTouchFragment">
+
+
+  <com.example.licola.myandroiddemo.view.widget.TouchView
+    android:id="@+id/view_touch_target"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="@color/red_normal_A32" />
+
+</LinearLayout>

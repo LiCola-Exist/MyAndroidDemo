@@ -29,6 +29,11 @@ public class DownLoadFragment extends BaseFragment {
   public DownLoadFragment() {
   }
 
+  @Override
+  protected int getLayoutId() {
+    return R.layout.fragment_down;
+  }
+
   /**
    * Returns a new instance of this fragment for the given section
    * number.
@@ -44,7 +49,7 @@ public class DownLoadFragment extends BaseFragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    final View rootView = inflater.inflate(R.layout.fragment_down, container, false);
+    View rootView = super.onCreateView(inflater,container ,savedInstanceState );
     rootView.findViewById(R.id.btn_down_manager).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {

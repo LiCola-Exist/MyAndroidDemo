@@ -24,6 +24,11 @@ public class ConstraintLayoutFragment extends BaseFragment {
     // Required empty public constructor
   }
 
+  @Override
+  protected int getLayoutId() {
+    return R.layout.fragment_constraint_layout;
+  }
+
   /**
    * Use this factory method to create a new instance of
    * this fragment using the provided parameters.
@@ -47,8 +52,4 @@ public class ConstraintLayoutFragment extends BaseFragment {
     }
   }
 
-  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_constraint_layout, container, false);
-  }
 }

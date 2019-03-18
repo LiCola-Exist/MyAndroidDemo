@@ -54,11 +54,11 @@ public class FixFlingRecyclerView extends RecyclerView {
    * @param velocityY velocityY是竖向滑动系数，系统会根据这个系统计算出竖向滑动的距离
    * @return
    */
-  @Override
-  public boolean fling(int velocityX, int velocityY) {
-
-    int flingX = (int) (velocityX * 0.4f);
-    LLogger.d(velocityX, flingX);
-    return super.fling(flingX, velocityY);
-  }
+//  @Override
+//  public boolean fling(int velocityX, int velocityY) {
+//
+////    int flingX = (int) (velocityX * 0.4f);
+//    LLogger.d(velocityX, velocityY);
+//    return super.fling(velocityX, velocityY);
+//  }
 }

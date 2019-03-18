@@ -42,6 +42,11 @@ public class RecyclerAdapterFragment extends BaseFragment {
   public RecyclerAdapterFragment() {
   }
 
+  @Override
+  protected int getLayoutId() {
+    return R.layout.fragment_recycler_list;
+  }
+
   // TODO: Customize parameter initialization
   @SuppressWarnings("unused")
   public static RecyclerAdapterFragment newInstance(String title) {
@@ -61,12 +66,12 @@ public class RecyclerAdapterFragment extends BaseFragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_recycler_list, container, false);
+    View viewRoot = super.onCreateView(inflater,container ,savedInstanceState );
 
-    SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+    SwipeRefreshLayout swipeRefreshLayout = viewRoot.findViewById(R.id.swipe_refresh);
 
-    Context context = view.getContext();
-    RecyclerView recyclerView = view.findViewById(R.id.list);
+    Context context = viewRoot.getContext();
+    RecyclerView recyclerView = viewRoot.findViewById(R.id.list);
     if (mColumnCount <= 1) {
 //      recyclerView.setLayoutManager(new LinearLayoutManager(context));
       recyclerView.setLayoutManager(new CustomLayoutManager());
@@ -91,7 +96,7 @@ public class RecyclerAdapterFragment extends BaseFragment {
       }
     });
 
-    FloatingActionButton button = view.findViewById(R.id.bt_action);
+    FloatingActionButton button = viewRoot.findViewById(R.id.bt_action);
     button.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -117,7 +122,7 @@ public class RecyclerAdapterFragment extends BaseFragment {
         checkScrollEndByPosition(recyclerView);
       }
     });
-    return view;
+    return viewRoot;
   }
 
   private static void checkScrollEndByPosition(RecyclerView recyclerView) {

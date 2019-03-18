@@ -97,6 +97,11 @@ public class ProcessViewFragment extends BaseFragment {
   public ProcessViewFragment() {
   }
 
+  @Override
+  protected int getLayoutId() {
+    return R.layout.fragment_process_view;
+  }
+
 
   public static ProcessViewFragment newInstance(String param1) {
     ProcessViewFragment fragment = new ProcessViewFragment();
@@ -118,7 +123,7 @@ public class ProcessViewFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    View viewRoot = inflater.inflate(R.layout.fragment_process_view, container, false);
+    View viewRoot = super.onCreateView(inflater,container ,savedInstanceState );
     bindRangeProgress(viewRoot);
     bindDrawableProcess(viewRoot);
 

@@ -7,27 +7,36 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.example.licola.myandroiddemo.MyApplication;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import com.licola.llogger.LLogger;
 
 
 /**
  * Created by 李可乐 on 2016/12/9 0009.
  */
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
-  protected boolean isLife() {
-    return false;
-  }
+  private static final boolean DEBUG = true;
+
+  private static final String Life = "FragLife:";
+
+  protected Context mContext;
+
+  protected View viewRoot;
+
+  private Unbinder mUnbinder;
 
   public BaseFragment() {
   }
 
+  protected abstract int getLayoutId();
 
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
-    if (isLife()) {
+    mContext = context;
+    if (DEBUG) {
       LLogger.d(this);
     }
   }
@@ -35,7 +44,7 @@ public class BaseFragment extends Fragment {
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (isLife()) {
+    if (DEBUG) {
       LLogger.d(this);
     }
   }
@@ -45,17 +54,18 @@ public class BaseFragment extends Fragment {
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    View rootView = super.onCreateView(inflater, container, savedInstanceState);
-    if (isLife()) {
+    viewRoot = inflater.inflate(getLayoutId(), container, false);
+    mUnbinder = ButterKnife.bind(this, viewRoot);
+    if (DEBUG) {
       LLogger.d(this);
     }
-    return rootView;
+    return viewRoot;
   }
 
   @Override
   public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    if (isLife()) {
+    if (DEBUG) {
       LLogger.d(this);
     }
   }
@@ -63,7 +73,7 @@ public class BaseFragment extends Fragment {
   @Override
   public void onStart() {
     super.onStart();
-    if (isLife()) {
+    if (DEBUG) {
       LLogger.d(this);
     }
   }
@@ -71,7 +81,7 @@ public class BaseFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
-    if (isLife()) {
+    if (DEBUG) {
       LLogger.d(this);
     }
   }
@@ -79,7 +89,7 @@ public class BaseFragment extends Fragment {
   @Override
   public void onPause() {
     super.onPause();
-    if (isLife()) {
+    if (DEBUG) {
       LLogger.d(this);
     }
   }
@@ -87,7 +97,7 @@ public class BaseFragment extends Fragment {
   @Override
   public void onStop() {
     super.onStop();
-    if (isLife()) {
+    if (DEBUG) {
       LLogger.d(this);
     }
   }
@@ -95,15 +105,19 @@ public class BaseFragment extends Fragment {
   @Override
   public void onDestroyView() {
     super.onDestroyView();
-    if (isLife()) {
+    if (DEBUG) {
       LLogger.d(this);
     }
+    if (mUnbinder != null) {
+      mUnbinder.unbind();
+    }
+    viewRoot = null;
   }
 
   @Override
   public void onDestroy() {
     super.onDestroy();
-    if (isLife()) {
+    if (DEBUG) {
       LLogger.d(this);
     }
   }
@@ -111,7 +125,7 @@ public class BaseFragment extends Fragment {
   @Override
   public void onDetach() {
     super.onDetach();
-    if (isLife()) {
+    if (DEBUG) {
       LLogger.d(this);
     }
   }

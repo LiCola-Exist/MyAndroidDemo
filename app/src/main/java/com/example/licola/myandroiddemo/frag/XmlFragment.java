@@ -27,6 +27,11 @@ public class XmlFragment extends BaseFragment {
     // Required empty public constructor
   }
 
+  @Override
+  protected int getLayoutId() {
+    return R.layout.fragment_xml;
+  }
+
 
   public static XmlFragment newInstance(String param1) {
     XmlFragment fragment = new XmlFragment();
@@ -47,8 +52,8 @@ public class XmlFragment extends BaseFragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View viewRoot = inflater.inflate(R.layout.fragment_xml, container, false);
-    txtResult = (TextView) viewRoot.findViewById(R.id.txt_result);
+    View viewRoot = super.onCreateView(inflater, container, savedInstanceState);
+    txtResult = viewRoot.findViewById(R.id.txt_result);
     return viewRoot;
   }
 

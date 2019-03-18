@@ -33,6 +33,11 @@ public class DialogShowFragment extends BaseFragment {
     // Required empty public constructor
   }
 
+  @Override
+  protected int getLayoutId() {
+    return R.layout.fragment_dialog_operate;
+  }
+
   /**
    * Use this factory method to create a new instance of this fragment using the provided
    * parameters.
@@ -61,7 +66,7 @@ public class DialogShowFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    View rootView = inflater.inflate(R.layout.fragment_dialog_operate, container, false);
+    View rootView = super.onCreateView(inflater,container ,savedInstanceState );
     bindAlertDialog(rootView);
     bindSimpleDialog(rootView);
     return rootView;

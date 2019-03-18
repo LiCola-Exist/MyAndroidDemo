@@ -34,6 +34,11 @@ public class IOFragment extends BaseFragment {
   public IOFragment() {
   }
 
+  @Override
+  protected int getLayoutId() {
+    return R.layout.fragment_io;
+  }
+
   /**
    * Use this factory method to create a new instance of
    * this fragment using the provided parameters.
@@ -59,15 +64,6 @@ public class IOFragment extends BaseFragment {
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
-    View viewRoot = inflater.inflate(R.layout.fragment_io, container, false);
-
-    return viewRoot;
-  }
-
-  @Override
   public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
 
@@ -81,7 +77,6 @@ public class IOFragment extends BaseFragment {
       e.printStackTrace();
     }
     LLogger.d("readData:" + readData);
-
 
 
   }

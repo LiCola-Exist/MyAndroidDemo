@@ -26,6 +26,11 @@ public class LayoutFragment extends BaseFragment {
     // Required empty public constructor
   }
 
+  @Override
+  protected int getLayoutId() {
+    return R.layout.fragment_layout;
+  }
+
   /**
    * Use this factory method to create a new instance of
    * this fragment using the provided parameters.
@@ -55,23 +60,23 @@ public class LayoutFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    View inflate = inflater.inflate(R.layout.fragment_layout, container, false);
+    View viewRoot = super.onCreateView(inflater,container ,savedInstanceState );
 
-    inflate.findViewById(R.id.tv_layout_linear).setOnClickListener(new OnClickListener() {
+    viewRoot.findViewById(R.id.tv_layout_linear).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
         LayoutActivity.start(getContext(), R.layout.activity_linear);
       }
     });
 
-    inflate.findViewById(R.id.tv_layout_relative).setOnClickListener(new OnClickListener() {
+    viewRoot.findViewById(R.id.tv_layout_relative).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
         LayoutActivity.start(getContext(), R.layout.activity_relative);
       }
     });
 
-    return inflate;
+    return viewRoot;
   }
 
   @Override

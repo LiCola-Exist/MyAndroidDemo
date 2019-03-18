@@ -43,9 +43,10 @@ public class TestFragment extends BaseFragment {
   }
 
   @Override
-  protected boolean isLife() {
-    return true;
+  protected int getLayoutId() {
+    return R.layout.fragment_test;
   }
+
 
   public static TestFragment newInstance(String key) {
     TestFragment fragment = new TestFragment();
@@ -59,19 +60,19 @@ public class TestFragment extends BaseFragment {
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable final Bundle savedInstanceState) {
-    View rootView = inflater.inflate(R.layout.fragment_test, container, false);
-    btnStart = rootView.findViewById(R.id.btn_start);
-    btnTest = rootView.findViewById(R.id.btn_test);
-    txtResult = rootView.findViewById(R.id.txt_result);
+    View viewRoot = super.onCreateView(inflater,container ,savedInstanceState );
+    btnStart = viewRoot.findViewById(R.id.btn_start);
+    btnTest = viewRoot.findViewById(R.id.btn_test);
+    txtResult = viewRoot.findViewById(R.id.txt_result);
 
-    rootView.findViewById(R.id.btn_value).setOnClickListener(new OnClickListener() {
+    viewRoot.findViewById(R.id.btn_value).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
         onClickValue();
       }
     });
 
-    rootView.findViewById(R.id.btn_entry_scroll).setOnClickListener(new OnClickListener() {
+    viewRoot.findViewById(R.id.btn_entry_scroll).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(getContext(), ScrollingActivity.class);
@@ -82,7 +83,7 @@ public class TestFragment extends BaseFragment {
       }
     });
 
-    rootView.findViewById(R.id.btn_entry_scroll).setOnClickListener(new OnClickListener() {
+    viewRoot.findViewById(R.id.btn_entry_scroll).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(getContext(), BottomSheetActivity.class);
@@ -90,7 +91,7 @@ public class TestFragment extends BaseFragment {
       }
     });
 
-    rootView.findViewById(R.id.btn_entry_soft).setOnClickListener(new OnClickListener() {
+    viewRoot.findViewById(R.id.btn_entry_soft).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(getContext(), SoftKeyActivity.class);
@@ -98,7 +99,7 @@ public class TestFragment extends BaseFragment {
       }
     });
 
-    rootView.findViewById(R.id.btn_entry_empty).setOnClickListener(new OnClickListener() {
+    viewRoot.findViewById(R.id.btn_entry_empty).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(getContext(), NoDisplayAty.class);
@@ -106,7 +107,7 @@ public class TestFragment extends BaseFragment {
       }
     });
 
-    rootView.findViewById(R.id.btn_block).setOnClickListener(new OnClickListener() {
+    viewRoot.findViewById(R.id.btn_block).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
         try {
@@ -151,7 +152,7 @@ public class TestFragment extends BaseFragment {
 
     });
 
-    return rootView;
+    return viewRoot;
   }
 
   private void testMapPutTime(int size) {

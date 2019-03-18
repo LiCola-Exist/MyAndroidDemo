@@ -7,8 +7,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView.OnFlingListener;
+import android.support.v7.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.adapter.MyItemRecyclerViewAdapter;
 import com.example.licola.myandroiddemo.dummy.DummyContent;
 import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
+import com.example.licola.myandroiddemo.view.widget.FixFlingRecyclerView;
 import com.licola.llogger.LLogger;
 import java.util.List;
 
@@ -33,7 +35,7 @@ public class RecyclerViewFragment extends BaseFragment {
   private MyItemRecyclerViewAdapter adapter;
 
   private SwipeRefreshLayout swipeRefreshLayout;
-  private RecyclerView recyclerView;
+  private FixFlingRecyclerView recyclerView;
 
   private LinearLayoutManager layoutManager;
 
@@ -42,6 +44,11 @@ public class RecyclerViewFragment extends BaseFragment {
    * fragment (e.g. upon screen orientation changes).
    */
   public RecyclerViewFragment() {
+  }
+
+  @Override
+  protected int getLayoutId() {
+    return R.layout.fragment_item_list;
   }
 
   public static RecyclerViewFragment newInstance(String content) {
@@ -60,9 +67,10 @@ public class RecyclerViewFragment extends BaseFragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_item_list, container, false);
-    recyclerView = view.findViewById(R.id.list);
-    swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+    View viewRoot = super.onCreateView(inflater,container ,savedInstanceState );
+
+    recyclerView = viewRoot.findViewById(R.id.list);
+    swipeRefreshLayout = viewRoot.findViewById(R.id.swipe_refresh);
 
     swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
       @Override
@@ -74,7 +82,7 @@ public class RecyclerViewFragment extends BaseFragment {
 
     setRetainInstance(true);
 
-    Context context = view.getContext();
+    Context context = viewRoot.getContext();
 
     layoutManager = new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false);
     recyclerView.setLayoutManager(layoutManager);
@@ -83,8 +91,10 @@ public class RecyclerViewFragment extends BaseFragment {
     recyclerView.setAdapter(adapter);
     adapter.initData(DummyContent.ITEMS);
 //    recyclerView.setOnFlingListener(new MyFlingListener());
-
-    return view;
+//    recyclerView.setOnFlingListener(new LinearSnapHelper());
+    SnapHelper snapHelper=new LinearSnapHelper();
+    snapHelper.attachToRecyclerView(recyclerView);
+    return viewRoot;
   }
 
 

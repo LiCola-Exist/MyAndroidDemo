@@ -37,6 +37,11 @@ public class ImageLoadFragment extends BaseFragment {
     // Required empty public constructor
   }
 
+  @Override
+  protected int getLayoutId() {
+    return R.layout.fragment_image_view;
+  }
+
 
   public static ImageLoadFragment newInstance(String param1) {
     ImageLoadFragment fragment = new ImageLoadFragment();
@@ -58,17 +63,17 @@ public class ImageLoadFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    View childView = inflater.inflate(R.layout.fragment_image_view, container, false);
+    View rootView = super.onCreateView(inflater,container ,savedInstanceState );
 
-    loadNinePath(childView);
+    loadNinePath(rootView);
 
-    loadByFresco(childView);
-    loadByGlide(childView);
-    loadByOriginalWithOptions(childView);
-    loadByDrawable(childView);
-    loadByOriginal(childView);
+    loadByFresco(rootView);
+    loadByGlide(rootView);
+    loadByOriginalWithOptions(rootView);
+    loadByDrawable(rootView);
+    loadByOriginal(rootView);
 
-    return childView;
+    return rootView;
   }
 
 

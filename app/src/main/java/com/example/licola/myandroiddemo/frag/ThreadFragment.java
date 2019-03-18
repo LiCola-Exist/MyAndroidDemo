@@ -37,6 +37,11 @@ public class ThreadFragment extends BaseFragment {
     // Required empty public constructor
   }
 
+  @Override
+  protected int getLayoutId() {
+    return R.layout.fragment_thread;
+  }
+
   /**
    * Use this factory method to create a new instance of this fragment using the provided
    * parameters.
@@ -65,7 +70,7 @@ public class ThreadFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    View viewRoot = inflater.inflate(R.layout.fragment_thread, container, false);
+    View viewRoot = super.onCreateView(inflater,container ,savedInstanceState );
     Button btnNewThread = viewRoot.findViewById(R.id.btn_new_thread);
     btnNewThread.setOnClickListener(new OnClickListener() {
       @Override

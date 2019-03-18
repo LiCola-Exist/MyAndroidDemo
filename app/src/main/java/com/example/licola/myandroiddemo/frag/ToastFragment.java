@@ -44,6 +44,11 @@ public class ToastFragment extends BaseFragment {
     // Required empty public constructor
   }
 
+  @Override
+  protected int getLayoutId() {
+    return R.layout.fragment_toast;
+  }
+
   /**
    * Use this factory method to create a new instance of this fragment using the provided
    * parameters.
@@ -72,21 +77,21 @@ public class ToastFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    View rootView = inflater.inflate(R.layout.fragment_toast, container, false);
+    View viewRoot = super.onCreateView(inflater,container ,savedInstanceState );
 
-    onBindNormalToast(rootView.findViewById(R.id.btn_toast_normal));
-    onBindGravityToast(rootView.findViewById(R.id.btn_toast_gravity));
-    onBindViewToast(rootView.findViewById(R.id.btn_toast_view));
+    onBindNormalToast(viewRoot.findViewById(R.id.btn_toast_normal));
+    onBindGravityToast(viewRoot.findViewById(R.id.btn_toast_gravity));
+    onBindViewToast(viewRoot.findViewById(R.id.btn_toast_view));
     onBindViewPopup(
-        rootView.findViewById(R.id.btn_popup_view_left),
-        rootView.findViewById(R.id.btn_popup_view_center),
-        rootView.findViewById(R.id.btn_popup_view_right)
+        viewRoot.findViewById(R.id.btn_popup_view_left),
+        viewRoot.findViewById(R.id.btn_popup_view_center),
+        viewRoot.findViewById(R.id.btn_popup_view_right)
     );
 
 
-    onBindSnackBar(rootView,rootView.findViewById(R.id.btn_snack_bar));
+    onBindSnackBar(viewRoot, viewRoot.findViewById(R.id.btn_snack_bar));
 
-    return rootView;
+    return viewRoot;
   }
 
   private void onBindSnackBar(final View rootView,View viewBtn) {

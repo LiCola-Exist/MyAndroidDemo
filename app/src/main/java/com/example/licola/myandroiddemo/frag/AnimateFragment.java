@@ -47,6 +47,11 @@ public class AnimateFragment extends BaseFragment {
   public AnimateFragment() {
   }
 
+  @Override
+  protected int getLayoutId() {
+    return R.layout.fragment_animate;
+  }
+
   public static AnimateFragment newInstance(String param1) {
     AnimateFragment fragment = new AnimateFragment();
     Bundle args = new Bundle();
@@ -69,7 +74,7 @@ public class AnimateFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    View rootView = inflater.inflate(R.layout.fragment_animate, container, false);
+    View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
     LinearLayout layoutLinearGroup = rootView.findViewById(R.id.layout_linear_group);
 
