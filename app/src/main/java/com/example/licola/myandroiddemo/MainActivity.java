@@ -33,6 +33,7 @@ import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
 import com.example.licola.myandroiddemo.frag.AnimateFragment;
 import com.example.licola.myandroiddemo.frag.BaseFragment;
 import com.example.licola.myandroiddemo.frag.BroadcastFragment;
+import com.example.licola.myandroiddemo.frag.ConfigFragment;
 import com.example.licola.myandroiddemo.frag.ConstraintLayoutFragment;
 import com.example.licola.myandroiddemo.frag.DaoFragment;
 import com.example.licola.myandroiddemo.frag.DialogShowFragment;
@@ -135,6 +136,7 @@ public class MainActivity extends BaseActivity implements
     map.put("Toast提示", ToastFragment.class);
     map.put("Dialog弹框", DialogShowFragment.class);
     map.put("Service", ServiceFragment.class);
+    map.put("Config配置", ConfigFragment.class);
     return map;
   }
 
@@ -164,8 +166,8 @@ public class MainActivity extends BaseActivity implements
     mViewPager.post(new Runnable() {
       @Override
       public void run() {
-//        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("ViewTouch"));
+        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
+//        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("ViewTouch"));
 //        mViewPager.setCurrentItem(6);
       }
     });

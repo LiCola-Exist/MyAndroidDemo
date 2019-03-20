@@ -1,5 +1,9 @@
 package com.example.licola.myandroiddemo.java;
 
+import android.annotation.TargetApi;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
+import android.support.annotation.RequiresApi;
 import com.google.common.collect.Maps;
 import com.licola.llogger.LLogger;
 import java.time.Instant;
@@ -23,9 +27,16 @@ public class JavaMain {
 
     HashMap<Object, Object> hashMap = Maps.newHashMapWithExpectedSize(10);
 
+    if (VERSION.SDK_INT >= VERSION_CODES.O) {
+      heightApi();
+    }
+
+  }
+
+  @RequiresApi(api = VERSION_CODES.O)
+  private static void heightApi() {
     LocalDate date=LocalDate.now();
     Instant instant=Instant.now();
-
   }
 
   private static void testSingle() {

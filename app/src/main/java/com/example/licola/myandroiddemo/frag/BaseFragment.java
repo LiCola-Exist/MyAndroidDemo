@@ -17,7 +17,7 @@ import com.licola.llogger.LLogger;
  */
 public abstract class BaseFragment extends Fragment {
 
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = false;
 
   private static final String Life = "FragLife:";
 

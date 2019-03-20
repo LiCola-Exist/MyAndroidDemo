@@ -65,7 +65,10 @@ public class AndroidMain {
 
     String packageCodePath = context.getPackageCodePath();
     String packageResourcePath = context.getPackageResourcePath();
-    String codeCacheDir = context.getCodeCacheDir().getAbsolutePath();
+    String codeCacheDir = null;
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+      codeCacheDir = context.getCodeCacheDir().getAbsolutePath();
+    }
     LLogger.d("packageCodePath:" + packageCodePath + " packageResourcePath:" + packageResourcePath
         + " codeCacheDir:" + codeCacheDir);
 

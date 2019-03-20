@@ -25,6 +25,7 @@ public class MyApplication extends Application {
   @Override
   protected void attachBaseContext(Context base) {
     super.attachBaseContext(base);
+    MultiDex.install(this);
   }
 
   @Override
@@ -32,9 +33,7 @@ public class MyApplication extends Application {
     super.onCreate();
     //初始化推送
     initCloudChannel(this);
-
     //多dex装载
-    MultiDex.install(this);
 
     //fresco的初始化
     Fresco.initialize(this);
