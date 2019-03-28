@@ -15,4 +15,13 @@
     </attr>
   </declare-styleable>
 
+
+  <declare-styleable name="SquareFrameLayout">
+    <attr format="enum" name="frame_fix_side">
+      <enum name="width" value="0" />
+      <enum name="height" value="1" />
+    </attr>
+    <attr format="float" name="frame_ratio" />
+  </declare-styleable>
+
 </resources>

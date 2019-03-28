@@ -3,6 +3,9 @@
   <string name="action_settings">Settings</string>
   <string name="section_format">Hello World from section: %1$d</string>
 
+  <string name="app_place_holder"> 很长的文字123Abc文字</string>
+  <string name="app_place_holder_double">斜体字加入空格处理显示问题\u00a0</string>
+
   <!-- TODO: Remove or change this placeholder text -->
   <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="title_activity_main_bottom">MainBottomActivity</string>

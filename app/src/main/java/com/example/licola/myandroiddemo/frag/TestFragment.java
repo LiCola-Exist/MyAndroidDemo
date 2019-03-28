@@ -111,7 +111,7 @@ public class TestFragment extends BaseFragment {
       @Override
       public void onClick(View v) {
         try {
-          Thread.sleep(2000);
+          Thread.sleep(6000);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }

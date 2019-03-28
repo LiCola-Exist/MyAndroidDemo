@@ -1,14 +1,22 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/nested_view"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  tools:context="com.example.licola.myandroiddemo.frag.ViewTouchFragment">
+  android:layout_height="match_parent">
 
-
-  <com.example.licola.myandroiddemo.view.widget.TouchView
-    android:id="@+id/view_touch_target"
+  <LinearLayout
+    android:id="@+id/layout_group"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:background="@color/red_normal_A32" />
+    android:layout_height="match_parent"
+    tools:context="com.example.licola.myandroiddemo.frag.ViewTouchFragment">
 
-</LinearLayout>
+
+    <com.example.licola.myandroiddemo.view.widget.TouchView
+      android:id="@+id/view_touch_target"
+      android:layout_width="match_parent"
+      android:layout_height="200dp"
+      android:background="@color/red_normal_A32" />
+
+  </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

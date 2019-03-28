@@ -73,8 +73,6 @@ public class ViewDrawFragment extends BaseFragment {
 
     final int screenWidth = PixelUtils.getScreenWidth(getContext());
 
-    handleTouch((NestedScrollView) viewRoot, viewRoot.findViewById(R.id.layout_touche));
-
     addTextCaptionView(viewRoot.findViewById(R.id.layout_draw_group), screenWidth);
 
     addCanvasView(layoutGroup, screenWidth);
@@ -165,59 +163,6 @@ public class ViewDrawFragment extends BaseFragment {
 
     layoutGroup.addView(canvasView,
         new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, maxWidth));
-  }
-
-  private void handleTouch(final NestedScrollView rootView, ViewGroup touch) {
-    touch.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        LLogger.d("响应了 点击事件");
-      }
-    });
-
-    touch.setOnLongClickListener(new OnLongClickListener() {
-      @Override
-      public boolean onLongClick(View v) {
-        //长按复制出 ScrollView的内容 并显示
-        ImageView imageView = new ImageView(getContext());
-        imageView.setBackgroundColor(Color.GRAY);
-        Bitmap screenShotBitmap = getScrollViewBitmap(rootView);
-        imageView.setImageBitmap(screenShotBitmap);
-
-        touch.addView(imageView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT));
-        return true;
-      }
-    });
-
-//    touch.setOnTouchListener(new OnTouchListener() {
-//      @Override
-//      public boolean onTouch(View v, MotionEvent event) {
-//        LLogger.d("ViewGroup Touch 拦截点击事件");
-//
-//        try {
-//          Thread.sleep(100000);
-//        } catch (InterruptedException e) {
-//          e.printStackTrace();
-//        }
-//
-//        return true;
-//      }
-//    });
-  }
-
-  public static Bitmap getScrollViewBitmap(NestedScrollView scrollView) {
-    int height = 0;
-    Bitmap bitmap;
-    for (int i = 0; i < scrollView.getChildCount(); i++) {
-      height += scrollView.getChildAt(i).getHeight();
-    }
-    bitmap = Bitmap.createBitmap(scrollView.getWidth(), height, Config.ARGB_8888);
-    final Canvas canvas = new Canvas(bitmap);
-    //用view绘制到canvas画布上
-    scrollView.draw(canvas);
-    //返回有内容的bitmap
-    return bitmap;
   }
 
   private static class MyTextView extends android.support.v7.widget.AppCompatTextView {

@@ -10,16 +10,33 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
-      android:id="@+id/tv_auto_size"
-      android:layout_width="100dp"
-      android:layout_height="100dp"
-      android:autoSizeMaxTextSize="40dp"
-      android:autoSizeMinTextSize="12dp"
-      android:autoSizeStepGranularity="1dp"
-      android:autoSizeTextType="uniform"
-      android:background="@color/red_normal_A32"
-      android:text="很长的文字" />
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+      <TextView
+        android:id="@+id/tv_auto_size"
+        android:textStyle="italic|bold"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:autoSizeMaxTextSize="40dp"
+        android:autoSizeMinTextSize="12dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
+        android:background="@color/red_normal_A32"
+        android:gravity="fill"
+        android:text="@string/app_place_holder" />
+
+      <TextView
+        android:textStyle="italic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/green_normal_A32"
+        android:text="@string/app_place_holder_double"
+        android:textSize="20dp" />
+
+
+    </LinearLayout>
 
     <com.example.licola.myandroiddemo.view.widget.TickView
       android:layout_width="wrap_content"
@@ -31,14 +48,22 @@
       android:layout_height="80dp"
       app:rate="slow" />
 
-    <LinearLayout
-      android:id="@+id/layout_touche"
+    <FrameLayout
+      android:id="@+id/layout_over"
       android:layout_width="match_parent"
-      android:layout_height="150dp"
-      android:background="@color/blue_normal"
-      android:orientation="vertical">
+      android:layout_height="607px"
+      android:background="@color/blue_normal">
 
-    </LinearLayout>
+      <com.example.licola.myandroiddemo.view.widget.SquareFrameLayout
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:frame_ratio="0.5625"
+        app:frame_fix_side="width"
+        android:background="@color/white"/>
+
+    </FrameLayout>
+
 
     <FrameLayout
       android:id="@+id/layout_draw_group"
@@ -48,6 +73,7 @@
       android:minHeight="120dp">
 
       <TextView
+        android:textStyle="italic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"

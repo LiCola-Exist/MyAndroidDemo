@@ -166,9 +166,9 @@ public class MainActivity extends BaseActivity implements
     mViewPager.post(new Runnable() {
       @Override
       public void run() {
-        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-//        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("ViewTouch"));
-//        mViewPager.setCurrentItem(6);
+//        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
+        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("ViewDraw"));
+//        mViewPager.setCurrentItem(0);
       }
     });
 

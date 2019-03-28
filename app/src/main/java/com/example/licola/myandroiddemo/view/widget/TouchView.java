@@ -50,6 +50,8 @@ public class TouchView extends View {
   @Override
   public boolean onTouchEvent(MotionEvent event) {
 
+    super.onTouchEvent(event);
+
     int actionMasked = event.getActionMasked();
     switch (actionMasked) {
       case MotionEvent.ACTION_DOWN:
