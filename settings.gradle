@@ -1,1 +1,1 @@
-include ':app', ':annotation', ':compiler', ':aspectj'
+include ':app', ':annotation', ':compiler', ':aspectj', ':base'

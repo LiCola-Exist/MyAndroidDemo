@@ -60,7 +60,7 @@ public class TestFragment extends BaseFragment {
   @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable final Bundle savedInstanceState) {
-    View viewRoot = super.onCreateView(inflater,container ,savedInstanceState );
+    View viewRoot = super.onCreateView(inflater, container, savedInstanceState);
     btnStart = viewRoot.findViewById(R.id.btn_start);
     btnTest = viewRoot.findViewById(R.id.btn_test);
     txtResult = viewRoot.findViewById(R.id.txt_result);
@@ -75,15 +75,25 @@ public class TestFragment extends BaseFragment {
     viewRoot.findViewById(R.id.btn_entry_scroll).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = new Intent(getContext(), ScrollingActivity.class);
-        //传输数据 限制在1MB以下
-//        byte[] value = new byte[1024 * 1024];
+
+        new Thread(new Runnable() {
+          @Override
+          public void run() {
+            Intent intent = new Intent(getContext(), ScrollingActivity.class);
+            //传输数据 限制在1MB以下
+//            byte[] value = new byte[1024 * 1024];
 //        intent.putExtra("big", value);
-        startActivity(intent);
+//        startActivity(intent);
+
+            Bundle bundle = new Bundle();
+//            bundle.putByteArray("key", value);
+            startActivity(intent, bundle);
+          }
+        }).start();
       }
     });
 
-    viewRoot.findViewById(R.id.btn_entry_scroll).setOnClickListener(new OnClickListener() {
+    viewRoot.findViewById(R.id.btn_entry_sheet).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(getContext(), BottomSheetActivity.class);

@@ -12,6 +12,7 @@ import javax.lang.model.element.Modifier;
  */
 
 public class JavaPoetTest {
+
   public static  void main(String[] args){
     MethodSpec main = MethodSpec.methodBuilder("main")
         .addModifiers(Modifier.PUBLIC, Modifier.STATIC)

@@ -11,13 +11,16 @@ import android.view.View;
 import butterknife.OnClick;
 import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.receiver.MainLocalBroadcastReceiver;
+import com.licola.llogger.LLogger;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 
 /**
- * A simple {@link Fragment} subclass. Use the {@link BroadcastFragment#newInstance} factory method
- * to create an instance of this fragment.
+ * A simple {@link Fragment} subclass. Use the {@link EventFragment#newInstance} factory method to
+ * create an instance of this fragment.
  */
-public class BroadcastFragment extends BaseFragment {
+public class EventFragment extends BaseFragment {
 
 
   // TODO: Rename parameter arguments, choose names that match
@@ -28,15 +31,15 @@ public class BroadcastFragment extends BaseFragment {
   private String mParam1;
 
   MainLocalBroadcastReceiver receiver;
+  private EventBus eventBus;
 
-
-  public BroadcastFragment() {
+  public EventFragment() {
     // Required empty public constructor
   }
 
   @Override
   protected int getLayoutId() {
-    return R.layout.fragment_module;
+    return R.layout.fragment_event;
   }
 
   /**
@@ -47,8 +50,8 @@ public class BroadcastFragment extends BaseFragment {
    * @return A new instance of fragment ModuleFragment.
    */
   // TODO: Rename and change types and number of parameters
-  public static BroadcastFragment newInstance(String param1) {
-    BroadcastFragment fragment = new BroadcastFragment();
+  public static EventFragment newInstance(String param1) {
+    EventFragment fragment = new EventFragment();
     Bundle args = new Bundle();
     args.putString(ARG_PARAM1, param1);
     fragment.setArguments(args);
@@ -70,7 +73,49 @@ public class BroadcastFragment extends BaseFragment {
     receiver = new MainLocalBroadcastReceiver();
     LocalBroadcastManager.getInstance(getContext())
         .registerReceiver(receiver, new IntentFilter(Intent.ACTION_PICK_ACTIVITY));
+
+    eventBus = EventBus.builder()
+        .eventInheritance(false)//开启事件继承关系 就会发送String事件 则注册String-CharSequence都会受到事件
+        .build();
+
+
   }
+
+  @Override
+  public void onStart() {
+    super.onStart();
+    eventBus.register(this);
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    eventBus.unregister(this);
+  }
+
+  @Subscribe()
+  public void onEvent(String event) {
+    LLogger.d(event);
+  }
+
+  @Subscribe()
+  public void onEvent(CharSequence event) {
+    LLogger.d(event);
+  }
+
+  @OnClick(R.id.btn_send_event)
+  public void onBtnSendEventClick(View view) {
+    String data = "supper?";
+    eventBus.post(data);
+  }
+
+
+  @OnClick(R.id.btn_send_event_sticky)
+  public void onBtnSendEventStickyClick(View view) {
+    String data = "supper?";
+    eventBus.postSticky(data);
+  }
+
 
   @OnClick(R.id.btn_send_broad)
   public void onBtnSendBroadClick(View view) {

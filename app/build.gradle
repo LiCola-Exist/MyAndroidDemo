@@ -7,13 +7,15 @@ import org.aspectj.tools.ajc.Main
 
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildSdkVersion"]
     defaultConfig {
-        applicationId "com.demo.licola.myandroiddemo"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -67,72 +69,82 @@ greendao {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.licola:route-annotation:1.2.1'
-    implementation 'com.licola:route-api:1.2.1'
-    annotationProcessor 'com.licola:route-compiler:1.2.1'
-
-    implementation 'com.android.support:support-v4:27.1.1'
-
     annotationProcessor project(':compiler')
     implementation project(':annotation')
     implementation project(':aspectj')
 
+    implementation rootProject.ext.dependencies["route-api"]
+    implementation rootProject.ext.dependencies["route-annotation"]
+    annotationProcessor rootProject.ext.dependencies["route-compiler"]
+
     //log工具
-    implementation "com.licola:llogger:1.4.6"
+    implementation rootProject.ext.dependencies["llogger"]
 
     //代码工具
-    implementation 'com.licola:reversesuper-annotation:1.2.5'//注解库
-    annotationProcessor 'com.licola:reversesuper-compiler:1.2.5'//代码生成工具库
+    implementation rootProject.ext.dependencies["reversesuper-annotation"]
+    annotationProcessor rootProject.ext.dependencies["reversesuper-compiler"]
 
     //数据模拟工具
-    implementation 'com.licola:virtual:1.2.3'
-//    implementation 'com.github.LiCola:VirtualData:master'
-
-    //代码工具
-    implementation 'com.licola:reversesuper-annotation:1.2.5'//注解库
-    annotationProcessor 'com.licola:reversesuper-compiler:1.2.5'//代码生成工具库
+    implementation rootProject.ext.dependencies["virtual"]
 
     //aspectJ工具依赖
     implementation "org.aspectj:aspectjrt:$rootProject.aspectjVersion"
 
     //数据可视化调试工具
-    implementation "com.facebook.stetho:stetho:$rootProject.stethoVersion"
-    implementation "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
+    debugImplementation rootProject.ext.dependencies["stetho"]
 
     //dex分包支持
-    implementation "com.android.support:multidex:$rootProject.supportMultidexVersion"
+    implementation rootProject.ext.dependencies["multidex"]
 
     //guava工具类
-    implementation "com.google.guava:guava:$rootProject.guavaVersion"
-    //View辅助工具 注解工具
-    implementation "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
-    //事件总线 注解工具
-    implementation "org.greenrobot:eventbus:$rootProject.eventbusVersion"
-    annotationProcessor "org.greenrobot:eventbus-annotation-processor:$eventbusVersion"
+    implementation rootProject.ext.dependencies["guava"]
+    implementation(rootProject.ext.dependencies["butterknife"]) {
+        exclude group: 'com.android.support', module: 'support-compat'
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
+
+    //事件总线
+    implementation rootProject.ext.dependencies["eventbus"]
+    annotationProcessor rootProject.ext.dependencies["eventbus-annotation-processor"]
+
+    implementation rootProject.ext.dependencies["retrofit2"]
+    implementation rootProject.ext.dependencies["retrofit2-converter-gson"]
+
     //数据库
-    implementation "org.greenrobot:greendao:$rootProject.greendaoVersion"
+    implementation rootProject.ext.dependencies["greendao"]
     //OkHttp网络
-    implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
-    implementation "com.squareup.okhttp3:mockwebserver:$rootProject.okhttpVersion"
+    implementation rootProject.ext.dependencies["okhttp3"]
+    implementation rootProject.ext.dependencies["okhttp3-interceptor-logging"]
+    implementation rootProject.ext.dependencies["okhttp3-mockwebserver"]
+
+    //retrofit2
+    implementation rootProject.ext.dependencies["retrofit2"]
+    implementation rootProject.ext.dependencies["retrofit2-converter-gson"]
+    implementation rootProject.ext.dependencies["retrofit2-adapter-rxjava2"]
+    implementation rootProject.ext.dependencies["retrofit2-mock"]
+
+
+    implementation rootProject.ext.dependencies["okio"]
 
     //图片框架
-    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
-    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
-    implementation "com.github.bumptech.glide:okhttp3-integration:$rootProject.glideVersion"
+    implementation rootProject.ext.dependencies["glide"]
+    annotationProcessor rootProject.ext.dependencies["glide-compiler"]
+    implementation rootProject.ext.dependencies["glide-okhttp3-integration"]
+    implementation rootProject.ext.dependencies["glide-transformations"]
 
-    //图片框架
-    implementation 'com.facebook.fresco:fresco:1.9.0'
+    implementation rootProject.ext.dependencies["fresco"]
+    implementation rootProject.ext.dependencies["picasso"]
 
     //动画
-    implementation('com.airbnb.android:lottie:2.7.0')
+    implementation rootProject.ext.dependencies["lottie"]
 
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    implementation rootProject.ext.dependencies["rxjava"]
+    implementation rootProject.ext.dependencies["rxandroid"]
 
     //权限适配工具
-    implementation('com.yanzhenjie.permission:support:2.0.1') {
+    implementation(rootProject.ext.dependencies["permission"]) {
         exclude group: 'com.android.support', module: 'support-fragment'
     }
 
@@ -141,14 +153,8 @@ dependencies {
     implementation 'com.aliyun.ams:alicloud-android-push:2.3.7'
     implementation 'com.aliyun.ams:alicloud-android-third-push:3.0.2@aar'
 
-    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit2Version"
-    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit2Version"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofit2Version"
-    implementation "com.squareup.retrofit2:retrofit-mock:$rootProject.retrofit2Version"
-    implementation "com.squareup.okio:okio:1.14.0"
-
-    implementation "com.google.dagger:dagger:$rootProject.daggerVersion"
-    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+    implementation rootProject.ext.dependencies["dagger"]
+    annotationProcessor rootProject.ext.dependencies["dagger-compiler"]
 
     implementation('io.socket:socket.io-client:1.0.0') {
         // excluding org.json which is provided by Android
@@ -156,28 +162,30 @@ dependencies {
     }
 
     //内存检测工具
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
-
-    debugImplementation 'com.github.markzhai:blockcanary-android:1.5.0'
+    debugImplementation rootProject.ext.dependencies["stetho"]
+    debugImplementation rootProject.ext.dependencies["leakcanary-debug"]
+    debugImplementation rootProject.ext.dependencies["leakcanary-fragment"]
+    //    releaseImplementation rootProject.ext.dependencies["leakcanary-release"]
+    debugImplementation rootProject.ext.dependencies["blockcanary-debug"]
 
     //基于 mmap 的高性能通用 key-value 组件
     implementation 'com.tencent:mmkv:1.0.10'
 
     //support
-    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintVersion"
-    implementation "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:exifinterface:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:design:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:gridlayout-v7:$rootProject.supportLibraryVersion"
-    implementation "com.google.android:flexbox:$rootProject.flexboxVersion"
+    implementation rootProject.ext.dependencies["support-compat"]
+    implementation rootProject.ext.dependencies["support-core-utils"]
+    implementation rootProject.ext.dependencies["support-core-ui"]
+    implementation rootProject.ext.dependencies["support-media-compat"]
+    implementation rootProject.ext.dependencies["support-fragment"]
+    implementation rootProject.ext.dependencies["support-annotations"]
+    implementation rootProject.ext.dependencies["design"]
+    implementation rootProject.ext.dependencies["appcompat-v7"]
+    implementation rootProject.ext.dependencies["recyclerview-v7"]
+    implementation rootProject.ext.dependencies["cardview-v7"]
+    implementation rootProject.ext.dependencies["gridlayout-v7"]
 
+    implementation rootProject.ext.dependencies["flexbox"]
+    implementation rootProject.ext.dependencies["constraint"]
 
     def lifecycle_version = "1.1.1"
     // ViewModel and LiveData
@@ -212,31 +220,37 @@ dependencies {
 //    // optional - Test helpers
 //    androidTestImplementation "android.arch.work:work-testing:$work_version"
 
-    // Dependencies for local unit tests
-    testImplementation "junit:junit:$rootProject.junitVersion"
-    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
-    testImplementation "org.mockito:mockito-inline:$rootProject.mockitoVersion"
-    androidTestImplementation "org.mockito:mockito-android:$rootProject.mockitoVersion"
-    testImplementation "org.hamcrest:hamcrest-all:$rootProject.hamcrestVersion"
-    //测试依赖Json
-    testImplementation 'org.json:json:20180130'
-    // Android Testing Support Library's runner and rules
-    androidTestImplementation "com.android.support.test:runner:$rootProject.runnerVersion"
-    androidTestImplementation "com.android.support.test:rules:$rootProject.runnerVersion"
-    // Dependencies for Android unit tests
-    androidTestImplementation "junit:junit:$rootProject.junitVersion"
-    androidTestImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
-    //Espresso UI Testing idling需要注入到release版
-    implementation "com.android.support.test.espresso:espresso-idling-resource:3.0.2"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
-    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$rootProject.espressoVersion"
-    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$rootProject.espressoVersion"
+    testImplementation rootProject.ext.dependencies["json"]
+    //idling需要注入到release版
+    implementation rootProject.ext.dependencies["espresso-idling"]
+
+    testImplementation rootProject.ext.dependencies["junit"]
+    testImplementation rootProject.ext.dependencies["mockito-core"]
+    testImplementation rootProject.ext.dependencies["mockito-inline"]
+    testImplementation rootProject.ext.dependencies["hamcrest"]
+
+    androidTestImplementation rootProject.ext.dependencies["mockito-android"]
+    androidTestImplementation rootProject.ext.dependencies["mockito-core"]
+    androidTestImplementation rootProject.ext.dependencies["runner"]
+    androidTestImplementation rootProject.ext.dependencies["rules"]
+    androidTestImplementation rootProject.ext.dependencies["junit"]
+
+    androidTestImplementation rootProject.ext.dependencies["espresso-core"]
+    androidTestImplementation rootProject.ext.dependencies["espresso-contrib"]
+    androidTestImplementation rootProject.ext.dependencies["espresso-intents"]
+
     //Resolve conflicts between main and test APK:
-    androidTestImplementation "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
-    androidTestImplementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    androidTestImplementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
-    androidTestImplementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    androidTestImplementation "com.android.support:design:$rootProject.supportLibraryVersion"
+    androidTestImplementation rootProject.ext.dependencies["support-compat"]
+    androidTestImplementation rootProject.ext.dependencies["support-core-utils"]
+    androidTestImplementation rootProject.ext.dependencies["support-core-ui"]
+    androidTestImplementation rootProject.ext.dependencies["support-media-compat"]
+    androidTestImplementation rootProject.ext.dependencies["support-fragment"]
+    androidTestImplementation rootProject.ext.dependencies["support-annotations"]
+    androidTestImplementation rootProject.ext.dependencies["design"]
+    androidTestImplementation rootProject.ext.dependencies["appcompat-v7"]
+    androidTestImplementation rootProject.ext.dependencies["recyclerview-v7"]
+    androidTestImplementation rootProject.ext.dependencies["cardview-v7"]
+    androidTestImplementation rootProject.ext.dependencies["gridlayout-v7"]
 
 }
 

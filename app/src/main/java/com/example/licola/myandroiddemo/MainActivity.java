@@ -4,17 +4,22 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.location.GpsStatus;
 import android.location.Location;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
 import com.example.RuntimeHandle;
 import com.example.licola.myandroiddemo.AndroidRuntimeCode.RuntimeCode;
@@ -32,12 +37,12 @@ import com.example.licola.myandroiddemo.dagger.UserModel;
 import com.example.licola.myandroiddemo.dummy.DummyContent.DummyItem;
 import com.example.licola.myandroiddemo.frag.AnimateFragment;
 import com.example.licola.myandroiddemo.frag.BaseFragment;
-import com.example.licola.myandroiddemo.frag.BroadcastFragment;
 import com.example.licola.myandroiddemo.frag.ConfigFragment;
 import com.example.licola.myandroiddemo.frag.ConstraintLayoutFragment;
 import com.example.licola.myandroiddemo.frag.DaoFragment;
 import com.example.licola.myandroiddemo.frag.DialogShowFragment;
 import com.example.licola.myandroiddemo.frag.DownLoadFragment;
+import com.example.licola.myandroiddemo.frag.EventFragment;
 import com.example.licola.myandroiddemo.frag.HttpFragment;
 import com.example.licola.myandroiddemo.frag.IOFragment;
 import com.example.licola.myandroiddemo.frag.ImageLoadFragment;
@@ -78,8 +83,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 @RuntimeHandle()
 @Route(path = "main")
@@ -125,7 +128,7 @@ public class MainActivity extends BaseActivity implements
     map.put("RecyclerAdapter数据", RecyclerAdapterFragment.class);
     map.put("Animate动画", AnimateFragment.class);
     map.put("ProgressAnimate动画", ProcessViewFragment.class);
-    map.put("Broadcast广播/本地广播", BroadcastFragment.class);
+    map.put("Event事件", EventFragment.class);
     map.put("IO", IOFragment.class);
     map.put("Socket", SocketFragment.class);
     map.put("Thread/Handler", ThreadFragment.class);
@@ -144,9 +147,19 @@ public class MainActivity extends BaseActivity implements
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    WindowsController.setTranslucentWindows(this);
+//    WindowsController.setTranslucentWindows(this);
+
+    Window window = getWindow();
+    window.addFlags(LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+    window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.blue_normal_A54));
+
+    if (VERSION.SDK_INT >= VERSION_CODES.M) {
+//      window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+    } else {
+      WindowsController.addStatusBarBackground(this, R.color.black_normal_A12);
+    }
+
     setContentView(R.layout.activity_main);
-    WindowsController.addStatusBarBackground(this, R.color.gray_normal_A32);
 
     coordinatorLayout = findViewById(R.id.main_content);
     toolbar = findViewById(R.id.toolbar);
@@ -167,7 +180,7 @@ public class MainActivity extends BaseActivity implements
       @Override
       public void run() {
 //        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("ViewDraw"));
+        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("Event事件"));
 //        mViewPager.setCurrentItem(0);
       }
     });
@@ -176,8 +189,6 @@ public class MainActivity extends BaseActivity implements
     daggerInject();
 
     testLifeCycle();
-
-    testEventBus();
 
     JavaMain.main();
     AndroidMain.main(MainActivity.this);
@@ -298,27 +309,6 @@ public class MainActivity extends BaseActivity implements
 
     mmkv.removeValueForKey("input");
     LLogger.d(Arrays.toString(mmkv.allKeys()));
-  }
-
-  private void testEventBus() {
-    EventBus eventBus = EventBus.getDefault();
-
-    eventBus.register(this);
-
-    String event = "123";
-    eventBus.postSticky(event);
-
-  }
-
-
-  @Subscribe()
-  public void onEvent(String event) {
-    LLogger.d(event);
-  }
-
-  @Subscribe()
-  public void onEvent(CharSequence event) {
-    LLogger.d(event);
   }
 
   private void testLifeCycle() {

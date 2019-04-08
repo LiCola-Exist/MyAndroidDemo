@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  tools:context="com.example.licola.myandroiddemo.frag.EventFragment">
+
+  <Button
+    android:id="@+id/btn_send_event"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="发送EventBus-普通事件" />
+
+  <Button
+    android:id="@+id/btn_send_event_sticky"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="发送EventBus-Sticky事件" />
+
+  <Button
+    android:id="@+id/btn_send_broad"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="发送本地广播" />
+
+
+</LinearLayout>

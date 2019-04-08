@@ -12,6 +12,7 @@ import com.github.moduth.blockcanary.BlockCanaryContext;
 import com.licola.llogger.LLogger;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+import java.io.File;
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -48,7 +49,8 @@ public class MyApplication extends Application {
         .installDefaultEventBus();
 
     //log日志初始化
-    LLogger.init(true, "Demo", getCacheDir(), "demo-log_");
+    File logFileDir = new File(getCacheDir(),"log");
+    LLogger.init(true, "Demo", logFileDir);
 
     /**
      * 初始化Stetho 数据库 调试工具 发布版注释

@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -23,17 +24,29 @@ public class WindowsController {
    * 设置透明状态栏和导航栏.
    */
   static public void setTranslucentWindows(@NonNull Activity activity) {
+    setTranslucentWindows(activity.getWindow());
+  }
+
+  /**
+   * 设置透明状态栏和导航栏.
+   */
+  static public void setTranslucentWindows(@NonNull Window windows) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
       //透明状态栏
-      activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+      windows.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
       //透明导航栏
 //      activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
     }
   }
 
   public static void hideBottomNavigationBar(Activity activity) {
+    hideBottomNavigationBar(activity.getWindow());
+  }
+
+
+  public static void hideBottomNavigationBar(Window window) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-      View decorView = activity.getWindow().getDecorView();
+      View decorView = window.getDecorView();
       int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
       decorView.setSystemUiVisibility(uiOptions);
     }
@@ -61,11 +74,9 @@ public class WindowsController {
   }
 
   /**
-   * 給状态栏加上一层透明色
-   * 配合{@link #setTranslucentWindows(Activity)}方法使用
-   * 主要方法为添加一个View并设置背景色添加到系统contentView中
+   * 給状态栏加上一层透明色 配合{@link #setTranslucentWindows(Activity)}方法使用 主要方法为添加一个View并设置背景色添加到系统contentView中
    */
-  static public void addStatusBarBackground(@NonNull Activity activity, @DrawableRes int resid) {
+  static public void addStatusBarBackground(@NonNull Activity activity, @DrawableRes int resId) {
     int height;
     height = getStatusBarHeight(activity);
     if (height <= 0) {
@@ -76,7 +87,7 @@ public class WindowsController {
     statusLayout.setLayoutParams(
         new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
 
-    statusLayout.setBackgroundResource(resid);
+    statusLayout.setBackgroundResource(resId);
     layout.addView(statusLayout);
   }
 
