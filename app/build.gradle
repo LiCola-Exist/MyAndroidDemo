@@ -73,6 +73,9 @@ dependencies {
     implementation project(':annotation')
     implementation project(':aspectj')
 
+    implementation project(':base')
+    implementation project(':module')
+
     implementation rootProject.ext.dependencies["route-api"]
     implementation rootProject.ext.dependencies["route-annotation"]
     annotationProcessor rootProject.ext.dependencies["route-compiler"]

@@ -10,8 +10,8 @@ import com.facebook.stetho.Stetho;
 import com.github.moduth.blockcanary.BlockCanary;
 import com.github.moduth.blockcanary.BlockCanaryContext;
 import com.licola.llogger.LLogger;
+import com.licola.modue.base.ServiceProvider;
 import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 import java.io.File;
 import org.greenrobot.eventbus.EventBus;
 
@@ -21,15 +21,12 @@ import org.greenrobot.eventbus.EventBus;
 
 public class MyApplication extends Application {
 
-  private static final boolean CHECK_LEAK=false;
+  private static final boolean CHECK_LEAK = false;
 
   @Override
   protected void attachBaseContext(Context base) {
     super.attachBaseContext(base);
-    long start=System.currentTimeMillis();
     MultiDex.install(this);
-    long end=System.currentTimeMillis();
-    LLogger.d(end-start);
   }
 
   @Override
@@ -49,7 +46,7 @@ public class MyApplication extends Application {
         .installDefaultEventBus();
 
     //log日志初始化
-    File logFileDir = new File(getCacheDir(),"log");
+    File logFileDir = new File(getCacheDir(), "log");
     LLogger.init(true, "Demo", logFileDir);
 
     /**
@@ -60,7 +57,7 @@ public class MyApplication extends Application {
         .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
         .build());
 
-    if (CHECK_LEAK){
+    if (CHECK_LEAK) {
       //内存检测工具
       if (!LeakCanary.isInAnalyzerProcess(this)) {
         LeakCanary.install(this);
@@ -68,6 +65,8 @@ public class MyApplication extends Application {
     }
 
     BlockCanary.install(this, new AppBlockCanaryContext()).start();
+
+    ServiceProvider.register(this);
 
   }
 

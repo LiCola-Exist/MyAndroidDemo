@@ -63,7 +63,7 @@ public class ImageLoadFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    View rootView = super.onCreateView(inflater,container ,savedInstanceState );
+    View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
     loadNinePath(rootView);
 
@@ -75,7 +75,6 @@ public class ImageLoadFragment extends BaseFragment {
 
     return rootView;
   }
-
 
 
   private void loadNinePath(final View childView) {
@@ -112,7 +111,6 @@ public class ImageLoadFragment extends BaseFragment {
     imgThird.setImageURI(
         Uri.parse("android.resource://" + getActivity().getPackageName() + "//"
             + R.drawable.ic_action_app_white));
-
 
 
   }

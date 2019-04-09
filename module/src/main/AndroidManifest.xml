@@ -1,0 +1,12 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.licola.modue.module">
+
+  <application>
+
+    <!--逆常规 以key-value对调，否则就会duplicated with element declared at，因为不同模块需要配置相同值 同样的思路参见Glide的GlideModule-->
+    <meta-data
+      android:name="com.licola.modue.module.RuntimeModule"
+      android:value="module" />
+  </application>
+
+</manifest>

@@ -26,6 +26,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation project(':base')
+
+    //log工具
     implementation rootProject.ext.dependencies["llogger"]
 
     //support
