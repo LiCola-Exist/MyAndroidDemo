@@ -83,6 +83,8 @@
         android:background="@color/blue_normal_A12"
         android:gravity="center"
         android:maxWidth="20dp"
+        android:lineSpacingExtra="6dp"
+        android:lineSpacingMultiplier="1"
         android:text="Caption字幕123"
         android:textColor="@color/black_normal"
         android:textSize="20dp" />

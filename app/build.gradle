@@ -168,8 +168,11 @@ dependencies {
     debugImplementation rootProject.ext.dependencies["stetho"]
     debugImplementation rootProject.ext.dependencies["leakcanary-debug"]
     debugImplementation rootProject.ext.dependencies["leakcanary-fragment"]
-    //    releaseImplementation rootProject.ext.dependencies["leakcanary-release"]
+    releaseImplementation rootProject.ext.dependencies["leakcanary-release"]
     debugImplementation rootProject.ext.dependencies["blockcanary-debug"]
+
+    debugImplementation rootProject.ext.dependencies["doraemonkit-debug"]
+    releaseImplementation rootProject.ext.dependencies["doraemonkit-release"]
 
     //基于 mmap 的高性能通用 key-value 组件
     implementation 'com.tencent:mmkv:1.0.10'

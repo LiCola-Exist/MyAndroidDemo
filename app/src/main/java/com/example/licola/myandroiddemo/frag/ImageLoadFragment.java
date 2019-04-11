@@ -175,6 +175,7 @@ public class ImageLoadFragment extends BaseFragment {
     LLogger.d("compress bitmap:" + bitmapCompress.getByteCount() + " width:" + bitmapCompress
         .getWidth() + " height:" + bitmapCompress.getHeight());
     imgBitmapCompress.setImageBitmap(bitmapCompress);
+
   }
 
 

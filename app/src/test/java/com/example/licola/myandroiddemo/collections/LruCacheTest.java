@@ -4,6 +4,7 @@ import android.support.v4.util.LruCache;
 import com.licola.llogger.LLogger;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -12,6 +13,11 @@ import org.junit.Test;
  */
 public class LruCacheTest {
 
+
+  @Before
+  public void setUp(){
+    LLogger.init();
+  }
 
   @Test
   public void onCache() {

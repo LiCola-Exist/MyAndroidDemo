@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 import com.demo.licola.myandroiddemo.EventBusIndex;
+import com.didichuxing.doraemonkit.DoraemonKit;
 import com.example.licola.myandroiddemo.utils.RomChecker;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.stetho.Stetho;
@@ -65,6 +66,7 @@ public class MyApplication extends Application {
     }
 
     BlockCanary.install(this, new AppBlockCanaryContext()).start();
+    DoraemonKit.install(this);
 
     ServiceProvider.register(this);
 
