@@ -1,6 +1,5 @@
 package com.example.licola.myandroiddemo.java;
 
-import android.annotation.TargetApi;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.RequiresApi;
@@ -8,9 +7,7 @@ import com.google.common.collect.Maps;
 import com.licola.llogger.LLogger;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.concurrent.ForkJoinPool;
 
 /**
  * Created by LiCola on 2017/9/5.
@@ -32,12 +29,21 @@ public class JavaMain {
       heightApi();
     }
 
+
+    Class<?> xposedClass = null;
+    try {
+      xposedClass = Class.forName("de.robv.android.xposed.XposedBridge",false,ClassLoader.getSystemClassLoader());
+    } catch (ClassNotFoundException e) {
+    }
+    if (xposedClass != null) {
+      LLogger.d("运行在Xposed环境");
+    }
   }
 
   @RequiresApi(api = VERSION_CODES.O)
   private static void heightApi() {
-    LocalDate date=LocalDate.now();
-    Instant instant=Instant.now();
+    LocalDate date = LocalDate.now();
+    Instant instant = Instant.now();
   }
 
   private static void testSingle() {

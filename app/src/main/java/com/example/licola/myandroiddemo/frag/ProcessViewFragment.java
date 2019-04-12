@@ -159,7 +159,7 @@ public class ProcessViewFragment extends BaseFragment {
     int size = drawableRedIds.length;
     Drawable[] drawables = new Drawable[size];
     Options options = new Options();
-    options.inSampleSize = 2;
+    options.inSampleSize = 4;
     for (int i = 0; i < size; i++) {
       Bitmap bitmap = BitmapFactory.decodeResource(getResources(), drawableRedIds[i], options);
       BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(),
