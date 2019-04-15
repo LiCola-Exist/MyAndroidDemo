@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:minWidth="10dp"
   android:orientation="vertical">
 
 
@@ -42,11 +43,10 @@
     android:layout_height="wrap_content"
     android:text="block-ui-click" />
   <Button
+    android:id="@+id/btn_entry_sheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/btn_entry_sheet"
-    android:text="entry-Bottom-Sheet"
-    />
+    android:text="entry-Bottom-Sheet" />
   <Button
     android:id="@+id/btn_entry_scroll"
     android:layout_width="match_parent"

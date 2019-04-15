@@ -7,6 +7,7 @@
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+
   <!-- 阿里移动推送相关权限 -->
   <!-- Android 6.0版本可去除，用于选举信息（通道复用）的同步 -->
   <uses-permission android:name="android.permission.WRITE_SETTINGS" />
@@ -39,6 +40,15 @@
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
   <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+
+  <!--视频录制-->
+  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.FLASHLIGHT" />
+  <uses-permission android:name="android.permission.RECORD_VIDEO" />
+  <uses-permission android:name="android.permission.RECORD_AUDIO" />
+  <uses-feature android:name="android.hardware.camera" />
+  <uses-feature android:name="android.hardware.camera.autofocus" />
 
   <application
     android:allowBackup="true"

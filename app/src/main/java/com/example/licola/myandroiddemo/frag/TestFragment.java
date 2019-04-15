@@ -15,6 +15,9 @@ import com.example.licola.myandroiddemo.aty.NoDisplayAty;
 import com.example.licola.myandroiddemo.aty.ScrollingActivity;
 import com.example.licola.myandroiddemo.aty.SoftKeyActivity;
 import com.licola.llogger.LLogger;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -55,6 +58,7 @@ public class TestFragment extends BaseFragment {
     fragment.setArguments(args);
     return fragment;
   }
+
 
   @Nullable
   @Override
@@ -222,6 +226,62 @@ public class TestFragment extends BaseFragment {
   @Override
   public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
+
+    View rootView = getView();
+
+    if (rootView instanceof ViewGroup) {
+      Class<?> vClass = rootView.getClass().getSuperclass();
+      try {
+        Field mChildren = vClass.getDeclaredField("mChildren");
+        mChildren.setAccessible(true);
+        Object value = mChildren.get(rootView);
+        LLogger.d(value);
+      } catch (NoSuchFieldException e) {
+        e.printStackTrace();
+      } catch (IllegalAccessException e) {
+        e.printStackTrace();
+      }
+    }
+
+//    txtResult.getHorizontallyScrolling();
+
+    Class<?> tClass = txtResult.getClass().getSuperclass();
+    try {
+      Method hiddenMethod = tClass.getDeclaredMethod("getHorizontallyScrolling");
+      hiddenMethod.setAccessible(true);
+      Object invokeResult = hiddenMethod.invoke(txtResult);
+      LLogger.d(invokeResult);
+
+    } catch (NoSuchMethodException e) {
+      e.printStackTrace();
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    } catch (InvocationTargetException e) {
+      e.printStackTrace();
+    }
+
+    try {
+
+      //用Class类获取Class的getDeclaredMethod方法
+      Method getDeclaredMethod = Class.class
+          .getDeclaredMethod("getDeclaredMethod", String.class, Class[].class);
+
+      //通过持有的getDeclaredMethod方法 再反射得到目标类的方法
+      Method hiddenMethod = (Method) getDeclaredMethod
+          .invoke(TextView.class, "getHorizontallyScrolling", null);
+
+      Object invokeResult = hiddenMethod.invoke(txtResult);
+      LLogger.d(invokeResult);
+
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    } catch (InvocationTargetException e) {
+      e.printStackTrace();
+    } catch (NoSuchMethodException e) {
+      e.printStackTrace();
+    }
+
+
   }
 
   boolean isWrap;
