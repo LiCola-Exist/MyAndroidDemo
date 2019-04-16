@@ -38,7 +38,7 @@ public class ShaderDemoView extends View {
         new SweepGradient(1000, 200, Color.parseColor("#E91E63"), Color.parseColor("#2196F3"));
 
     Bitmap bitmap =
-        BitmapUtils.decodeSampleBitmapFromResource(getResources(), R.drawable.p2415568603, 400,
+        BitmapUtils.decodeSampleBitmapFromResource(getResources(), R.drawable.a01, 400,
             400);
 
     shaderBitmap = new BitmapShader(bitmap, TileMode.CLAMP, TileMode.CLAMP);

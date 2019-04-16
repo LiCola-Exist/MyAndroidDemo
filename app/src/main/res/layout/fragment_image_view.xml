@@ -1,98 +1,70 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  tools:context="com.example.licola.myandroiddemo.frag.ImageLoadFragment">
+  tools:context="com.example.licola.myandroiddemo.frag.ImageFragment">
 
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-
-    <FrameLayout
-      android:id="@+id/layout_patch_left"
-      android:layout_width="wrap_content"
-      android:layout_height="40dp"
-      android:layout_margin="12dp"
-      android:background="@drawable/bg_small_shape_left">
-
-      <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center|left"
-        android:orientation="horizontal">
-        <TextView
-          android:id="@+id/tv_patch_content_left"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="左"
-          android:textColor="@color/black_normal"
-          android:textSize="12dp" />
-
-      </LinearLayout>
-
-    </FrameLayout>
-    <FrameLayout
-      android:layout_width="wrap_content"
-      android:layout_height="35dp"
-      android:layout_margin="12dp"
-      android:background="@drawable/bg_small_shape_right">
-
-      <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center|left"
-        android:orientation="horizontal">
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="...箭头在右"
-          android:textColor="@color/black_normal"
-          android:textSize="12dp" />
-
-      </LinearLayout>
-
-    </FrameLayout>
-    <FrameLayout
-      android:layout_width="wrap_content"
-      android:layout_height="35dp"
-      android:layout_margin="12dp"
-      android:background="@drawable/bg_small_shape_center">
-
-      <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center|left"
-        android:orientation="horizontal">
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="..箭头在中.."
-          android:textColor="@color/black_normal"
-          android:textSize="12dp" />
-
-      </LinearLayout>
-
-    </FrameLayout>
+    <Button
+      android:id="@+id/btn_image_compress"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="图片压缩" />
 
     <com.facebook.drawee.view.SimpleDraweeView
       android:id="@+id/img_load_fresco"
       android:layout_width="match_parent"
       android:layout_height="180dp"
       app:actualImageScaleType="center"
-      app:placeholderImage="@color/colorPrimary" />
+      app:placeholderImage="@color/colorPrimary"
+      tools:background="@color/gray_normal_A32" />
 
     <ImageView
       android:id="@+id/img_load_glide"
       android:layout_width="match_parent"
       android:layout_height="180dp"
       tools:background="@color/gray_normal_A54" />
+
+    <ImageView
+      android:id="@+id/img_load_bitmap"
+      android:layout_width="match_parent"
+      android:layout_height="180dp"
+      android:background="@color/blue_normal_A54" />
+
+    <HorizontalScrollView
+      android:layout_width="match_parent"
+      android:layout_height="180dp">
+
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+
+        android:orientation="horizontal">
+
+        <ImageView
+          android:id="@+id/img_bitmap_compress"
+          android:layout_width="180dp"
+          android:layout_height="180dp"
+          android:layout_margin="12dp"
+          android:layout_gravity="center"
+          android:background="@color/blue_normal_A32" />
+
+        <ImageView
+          android:id="@+id/img_bitmap_compress_scale"
+          android:layout_width="180dp"
+          android:layout_height="180dp"
+          android:layout_margin="12dp"
+          android:layout_gravity="center"
+          android:background="@color/blue_normal_A32" />
+
+      </LinearLayout>
+
+    </HorizontalScrollView>
 
     <ImageView
       android:id="@+id/img_load_drawable_first"
@@ -110,20 +82,6 @@
       android:layout_height="60dp"
       android:background="@color/gray_normal_A54" />
 
-    <ImageView
-      android:id="@+id/img_load_bitmap"
-      android:layout_width="match_parent"
-      android:layout_height="300dp"
-      android:background="@color/blue_normal"
-      tools:src="@drawable/a01" />
-
-    <ImageView
-      android:id="@+id/img_bitmap_compress"
-      android:layout_width="match_parent"
-      android:layout_height="300dp"
-      android:layout_marginTop="20dp"
-      android:layout_gravity="center" />
-
 
     <com.example.licola.myandroiddemo.view.widget.TouchImageView
       android:id="@+id/img_load_touch"
@@ -131,7 +89,7 @@
       android:layout_height="300dp"
       android:background="@color/red_normal_A54"
       android:scaleType="center"
-      tools:src="@drawable/p18684001092782349" />
+      tools:src="@drawable/image_square_small" />
 
   </LinearLayout>
 

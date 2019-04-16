@@ -141,6 +141,9 @@ dependencies {
     implementation rootProject.ext.dependencies["fresco"]
     implementation rootProject.ext.dependencies["picasso"]
 
+    //图片压缩
+    implementation rootProject.ext.dependencies["luban"]
+
     //动画
     implementation rootProject.ext.dependencies["lottie"]
 

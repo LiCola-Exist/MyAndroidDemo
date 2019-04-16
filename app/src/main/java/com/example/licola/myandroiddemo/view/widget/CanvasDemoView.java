@@ -25,7 +25,7 @@ public class CanvasDemoView extends View {
     paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     paint.setColor(Color.BLUE);
     bitmap =
-        BitmapUtils.decodeSampleBitmapFromResource(getResources(), R.drawable.p18684001092782349,
+        BitmapUtils.decodeSampleBitmapFromResource(getResources(), R.drawable.image_square_small,
             400, 400);
     this.matrix = new Matrix();
   }

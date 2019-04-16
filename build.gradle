@@ -171,6 +171,8 @@ ext {
             "leakcanary-release"           : "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanaryVersion",
             "leakcanary-fragment"          : "com.squareup.leakcanary:leakcanary-support-fragment:$leakcanaryVersion",
 
+            "luban"                        : 'top.zibin:Luban:1.1.8',
+
             //UI检测
             "blockcanary-debug"            : "com.github.markzhai:blockcanary-android:$blockcanaryVersion",
             "blockcanary-release"          : "com.github.markzhai:blockcanary-no-op:$blockcanaryVersion",

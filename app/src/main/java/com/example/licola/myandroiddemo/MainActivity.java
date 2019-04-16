@@ -46,7 +46,7 @@ import com.example.licola.myandroiddemo.frag.DownLoadFragment;
 import com.example.licola.myandroiddemo.frag.EventFragment;
 import com.example.licola.myandroiddemo.frag.HttpFragment;
 import com.example.licola.myandroiddemo.frag.IOFragment;
-import com.example.licola.myandroiddemo.frag.ImageLoadFragment;
+import com.example.licola.myandroiddemo.frag.ImageFragment;
 import com.example.licola.myandroiddemo.frag.LayoutFragment;
 import com.example.licola.myandroiddemo.frag.ProcessViewFragment;
 import com.example.licola.myandroiddemo.frag.RecyclerAdapterFragment;
@@ -133,7 +133,7 @@ public class MainActivity extends BaseActivity implements
     map.put("IO", IOFragment.class);
     map.put("Socket", SocketFragment.class);
     map.put("Thread/Handler", ThreadFragment.class);
-    map.put("图片加载", ImageLoadFragment.class);
+    map.put("图片相关", ImageFragment.class);
     map.put("Dao数据库", DaoFragment.class);
     map.put("WebView", WebViewFragment.class);
     map.put("Http", HttpFragment.class);
@@ -182,8 +182,8 @@ public class MainActivity extends BaseActivity implements
       @Override
       public void run() {
 //        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-//        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("Event事件"));
-        mViewPager.setCurrentItem(0);
+        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("图片相关"));
+//        mViewPager.setCurrentItem(0);
       }
     });
 

@@ -69,6 +69,8 @@ public class ViewDrawFragment extends BaseFragment {
 //        });
     View viewRoot = super.onCreateView(inflater,container ,savedInstanceState );
 
+    loadNinePath(viewRoot);
+
     final LinearLayout layoutGroup = viewRoot.findViewById(R.id.layout_group);
 
     final int screenWidth = PixelUtils.getScreenWidth(getContext());
@@ -81,6 +83,24 @@ public class ViewDrawFragment extends BaseFragment {
     bindAutoSize(viewRoot.findViewById(R.id.tv_auto_size));
 
     return viewRoot;
+  }
+
+  private void loadNinePath(final View childView) {
+    View layoutLeft = childView.findViewById(R.id.layout_patch_left);
+    final TextView content = layoutLeft.findViewById(R.id.tv_patch_content_left);
+    layoutLeft.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        boolean activated = content.isActivated();
+        if (activated) {
+          content.setText("激活长文本显示");
+        } else {
+          content.setText("1");
+        }
+        content.setActivated(!activated);
+      }
+    });
+
   }
 
   private void bindAutoSize(TextView tvAutoSize) {
