@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical">
@@ -8,7 +9,8 @@
     android:id="@+id/layout_group"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:scrollY="0dp">
 
     <LinearLayout
       android:layout_width="match_parent"
@@ -35,6 +37,27 @@
         android:text="@string/app_place_holder_double"
         android:textSize="20dp" />
 
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      >
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="不换行文字间距"
+        android:letterSpacing="2"
+        />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="10dp"
+        android:text="换行文字\n换行文字"
+        />
+
 
     </LinearLayout>
 
@@ -55,12 +78,12 @@
       android:background="@color/blue_normal">
 
       <com.example.licola.myandroiddemo.view.widget.SquareFrameLayout
-        android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:frame_ratio="0.5625"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
         app:frame_fix_side="width"
-        android:background="@color/white"/>
+        app:frame_ratio="0.5625" />
 
     </FrameLayout>
 
@@ -150,9 +173,9 @@
         android:layout_gravity="center_horizontal|top"
         android:background="@color/blue_normal_A12"
         android:gravity="center"
-        android:maxWidth="20dp"
         android:lineSpacingExtra="6dp"
         android:lineSpacingMultiplier="1"
+        android:maxWidth="20dp"
         android:text="Caption字幕123"
         android:textColor="@color/black_normal"
         android:textSize="20dp" />

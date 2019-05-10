@@ -232,6 +232,7 @@ public class ImageFragment extends BaseFragment {
         bitmapCompress.getWidth(),
         bitmapCompress.getConfig()
     );
+
     return bitmapCompress;
   }
 

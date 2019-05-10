@@ -8,14 +8,38 @@
     android:id="@+id/layout_group"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.licola.myandroiddemo.frag.ViewTouchFragment">
-
 
     <com.example.licola.myandroiddemo.view.widget.TouchView
       android:id="@+id/view_touch_target"
       android:layout_width="match_parent"
       android:layout_height="200dp"
       android:background="@color/red_normal_A32" />
+
+
+    <com.example.licola.myandroiddemo.view.widget.FixHorizontalScrollView
+      android:id="@+id/horizontal_scroll_view"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <LinearLayout
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:orientation="horizontal">
+        <ImageView
+          android:layout_width="36dp"
+          android:layout_height="64dp"
+          android:background="@color/red_normal" />
+
+
+
+      </LinearLayout>
+
+    </com.example.licola.myandroiddemo.view.widget.FixHorizontalScrollView>
 
   </LinearLayout>
 

@@ -41,6 +41,7 @@ import com.example.licola.myandroiddemo.frag.CameraFragment;
 import com.example.licola.myandroiddemo.frag.ConfigFragment;
 import com.example.licola.myandroiddemo.frag.ConstraintLayoutFragment;
 import com.example.licola.myandroiddemo.frag.DaoFragment;
+import com.example.licola.myandroiddemo.frag.DateFragment;
 import com.example.licola.myandroiddemo.frag.DialogShowFragment;
 import com.example.licola.myandroiddemo.frag.DownLoadFragment;
 import com.example.licola.myandroiddemo.frag.EventFragment;
@@ -142,8 +143,10 @@ public class MainActivity extends BaseActivity implements
     map.put("Service", ServiceFragment.class);
     map.put("Config配置", ConfigFragment.class);
     map.put("Camera", CameraFragment.class);
+    map.put("日期", DateFragment.class);
     return map;
   }
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -182,7 +185,7 @@ public class MainActivity extends BaseActivity implements
       @Override
       public void run() {
 //        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("图片相关"));
+        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("ViewTouch"));
 //        mViewPager.setCurrentItem(0);
       }
     });
@@ -210,7 +213,7 @@ public class MainActivity extends BaseActivity implements
   private void checkPermissionByThird() {
     AndPermission.with(mContext)
         .runtime()
-        .permission(Permission.WRITE_EXTERNAL_STORAGE,Permission.CAMERA,Permission.RECORD_AUDIO)
+        .permission(Permission.WRITE_EXTERNAL_STORAGE, Permission.CAMERA, Permission.RECORD_AUDIO)
         .onGranted(new Action<List<String>>() {
           @Override
           public void onAction(List<String> permissions) {

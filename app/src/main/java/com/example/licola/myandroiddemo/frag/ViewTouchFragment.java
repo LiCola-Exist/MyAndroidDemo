@@ -16,7 +16,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import butterknife.BindView;
 import com.example.licola.myandroiddemo.R;
+import com.example.licola.myandroiddemo.view.widget.FixHorizontalScrollView;
+import com.example.licola.myandroiddemo.view.widget.FixHorizontalScrollView.onScrollChangedListener;
 import com.example.licola.myandroiddemo.view.widget.TouchView;
 import com.licola.llogger.LLogger;
 
@@ -32,6 +35,9 @@ public class ViewTouchFragment extends BaseFragment {
 
   // TODO: Rename and change types of parameters
   private String mParam1;
+
+  @BindView(R.id.horizontal_scroll_view)
+  FixHorizontalScrollView horizontalScrollView;
 
 
   public ViewTouchFragment() {
@@ -71,18 +77,25 @@ public class ViewTouchFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    View viewRoot = super.onCreateView(inflater,container ,savedInstanceState );
+    View viewRoot = super.onCreateView(inflater, container, savedInstanceState);
 
-    LinearLayout layoutGroup= viewRoot.findViewById(R.id.layout_group);
-    TouchView touchView= viewRoot.findViewById(R.id.view_touch_target);
+    LinearLayout layoutGroup = viewRoot.findViewById(R.id.layout_group);
+    TouchView touchView = viewRoot.findViewById(R.id.view_touch_target);
 
-    handleTouch((NestedScrollView) viewRoot,layoutGroup, touchView);
+    handleTouch((NestedScrollView) viewRoot, layoutGroup, touchView);
 
+    horizontalScrollView.setOnScrollChangedListener(new onScrollChangedListener() {
+      @Override
+      public void onScrollChange(int x, int y, int oldX, int oldY) {
+        LLogger.d(x, y, oldX, oldY);
+      }
+    });
 
     return viewRoot;
   }
 
-  private void handleTouch(final NestedScrollView rootView,LinearLayout layoutGroup, TouchView touch) {
+  private void handleTouch(final NestedScrollView rootView, LinearLayout layoutGroup,
+      TouchView touch) {
     touch.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
