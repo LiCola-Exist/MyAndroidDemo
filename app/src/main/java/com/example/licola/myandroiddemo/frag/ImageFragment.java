@@ -5,21 +5,26 @@ import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.ImageViewTarget;
 import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.io.FileUtils;
+import com.example.licola.myandroiddemo.utils.ImageMediaUtils;
 import com.example.licola.myandroiddemo.view.widget.TouchImageView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.licola.llogger.LLogger;
@@ -41,6 +46,11 @@ public class ImageFragment extends BaseFragment {
 
   private static final Uri GLIDE_LOGO = Uri
       .parse("http://inthecheesefactory.com/uploads/source/glidepicasso/cover.jpg");
+
+  /**
+   *
+   */
+  private static final String ORIENTATION_DEGREES_IMAGE = "rotation_image.jpg";
 
   private static final String ARG_PARAM1 = "param1";
 
@@ -68,7 +78,7 @@ public class ImageFragment extends BaseFragment {
   @BindView(R.id.img_load_drawable_third)
   ImageView imageLoadBitmapThird;
 
-  File fileLoacl;
+  File fileLocal;
 
   public ImageFragment() {
     // Required empty public constructor
@@ -94,7 +104,7 @@ public class ImageFragment extends BaseFragment {
     if (getArguments() != null) {
       mParam1 = getArguments().getString(ARG_PARAM1);
     }
-    fileLoacl = loadImageToLocal();
+    fileLocal = loadImageToLocal(ORIENTATION_DEGREES_IMAGE);
   }
 
   @Override
@@ -106,7 +116,7 @@ public class ImageFragment extends BaseFragment {
     loadByFresco(FRESCO_LOGO);
     loadByGlide(GLIDE_LOGO);
     loadByOriginal();
-    loadByOriginalWithOptions(fileLoacl.getAbsolutePath());
+    loadByOriginalWithOptions(fileLocal.getAbsolutePath());
     loadByDrawable();
 
     return rootView;
@@ -159,7 +169,13 @@ public class ImageFragment extends BaseFragment {
   private void loadByGlide(Uri uri) {
     Glide.with(getActivity())
         .load(uri)
-        .into(imageGlide);
+        .into(new ImageViewTarget<Drawable>(imageGlide) {
+          @Override
+          protected void setResource(@Nullable Drawable resource) {
+            LLogger.d(resource);
+            imageGlide.setImageDrawable(resource);
+          }
+        });
 
     imageGlide.setOnClickListener(new OnClickListener() {
       @Override
@@ -185,16 +201,33 @@ public class ImageFragment extends BaseFragment {
     String outMimeType = options.outMimeType;
     LLogger.d(outHeight, outWidth, outMimeType);
 
+    boolean needRotate = ImageMediaUtils.needRotate(pathName);
+
     options.inJustDecodeBounds = false;
     options.inSampleSize = 2;//缩放设置 缩小2倍
     //从drawable中加载 能够取出默认的图片比例：系统dpi/drawable的dpi
     Bitmap bitmapDecode = BitmapFactory.decodeFile(pathName, options);
-    imageLoadBitmap.setImageBitmap(bitmapDecode);
+
     LLogger.d("bitmap byte size:" + bitmapDecode.getByteCount(),
         bitmapDecode.getHeight(),
         bitmapDecode.getWidth(),
         bitmapDecode.getConfig()
     );
+
+    Bitmap resultBitmap;
+
+    if (needRotate) {
+      Matrix matrix = new Matrix();
+      matrix.setRotate(90);
+      resultBitmap = Bitmap
+          .createBitmap(bitmapDecode, 0, 0, bitmapDecode.getWidth(), bitmapDecode.getHeight(),
+              matrix, false);
+    } else {
+      resultBitmap = bitmapDecode;
+    }
+
+    imageLoadBitmap.setScaleType(ScaleType.CENTER_INSIDE);
+    imageLoadBitmap.setImageBitmap(resultBitmap);
 
     imageCompressBitmap.setImageBitmap(compressQuality(bitmapDecode));
     imageCompressBitmapScale.setImageBitmap(compressScale(bitmapDecode));
@@ -217,8 +250,6 @@ public class ImageFragment extends BaseFragment {
 
   /**
    * 相比inSampleSize采样率2的倍数参数限制，矩阵缩放支持浮点输入，一样也维持宽高比例
-   * @param bitmapInput
-   * @return
    */
   private Bitmap compressScale(Bitmap bitmapInput) {
     Matrix matrix = new Matrix();
@@ -242,17 +273,17 @@ public class ImageFragment extends BaseFragment {
 
   @OnClick(R.id.btn_image_compress)
   public void btnImageCompressClick(View view) {
-    compressImageFile(fileLoacl);
+    compressImageFile(fileLocal);
   }
 
-  private File loadImageToLocal() {
+  private File loadImageToLocal(String fileName) {
     File filesDir = mContext.getFilesDir();
-    File outTargetFile = new File(filesDir, "image_rectangle.jpg");
+    File outTargetFile = new File(filesDir, fileName);
 
     if (!outTargetFile.exists()) {
       InputStream inputStream = null;
       try {
-        inputStream = mContext.getAssets().open("image_rectangle.jpg");
+        inputStream = mContext.getAssets().open(fileName);
       } catch (IOException e) {
         e.printStackTrace();
       }

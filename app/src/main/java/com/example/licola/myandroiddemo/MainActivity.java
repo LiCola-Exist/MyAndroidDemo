@@ -185,7 +185,7 @@ public class MainActivity extends BaseActivity implements
       @Override
       public void run() {
 //        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("ViewTouch"));
+        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("图片相关"));
 //        mViewPager.setCurrentItem(0);
       }
     });
