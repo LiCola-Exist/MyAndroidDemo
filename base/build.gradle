@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
@@ -72,6 +74,10 @@ dependencies {
     androidTestImplementation rootProject.ext.dependencies["recyclerview-v7"]
     androidTestImplementation rootProject.ext.dependencies["cardview-v7"]
     androidTestImplementation rootProject.ext.dependencies["gridlayout-v7"]
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 
+}
+repositories {
+    mavenCentral()
 }

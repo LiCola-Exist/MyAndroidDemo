@@ -101,7 +101,7 @@ public class ServiceFragment extends BaseFragment {
 
   @OnClick(R.id.btn_bind_service)
   public void onBtnBindServiceClick(View view) {
-    Intent intent = new Intent(mContext, MessengerService.class);
+    Intent intent = new Intent(getMContext(), MessengerService.class);
     getActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
   }
 

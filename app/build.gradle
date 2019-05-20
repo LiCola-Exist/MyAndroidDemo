@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 apply plugin: 'org.greenrobot.greendao'
 
 import org.aspectj.bridge.IMessage
@@ -262,6 +264,7 @@ dependencies {
     androidTestImplementation rootProject.ext.dependencies["recyclerview-v7"]
     androidTestImplementation rootProject.ext.dependencies["cardview-v7"]
     androidTestImplementation rootProject.ext.dependencies["gridlayout-v7"]
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 }
 
@@ -306,4 +309,7 @@ variants.all { variant ->
             }
         }
     }
+}
+repositories {
+    mavenCentral()
 }

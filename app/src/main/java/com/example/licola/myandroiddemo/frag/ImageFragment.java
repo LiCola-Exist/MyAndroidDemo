@@ -277,13 +277,13 @@ public class ImageFragment extends BaseFragment {
   }
 
   private File loadImageToLocal(String fileName) {
-    File filesDir = mContext.getFilesDir();
+    File filesDir = getMContext().getFilesDir();
     File outTargetFile = new File(filesDir, fileName);
 
     if (!outTargetFile.exists()) {
       InputStream inputStream = null;
       try {
-        inputStream = mContext.getAssets().open(fileName);
+        inputStream = getMContext().getAssets().open(fileName);
       } catch (IOException e) {
         e.printStackTrace();
       }
