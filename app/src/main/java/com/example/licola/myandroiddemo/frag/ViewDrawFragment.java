@@ -2,32 +2,28 @@ package com.example.licola.myandroiddemo.frag;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.NestedScrollView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import butterknife.BindView;
 import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.utils.PixelUtils;
 import com.example.licola.myandroiddemo.view.widget.CanvasDemoView;
 import com.example.licola.myandroiddemo.view.widget.ShaderDemoView;
 import com.example.licola.myandroiddemo.view.widget.TextCaptionView;
-import com.licola.llogger.LLogger;
 
 /**
  * Created by 李可乐 on 2016/12/9 0009.
@@ -39,6 +35,9 @@ public class ViewDrawFragment extends BaseFragment {
 
   public ViewDrawFragment() {
   }
+
+  @BindView(R.id.layout_draw_text_group)
+  LinearLayout layoutDrawTextGroup;
 
   @Override
   protected int getLayoutId() {
@@ -67,7 +66,7 @@ public class ViewDrawFragment extends BaseFragment {
 //
 //          }
 //        });
-    View viewRoot = super.onCreateView(inflater,container ,savedInstanceState );
+    View viewRoot = super.onCreateView(inflater, container, savedInstanceState);
 
     loadNinePath(viewRoot);
 
@@ -81,6 +80,10 @@ public class ViewDrawFragment extends BaseFragment {
     addShaderView(layoutGroup, screenWidth);
 
     bindAutoSize(viewRoot.findViewById(R.id.tv_auto_size));
+
+    TextView newTextView = new TextView(getMContext());
+    newTextView.setText("手动添加的文字");
+    layoutDrawTextGroup.addView(newTextView);
 
     return viewRoot;
   }

@@ -2,7 +2,6 @@ package com.example.licola.myandroiddemo.frag;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,20 +10,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import butterknife.BindView;
 import com.example.licola.myandroiddemo.R;
+import com.example.licola.myandroiddemo.http.OkHttpHelper;
 import com.licola.llogger.LLogger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
-import java.net.Proxy;
 import java.net.URL;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.EventListener;
 import okhttp3.OkHttpClient;
-import okhttp3.OkHttpClient.Builder;
-import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 import okio.Buffer;
@@ -41,7 +36,7 @@ public class HttpFragment extends BaseFragment {
   // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
   private static final String ARG_PARAM1 = "param1";
 
-  private String SIMPLE_URL = "http://publicobject.com/helloworld.txt";
+  private String SIMPLE_URL = "https://api.github.com/users/LiCola";
 
   @BindView(R.id.btn_okhttp)
   Button btnOkhttp;
@@ -94,7 +89,7 @@ public class HttpFragment extends BaseFragment {
     rootView.findViewById(R.id.btn_okhttp).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        onOkHttpClick(v);
+        onOkHttpClick(SIMPLE_URL);
       }
     });
     rootView.findViewById(R.id.btn_retrofit).setOnClickListener(new OnClickListener() {
@@ -168,50 +163,15 @@ public class HttpFragment extends BaseFragment {
 
   }
 
-  final static OkHttpClient client = new Builder()
-      .eventListener(new EventListener() {
-        @Override
-        public void callStart(Call call) {
-          super.callStart(call);
-          LLogger.d();
-        }
 
-        @Override
-        public void connectEnd(Call call, InetSocketAddress inetSocketAddress, Proxy proxy,
-            @Nullable Protocol protocol) {
-          super.connectEnd(call, inetSocketAddress, proxy, protocol);
-          LLogger.d();
-        }
 
-        @Override
-        public void connectFailed(Call call, InetSocketAddress inetSocketAddress, Proxy proxy,
-            @Nullable Protocol protocol, IOException ioe) {
-          super.connectFailed(call, inetSocketAddress, proxy, protocol, ioe);
-          LLogger.d();
+  public void onOkHttpClick(String url) {
 
-        }
+    OkHttpClient okHttpClient = OkHttpHelper.makeClient(getMContext());
 
-        @Override
-        public void callEnd(Call call) {
-          super.callEnd(call);
-          LLogger.d();
+    Request request = new Request.Builder().url(url).build();
 
-        }
-
-        @Override
-        public void callFailed(Call call, IOException ioe) {
-          super.callFailed(call, ioe);
-          LLogger.d();
-        }
-      })
-      .build();
-
-  public void onOkHttpClick(final View view) {
-
-    Request request = new Request.Builder().url(SIMPLE_URL).build();
-//    Request request = new Request.Builder().url("https://me.d0575.net:4433/api/category").build();
-
-    client.newCall(request).enqueue(new Callback() {
+    okHttpClient.newCall(request).enqueue(new Callback() {
       @Override
       public void onFailure(Call call, IOException e) {
         e.printStackTrace();
@@ -219,16 +179,6 @@ public class HttpFragment extends BaseFragment {
 
       @Override
       public void onResponse(Call call, Response response) throws IOException {
-        if (!response.isSuccessful()) {
-          throw new IOException("Unexpected code " + response);
-        }
-
-        view.post(new Runnable() {
-          @Override
-          public void run() {
-            view.setEnabled(false);
-          }
-        });
         LLogger.d(
             "Thread:" + Thread.currentThread().toString() + " body:" + response.body().string());
       }

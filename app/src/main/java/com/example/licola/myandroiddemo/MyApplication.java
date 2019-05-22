@@ -15,6 +15,8 @@ import com.licola.modue.base.ServiceProvider;
 import com.squareup.leakcanary.LeakCanary;
 import java.io.File;
 import org.greenrobot.eventbus.EventBus;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by LiCola on 2017/6/16.
@@ -30,12 +32,21 @@ public class MyApplication extends Application {
     MultiDex.install(this);
   }
 
+
+
   @Override
   public void onCreate() {
     super.onCreate();
+
+
     //初始化推送
     initCloudChannel(this);
     //多dex装载
+
+    CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+        .setDefaultFontPath("fonts/base.ttf")
+        .setFontAttrId(R.attr.fontPath)
+        .build());
 
     //fresco的初始化
     Fresco.initialize(this);

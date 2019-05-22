@@ -173,7 +173,11 @@ ext {
             "leakcanary-release"           : "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanaryVersion",
             "leakcanary-fragment"          : "com.squareup.leakcanary:leakcanary-support-fragment:$leakcanaryVersion",
 
+            //图片压缩
             "luban"                        : 'top.zibin:Luban:1.1.8',
+
+            //字体替换
+            "calligraphy"                  : "uk.co.chrisjenx:calligraphy:2.3.0",
 
             //UI检测
             "blockcanary-debug"            : "com.github.markzhai:blockcanary-android:$blockcanaryVersion",

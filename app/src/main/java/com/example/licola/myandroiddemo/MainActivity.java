@@ -1,5 +1,6 @@
 package com.example.licola.myandroiddemo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.location.GpsStatus;
@@ -85,6 +86,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 @RuntimeHandle()
 @Route(path = "main")
@@ -147,6 +149,10 @@ public class MainActivity extends BaseActivity implements
     return map;
   }
 
+  @Override
+  protected void attachBaseContext(Context newBase) {
+    super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -185,7 +191,7 @@ public class MainActivity extends BaseActivity implements
       @Override
       public void run() {
 //        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("图片相关"));
+        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("Event事件"));
 //        mViewPager.setCurrentItem(0);
       }
     });

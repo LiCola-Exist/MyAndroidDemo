@@ -216,6 +216,7 @@
         android:resource="@xml/filepaths" />
     </provider>
 
+
   </application>
 
 </manifest>

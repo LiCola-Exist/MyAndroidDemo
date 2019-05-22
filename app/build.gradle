@@ -145,6 +145,8 @@ dependencies {
 
     //图片压缩
     implementation rootProject.ext.dependencies["luban"]
+    //字体替换
+    implementation rootProject.ext.dependencies["calligraphy"]
 
     //动画
     implementation rootProject.ext.dependencies["lottie"]

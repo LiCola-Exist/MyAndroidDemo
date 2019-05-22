@@ -11,6 +11,7 @@ import android.view.View;
 import butterknife.OnClick;
 import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.receiver.MainLocalBroadcastReceiver;
+import com.example.licola.myandroiddemo.receiver.NormalReceiver;
 import com.licola.llogger.LLogger;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -30,7 +31,8 @@ public class EventFragment extends BaseFragment {
   // TODO: Rename and change types of parameters
   private String mParam1;
 
-  MainLocalBroadcastReceiver receiver;
+  MainLocalBroadcastReceiver receiverLocal;
+  NormalReceiver receiverNormal;
   private EventBus eventBus;
 
   public EventFragment() {
@@ -70,27 +72,36 @@ public class EventFragment extends BaseFragment {
   public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
 
-    receiver = new MainLocalBroadcastReceiver();
-    LocalBroadcastManager.getInstance(getContext())
-        .registerReceiver(receiver, new IntentFilter(Intent.ACTION_PICK_ACTIVITY));
+    receiverLocal = new MainLocalBroadcastReceiver();
+
+    receiverNormal = new NormalReceiver();
 
     eventBus = EventBus.builder()
         .eventInheritance(false)//开启事件继承关系 就会发送String事件 则注册String-CharSequence都会受到事件
         .build();
-
-
   }
 
   @Override
   public void onStart() {
     super.onStart();
     eventBus.register(this);
+
+    LocalBroadcastManager.getInstance(getContext())
+        .registerReceiver(receiverLocal, new IntentFilter(Intent.ACTION_PICK_ACTIVITY));
+
+    getMContext().registerReceiver(receiverNormal,
+        new IntentFilter("com.example.licola.myandroiddemo.action"));
   }
 
   @Override
   public void onStop() {
     super.onStop();
     eventBus.unregister(this);
+
+    LocalBroadcastManager.getInstance(getContext())
+        .unregisterReceiver(receiverLocal);
+
+    getMContext().unregisterReceiver(receiverNormal);
   }
 
   @Subscribe()
@@ -123,9 +134,16 @@ public class EventFragment extends BaseFragment {
         .sendBroadcast(new Intent(Intent.ACTION_PICK_ACTIVITY));
   }
 
+
+  @OnClick(R.id.btn_send_broad_normal)
+  public void onBtnSendBroadNormalClick(View view) {
+    Intent intent = new Intent("com.example.licola.myandroiddemo.action");
+    getActivity().sendBroadcast(intent);
+  }
+
   @Override
   public void onDestroy() {
     super.onDestroy();
-    LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
+    LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiverLocal);
   }
 }
