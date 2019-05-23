@@ -191,7 +191,7 @@ public class MainActivity extends BaseActivity implements
       @Override
       public void run() {
 //        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("Event事件"));
+        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("ViewDraw"));
 //        mViewPager.setCurrentItem(0);
       }
     });

@@ -24,6 +24,7 @@ import com.example.licola.myandroiddemo.utils.PixelUtils;
 import com.example.licola.myandroiddemo.view.widget.CanvasDemoView;
 import com.example.licola.myandroiddemo.view.widget.ShaderDemoView;
 import com.example.licola.myandroiddemo.view.widget.TextCaptionView;
+import com.licola.llogger.LLogger;
 
 /**
  * Created by 李可乐 on 2016/12/9 0009.
@@ -84,6 +85,14 @@ public class ViewDrawFragment extends BaseFragment {
     TextView newTextView = new TextView(getMContext());
     newTextView.setText("手动添加的文字");
     layoutDrawTextGroup.addView(newTextView);
+
+    newTextView.post(new Runnable() {
+      @Override
+      public void run() {
+        //理论上
+        LLogger.d(newTextView.getWidth(),newTextView.getHeight());
+      }
+    });
 
     return viewRoot;
   }

@@ -25,6 +25,7 @@ public class JavaMain {
 
     HashMap<Object, Object> hashMap = Maps.newHashMapWithExpectedSize(10);
 
+
     if (VERSION.SDK_INT >= VERSION_CODES.O) {
       heightApi();
     }
