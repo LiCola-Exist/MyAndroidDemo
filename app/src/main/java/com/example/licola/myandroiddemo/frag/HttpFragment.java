@@ -19,8 +19,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okio.Buffer;
 import okio.Okio;
@@ -169,12 +171,21 @@ public class HttpFragment extends BaseFragment {
 
     OkHttpClient okHttpClient = OkHttpHelper.makeClient(getMContext());
 
-    Request request = new Request.Builder().url(url).build();
+//    RequestBody requestBody= new FormBody.Builder()
+//        .addEncoded("username","wxid_qajpvoh4cp1222")
+//        .addEncoded("password","lhb123lihaibin")
+//        .build();
+
+    Request request = new Request.Builder()
+        .url(url)
+//        .post(requestBody)
+        .build();
 
     okHttpClient.newCall(request).enqueue(new Callback() {
       @Override
       public void onFailure(Call call, IOException e) {
         e.printStackTrace();
+        LLogger.e(e);
       }
 
       @Override

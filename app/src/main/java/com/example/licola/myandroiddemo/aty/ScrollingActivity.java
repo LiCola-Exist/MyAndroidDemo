@@ -53,6 +53,6 @@ public class ScrollingActivity extends BaseActivity {
       public void run() {
         LLogger.d("延迟任务执行");
       }
-    },10000);
+    },100000);
   }
 }

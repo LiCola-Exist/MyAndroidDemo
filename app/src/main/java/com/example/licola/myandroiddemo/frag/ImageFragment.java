@@ -50,7 +50,7 @@ public class ImageFragment extends BaseFragment {
   /**
    *
    */
-  private static final String ORIENTATION_DEGREES_IMAGE = "rotation_image.jpg";
+  private static final String ORIENTATION_DEGREES_IMAGE = "rotation_image.webp";
 
   private static final String ARG_PARAM1 = "param1";
 
