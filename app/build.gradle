@@ -71,6 +71,7 @@ greendao {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     annotationProcessor project(':compiler')
     implementation project(':annotation')
     implementation project(':aspectj')
@@ -269,7 +270,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 }
-
 
 
 final def log = project.logger

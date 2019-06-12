@@ -50,6 +50,7 @@ import com.example.licola.myandroiddemo.frag.HttpFragment;
 import com.example.licola.myandroiddemo.frag.IOFragment;
 import com.example.licola.myandroiddemo.frag.ImageFragment;
 import com.example.licola.myandroiddemo.frag.LayoutFragment;
+import com.example.licola.myandroiddemo.frag.MemoryFragment;
 import com.example.licola.myandroiddemo.frag.ProcessViewFragment;
 import com.example.licola.myandroiddemo.frag.RecyclerAdapterFragment;
 import com.example.licola.myandroiddemo.frag.RecyclerViewFragment;
@@ -146,6 +147,7 @@ public class MainActivity extends BaseActivity implements
     map.put("Config配置", ConfigFragment.class);
     map.put("Camera", CameraFragment.class);
     map.put("日期", DateFragment.class);
+    map.put("内存", MemoryFragment.class);
     return map;
   }
 
@@ -191,7 +193,7 @@ public class MainActivity extends BaseActivity implements
       @Override
       public void run() {
 //        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("主测试Test"));
+        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("内存"));
 //        mViewPager.setCurrentItem(0);
       }
     });
@@ -255,6 +257,19 @@ public class MainActivity extends BaseActivity implements
         LLogger.d(statusBarHeight, fixDp, tabLayoutHeight);
       }
     });
+
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        LLogger.d("发起子线程任务");
+        tabLayout.post(new Runnable() {
+          @Override
+          public void run() {
+            LLogger.d(tabLayout.getWidth(), tabLayout.getHeight(), tabLayout.getHandler());
+          }
+        });
+      }
+    }).start();
   }
 
   private LocationHelper mLocationHelper;

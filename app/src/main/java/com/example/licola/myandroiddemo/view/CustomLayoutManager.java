@@ -69,4 +69,10 @@ public class CustomLayoutManager extends LayoutManager {
     offsetChildrenVertical(-travel);
     return dy;
   }
+
+  @Override
+  public void collectInitialPrefetchPositions(int adapterItemCount,
+      LayoutPrefetchRegistry layoutPrefetchRegistry) {
+    super.collectInitialPrefetchPositions(adapterItemCount, layoutPrefetchRegistry);
+  }
 }

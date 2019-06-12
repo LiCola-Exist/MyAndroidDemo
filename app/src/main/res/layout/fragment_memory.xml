@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  tools:context=".frag.MemoryFragment">
+
+  <Button
+    android:id="@+id/btn_new_objects"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="一次创建大量View对象" />
+
+  <Button
+    android:id="@+id/btn_new_objects_continuous"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="连续创建大量View对象" />
+
+  <Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="进入Aty让Leak可观察泄露"
+    android:id="@+id/btn_entry_aty"
+    />
+
+</LinearLayout>

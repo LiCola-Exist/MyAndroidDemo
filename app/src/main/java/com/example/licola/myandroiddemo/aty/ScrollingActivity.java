@@ -10,8 +10,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import com.example.licola.myandroiddemo.frag.NestedScrollFragment;
 import com.example.licola.myandroiddemo.R;
+import com.example.licola.myandroiddemo.frag.NestedScrollFragment;
 import com.licola.llogger.LLogger;
 import com.licola.route.annotation.Route;
 import java.util.List;
@@ -19,7 +19,8 @@ import java.util.List;
 @Route(path = "scrolling")
 public class ScrollingActivity extends BaseActivity {
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_scrolling);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -27,16 +28,17 @@ public class ScrollingActivity extends BaseActivity {
 
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
     fab.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View view) {
+      @Override
+      public void onClick(View view) {
         Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
             .setAction("Action", null)
             .show();
-        postDelayRunnable();
+//        postDelayRunnable();
       }
     });
 
     FragmentManager fragmentManager = getSupportFragmentManager();
-    fragmentManager.beginTransaction().replace(R.id.container,new NestedScrollFragment()).commit();
+    fragmentManager.beginTransaction().replace(R.id.container, new NestedScrollFragment()).commit();
 
     ActivityManager systemService = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
     List<RunningAppProcessInfo> runningAppProcesses = systemService.getRunningAppProcesses();
@@ -45,7 +47,7 @@ public class ScrollingActivity extends BaseActivity {
     }
   }
 
-  private Handler handler=new Handler();
+  private Handler handler = new Handler();
 
   private void postDelayRunnable() {
     handler.postDelayed(new Runnable() {
@@ -53,6 +55,14 @@ public class ScrollingActivity extends BaseActivity {
       public void run() {
         LLogger.d("延迟任务执行");
       }
-    },100000);
+    }, 100000);
+  }
+
+  @Override
+  protected void finalize() throws Throwable {
+    super.finalize();
+    LLogger.trace();
+    //在实例被回收时 调用 如果该方法执行超时 系统10s-华为等修改30s+ 守护线程FinalizerDaemon抛出异常，导致进程退出
+//    Thread.sleep(10000000);
   }
 }

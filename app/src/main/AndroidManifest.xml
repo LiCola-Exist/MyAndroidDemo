@@ -2,51 +2,35 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.example.licola.myandroiddemo">
 
-
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.INTERNET" />
-  <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
-
-  <!-- 阿里移动推送相关权限 -->
+  <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" /> <!-- 阿里移动推送相关权限 -->
   <!-- Android 6.0版本可去除，用于选举信息（通道复用）的同步 -->
-  <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-  <!-- 进行网络访问和网络状态监控相关的权限声明 -->
+  <uses-permission android:name="android.permission.WRITE_SETTINGS" /> <!-- 进行网络访问和网络状态监控相关的权限声明 -->
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-  <!-- 允许对sd卡进行读写操作 -->
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-  <!-- 网络库使用，当网络操作时需要确保事务完成不被杀掉 -->
-  <uses-permission android:name="android.permission.WAKE_LOCK" />
-  <!-- 用于读取手机硬件信息等，用于机型过滤 -->
-  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-  <!-- 选举使用，当应用有删除或者更新时需要重新选举，复用推送通道 -->
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 允许对sd卡进行读写操作 -->
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 网络库使用，当网络操作时需要确保事务完成不被杀掉 -->
+  <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- 用于读取手机硬件信息等，用于机型过滤 -->
+  <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 选举使用，当应用有删除或者更新时需要重新选举，复用推送通道 -->
   <uses-permission android:name="android.permission.BROADCAST_PACKAGE_CHANGED" />
   <uses-permission android:name="android.permission.BROADCAST_PACKAGE_REPLACED" />
-  <uses-permission android:name="android.permission.RESTART_PACKAGES" />
-  <!-- 补偿通道小米PUSH使用，不用可去除 -->
-  <uses-permission android:name="android.permission.GET_TASKS" />
-  <!-- 补偿通道GCM使用，不使用可去除 -->
-  <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-  <!-- 允许监听启动完成事件 -->
-  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-  <!-- 允许访问震动器 -->
-  <uses-permission android:name="android.permission.VIBRATE" />
-  <!-- 允许task重排序 -->
+  <uses-permission android:name="android.permission.RESTART_PACKAGES" /> <!-- 补偿通道小米PUSH使用，不用可去除 -->
+  <uses-permission android:name="android.permission.GET_TASKS" /> <!-- 补偿通道GCM使用，不使用可去除 -->
+  <uses-permission android:name="android.permission.GET_ACCOUNTS" /> <!-- 允许监听启动完成事件 -->
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- 允许访问震动器 -->
+  <uses-permission android:name="android.permission.VIBRATE" /> <!-- 允许task重排序 -->
   <uses-permission android:name="android.permission.REORDER_TASKS" />
   <uses-permission android:name="android.permission.READ_LOGS" />
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-  <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-
-
-  <!--视频录制-->
+  <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- 视频录制 -->
   <uses-permission android:name="android.permission.CAMERA" />
   <uses-permission android:name="android.permission.FLASHLIGHT" />
   <uses-permission android:name="android.permission.RECORD_VIDEO" />
   <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
   <uses-feature android:name="android.hardware.camera" />
   <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -57,6 +41,15 @@
     android:name=".MyApplication"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
+    <activity
+      android:label="@string/title_activity_memory"
+      android:name=".aty.MemoryActivity"
+      android:parentActivityName=".MainActivity"
+      android:theme="@style/AppTheme.NoActionBar">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value="com.example.licola.myandroiddemo.MainActivity" />
+    </activity>
 
     <uses-library android:name="android.test.runner" />
 
@@ -66,7 +59,6 @@
     <meta-data
       android:name="com.alibaba.app.appsecret"
       android:value="399dba2c397adf66f5e70c26960f58c4" /> <!-- 请填写你自己的appSecret -->
-
     <activity
       android:exported="true"
       android:label="@string/app_name"
@@ -77,9 +69,7 @@
 
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
-    </activity>
-
-    <!-- 通道保持服务 -->
+    </activity> <!-- 通道保持服务 -->
     <service
       android:exported="true"
       android:name="com.alibaba.sdk.android.push.ChannelService"
@@ -92,8 +82,7 @@
 
         <category android:name="taobao" />
       </intent-filter>
-    </service>
-    <!-- 消息接收服务 -->
+    </service> <!-- 消息接收服务 -->
     <service
       android:exported="false"
       android:name="com.alibaba.sdk.android.push.MsgService">
@@ -103,17 +92,14 @@
       <intent-filter>
         <action android:name="com.alibaba.sdk.android.push.NOTIFY_ACTION" />
       </intent-filter>
-    </service>
-    <!-- 消息接收增强服务（可提高通知/消息达到率） -->
+    </service> <!-- 消息接收增强服务（可提高通知/消息达到率） -->
     <service
       android:exported="true"
       android:name="com.alibaba.sdk.android.push.channel.TaobaoRecvService">
       <intent-filter>
         <action android:name="org.android.agoo.client.MessageReceiverService" />
       </intent-filter>
-    </service>
-
-    <!-- 消息接收监听器 -->
+    </service> <!-- 消息接收监听器 -->
     <receiver android:name=".push.AliMessageReceiver">
       <intent-filter>
         <action android:name="com.alibaba.push2.action.NOTIFICATION_OPENED" />
@@ -183,24 +169,19 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-
     <activity
       android:exported="true"
       android:name=".aty.LayoutActivity">
-
       <intent-filter>
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
-
     </activity>
-
     <activity
       android:exported="true"
       android:name=".aty.WebViewAty">
       <intent-filter>
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
-
     </activity>
     <activity
       android:name=".aty.NoDisplayAty"
@@ -215,8 +196,6 @@
         android:name="android.support.FILE_PROVIDER_PATHS"
         android:resource="@xml/filepaths" />
     </provider>
-
-
   </application>
 
 </manifest>
