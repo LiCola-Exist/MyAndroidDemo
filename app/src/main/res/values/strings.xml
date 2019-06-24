@@ -105,4 +105,5 @@
     "when a user tries to pick up one of cards.\n\n"
   </string>
   <string name="title_activity_memory">MemoryActivity</string>
+  <string name="more_line">换行文字\n换行文字</string>
 </resources>

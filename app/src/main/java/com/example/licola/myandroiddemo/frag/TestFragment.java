@@ -83,15 +83,17 @@ public class TestFragment extends BaseFragment {
         new Thread(new Runnable() {
           @Override
           public void run() {
+            LLogger.d("子线程跳转开始");
             Intent intent = new Intent(getContext(), ScrollingActivity.class);
             //传输数据 限制在1MB以下
 //            byte[] value = new byte[1024 * 1024];
-//        intent.putExtra("big", value);
-//        startActivity(intent);
+            byte[] value = new byte[800 * 1024];
+            intent.putExtra("big", value);
+            startActivity(intent);
 
-            Bundle bundle = new Bundle();
+//            Bundle bundle = new Bundle();
 //            bundle.putByteArray("key", value);
-            startActivity(intent, bundle);
+//            startActivity(intent, bundle);
           }
         }).start();
       }

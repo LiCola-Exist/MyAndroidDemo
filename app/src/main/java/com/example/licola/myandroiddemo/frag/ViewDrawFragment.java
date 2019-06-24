@@ -3,9 +3,17 @@ package com.example.licola.myandroiddemo.frag;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -18,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import com.example.licola.myandroiddemo.R;
 import com.example.licola.myandroiddemo.utils.PixelUtils;
@@ -33,6 +42,9 @@ import com.licola.llogger.LLogger;
 public class ViewDrawFragment extends BaseFragment {
 
   private static final String ARG_SECTION_KEY = "section_key";
+
+  @BindView(R.id.tv_more_type)
+  TextView tvMoreType;
 
   public ViewDrawFragment() {
   }
@@ -90,9 +102,31 @@ public class ViewDrawFragment extends BaseFragment {
       @Override
       public void run() {
         //理论上
-        LLogger.d(newTextView.getWidth(),newTextView.getHeight());
+        LLogger.d(newTextView.getWidth(), newTextView.getHeight());
       }
     });
+
+    String target="点击";
+    String content = "内容可点击";
+    SpannableString spannableString = new SpannableString(content);
+    int index = content.indexOf(target);
+    spannableString
+        .setSpan(new ForegroundColorSpan(Color.DKGRAY), index,index+target.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+    spannableString.setSpan(new ClickableSpan() {
+      @Override
+      public void onClick(@NonNull View widget) {
+        Toast.makeText(getMContext(), "点击文字", Toast.LENGTH_SHORT).show();
+        LLogger.d(widget);
+      }
+
+      @Override
+      public void updateDrawState(@NonNull TextPaint ds) {
+//        super.updateDrawState(ds);
+        //默认绘制下滑线
+      }
+    }, index, index+target.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+    tvMoreType.setMovementMethod(LinkMovementMethod.getInstance());
+    tvMoreType.append(spannableString);
 
     return viewRoot;
   }

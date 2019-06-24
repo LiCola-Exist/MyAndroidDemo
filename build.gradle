@@ -40,7 +40,7 @@ ext {
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
 
     android = [
-            compileSdkVersion: 27,
+            compileSdkVersion: 28,
             minSdkVersion    : 21,
             targetSdkVersion : 28,
             buildSdkVersion  : '28.0.3',

@@ -55,14 +55,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="10dp"
-        android:text="换行文字\n换行文字"
+        android:text="@string/more_line"
         android:textSize="22dp" />
 
+
       <TextView
+        android:id="@+id/tv_more_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="字体替换123"
-        android:textSize="20dp" />
+        android:text="富文本"
+        android:textSize="18dp" />
 
 
     </LinearLayout>

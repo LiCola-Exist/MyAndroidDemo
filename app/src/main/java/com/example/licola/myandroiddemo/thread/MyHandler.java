@@ -105,6 +105,7 @@ public class MyHandler {
       }
     };
 
+
     LLogger.d("handle start SystemClock.uptimeMillis():" + SystemClock.uptimeMillis());
 //    handler.sendEmptyMessage(0);
 //    handler.sendEmptyMessage(1);
