@@ -10,23 +10,29 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import butterknife.BindView;
 import com.example.licola.myandroiddemo.R;
-import com.example.licola.myandroiddemo.http.OkHttpHelper;
+import com.example.licola.myandroiddemo.componet.CatchCallAdapterFactory;
+import com.example.licola.myandroiddemo.componet.OkHttpHelper;
+import com.example.licola.myandroiddemo.componet.RetrofitHelper;
+import com.example.licola.myandroiddemo.data.model.GitHubReposModel;
 import com.licola.llogger.LLogger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+import java.util.concurrent.Executor;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import okio.Buffer;
 import okio.Okio;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 /**
  * A simple {@link Fragment} subclass. Use the {@link HttpFragment#newInstance} factory method to
@@ -38,7 +44,8 @@ public class HttpFragment extends BaseFragment {
   // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
   private static final String ARG_PARAM1 = "param1";
 
-  private String SIMPLE_URL = "https://api.github.com/users/LiCola";
+  private static final String SIMPLE_URL = "https://api.github.com/users/LiCola1213";
+  private static final String BASE_URL = "https://api.github.com/users/LiCola1213/";
 
   @BindView(R.id.btn_okhttp)
   Button btnOkhttp;
@@ -86,7 +93,7 @@ public class HttpFragment extends BaseFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    View rootView = super.onCreateView(inflater,container ,savedInstanceState );
+    View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
     rootView.findViewById(R.id.btn_okhttp).setOnClickListener(new OnClickListener() {
       @Override
@@ -97,7 +104,7 @@ public class HttpFragment extends BaseFragment {
     rootView.findViewById(R.id.btn_retrofit).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        onRetrofitClick(v);
+        onRetrofitClick();
       }
     });
     rootView.findViewById(R.id.btn_http).setOnClickListener(new OnClickListener() {
@@ -110,8 +117,8 @@ public class HttpFragment extends BaseFragment {
     return rootView;
   }
 
-  private void runWorkThread(String url){
-    Thread thread=new Thread(makeUrlRunnable(url),"workThread");
+  private void runWorkThread(String url) {
+    Thread thread = new Thread(makeUrlRunnable(url), "workThread");
     thread.start();
   }
 
@@ -136,7 +143,6 @@ public class HttpFragment extends BaseFragment {
           e.printStackTrace();
         }
 
-
         try {
           urlConnection.setRequestMethod("GET");
           urlConnection.connect();
@@ -144,14 +150,14 @@ public class HttpFragment extends BaseFragment {
           int code = urlConnection.getResponseCode();
           LLogger.d(code);
 
-          if (code==200){
+          if (code == 200) {
             InputStream inputStream = urlConnection.getInputStream();
             Buffer buffer = new Buffer();
             buffer.writeAll(Okio.source(inputStream));
             String result = buffer.toString();
             LLogger.d(result);
-          }else {
-            if (301==code){
+          } else {
+            if (301 == code) {
               String location = urlConnection.getHeaderField("Location");
               runWorkThread(location);
             }
@@ -164,7 +170,6 @@ public class HttpFragment extends BaseFragment {
     };
 
   }
-
 
 
   public void onOkHttpClick(String url) {
@@ -197,8 +202,32 @@ public class HttpFragment extends BaseFragment {
   }
 
 
-  public void onRetrofitClick(View view) {
-    Retrofit retrofit = new Retrofit.Builder().build();
+  public void onRetrofitClick() {
+
+    Executor executor = RetrofitHelper.defaultCallbackExecutor();
+
+    Retrofit retrofit = new Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .callbackExecutor(executor)
+        .addCallAdapterFactory(new CatchCallAdapterFactory(executor))
+        .addConverterFactory(GsonConverterFactory.create())
+        .callFactory(OkHttpHelper.makeClient(getMContext()))
+        .build();
+
+    Api api = retrofit.create(Api.class);
+    api.fetchRepos(1, 2).enqueue(new retrofit2.Callback<List<GitHubReposModel>>() {
+      @Override
+      public void onResponse(retrofit2.Call<List<GitHubReposModel>> call,
+          retrofit2.Response<List<GitHubReposModel>> response) {
+        LLogger.d(response.body());
+        throw new RuntimeException("调用异常");
+      }
+
+      @Override
+      public void onFailure(retrofit2.Call<List<GitHubReposModel>> call, Throwable t) {
+        LLogger.d(t);
+      }
+    });
 
   }
 
@@ -207,5 +236,11 @@ public class HttpFragment extends BaseFragment {
     super.onDestroyView();
   }
 
+  public interface Api {
+
+    @GET("repos")
+    retrofit2.Call<List<GitHubReposModel>> fetchRepos(@Query("page") int page,
+        @Query("per_page") int perPage);
+  }
 
 }

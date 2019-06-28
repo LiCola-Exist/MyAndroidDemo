@@ -193,8 +193,8 @@ public class MainActivity extends BaseActivity implements
       @Override
       public void run() {
 //        mViewPager.setCurrentItem(mSectionsPagerAdapter.getCount() - 1);
-//        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("主测试Test"));
-        mViewPager.setCurrentItem(1);
+        mViewPager.setCurrentItem(mSectionsPagerAdapter.getPositionByName("Http"));
+//        mViewPager.setCurrentItem(1);
       }
     });
 

@@ -1,4 +1,4 @@
-package com.example.licola.myandroiddemo.http;
+package com.example.licola.myandroiddemo.componet;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -76,6 +76,7 @@ public class OkHttpHelper {
       OK_HTTP_CLIENT = new Builder()
           .cache(new Cache(okhttpCache, 10 * 1024 * 1024))
           .addInterceptor(INTERCEPTOR_LOG)
+          .addInterceptor(new SlowHttpInterceptor())
           .eventListener(EVENT_LISTENER)
           .build();
     }

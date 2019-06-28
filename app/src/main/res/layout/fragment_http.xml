@@ -9,16 +9,16 @@
     android:id="@+id/btn_okhttp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="okhttp-post" />
+    android:text="Okhttp" />
   <Button
     android:id="@+id/btn_retrofit"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="retrofit-post" />
+    android:text="Retrofit" />
   <Button
     android:id="@+id/btn_http"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="Http-Service" />
+    android:text="HttpUrl" />
 
 </LinearLayout>
